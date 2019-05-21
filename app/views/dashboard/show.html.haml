@@ -1,0 +1,11 @@
+- if current_user.blank?
+  .ui.placeholder.basic.segment
+    %img.ui.centered.small.image{src: 'https://voxpupuli.org/static/images/8bit-vox.png'}
+    = link_to '/auth/github', class: 'ui basic button center aligned' do
+      Please log in first
+- else
+  %h1
+    What's up,
+    = current_user.nickname
+
+  = react_component 'Dashboard'

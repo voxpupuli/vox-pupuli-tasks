@@ -1,0 +1,31 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %title Vox Pupuli Tasks
+    = csrf_meta_tags
+    = csp_meta_tag
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+    = javascript_pack_tag 'application'
+  %body
+    .ui.top.large.fixed.menu
+      .ui.container
+        %a.header.item{style: 'padding: 0px 15px', href: '/'}
+          .ui.avatar.image
+            %img.logo{src: 'https://voxpupuli.org/static/images/8bit-vox.png'}
+          Vox Pupuli Tasks
+        .right.menu
+          %a.item{href: '/sidekiq'}
+            = semantic_icon(:cogs)
+            Background Jobs
+          - if current_user.blank?
+            = link_to '/auth/github', class: 'item' do
+              = semantic_icon(:github)
+              Log in
+          - else
+            %span.item{style: 'padding: 0'}
+              %img.ui.avatar.image{style: 'margin-left: 7px; margin-right: 0px', src: current_user.avatar_url}
+            = react_component 'UserDropdown', username: current_user.username, avatar_url: current_user.avatar_url
+    .ui.container{style: 'padding-top: 58px;'}
+      = yield

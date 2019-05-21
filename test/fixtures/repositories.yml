@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  full_name: MyString
+  description: MyString
+  homepage: MyString
+  stars: 1
+  watchers: 1
+  open_issues_count: 1
+
+two:
+  name: MyString
+  full_name: MyString
+  description: MyString
+  homepage: MyString
+  stars: 1
+  watchers: 1
+  open_issues_count: 1
