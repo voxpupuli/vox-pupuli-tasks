@@ -1,7 +1,7 @@
 FROM ruby:alpine
 
 RUN apk update && apk upgrade
-RUN apk add build-base linux-headers git nodejs yarn tzdata
+RUN apk add build-base linux-headers git nodejs yarn tzdata sqlite-dev
 
 RUN mkdir /vpt
 WORKDIR /vpt
