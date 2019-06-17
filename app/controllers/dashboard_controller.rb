@@ -1,6 +1,5 @@
 class DashboardController < ApplicationController
   def show
-    @repos = Repository.all
-    @repo_list = @repos.pluck(:name)
+    @data = JSON.parse(RedisClient.client.get('repo_status_data'))
   end
 end

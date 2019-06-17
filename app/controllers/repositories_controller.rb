@@ -1,16 +1,21 @@
 class RepositoriesController < ApplicationController
   def index
-    repos = filter(Repository.all)
-    repos = sort(repos)
+    respond_to do |format|
+      format.html { render 'repositories/index'}
+      format.json do
+        repos = filter(Repository.all)
+        repos = sort(repos)
 
-    repos = if params['_limit']
-              repos.page(params['_page']).per(params['_limit'])
-            else
-              repos.count
-            end
+        repos = if params['_limit']
+                  repos.page(params['_page']).per(params['_limit'])
+                else
+                  repos.count
+                end
 
 
-    render json: repos
+        render json: repos
+      end
+    end
   end
 
   private

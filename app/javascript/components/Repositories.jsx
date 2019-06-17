@@ -3,7 +3,7 @@ import {Button, Container, Header, Menu} from 'semantic-ui-react'
 
 import RepoList from './RepoList.js';
 
-export class Dashboard extends Component {
+export class Repositories extends Component {
   render() {
     return (
       <RepoList />
@@ -11,4 +11,4 @@ export class Dashboard extends Component {
   };
 }
 
-export default Dashboard;
+export default Repositories;

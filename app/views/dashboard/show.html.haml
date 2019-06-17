@@ -7,5 +7,6 @@
   %h1
     What's up,
     = current_user.nickname
-
-  = react_component 'Dashboard'
+  - @data.each do |type, repos|
+    %h3= type
+    = repos

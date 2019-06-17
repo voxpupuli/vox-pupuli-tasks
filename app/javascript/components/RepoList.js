@@ -102,7 +102,7 @@ export default class RepoList extends React.Component {
       totalCountQuery = `q=${params.q}`;
     }
 
-    fetch(`/repositories?${totalCountQuery}`).then(response => {
+    fetch(`/repositories.json?${totalCountQuery}`).then(response => {
       if (response.ok) {
         response.json().then(data => {
           this.setState({ totalCount: data });
@@ -115,7 +115,7 @@ export default class RepoList extends React.Component {
       this.setState({loading: false});
     });
 
-    fetch('repositories?' + query).then(response => {
+    fetch('repositories.json?' + query).then(response => {
       if (response.ok) {
         response.json().then(data => {
           this.setState({ repos: data });

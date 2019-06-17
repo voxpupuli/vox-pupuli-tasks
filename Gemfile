@@ -23,6 +23,8 @@ gem 'kaminari'
 gem 'oj'
 gem 'redis'
 
+gem 'puppet_forge'
+
 gem 'omniauth-github'
 gem 'octokit'
 
