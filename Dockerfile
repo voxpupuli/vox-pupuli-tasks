@@ -1,5 +1,8 @@
 FROM ruby:alpine
 
+ENV NODE_ENV production
+ENV RAILS_ENV production
+
 RUN apk update && apk upgrade
 RUN apk add build-base linux-headers git nodejs yarn tzdata sqlite-dev
 
@@ -11,6 +14,6 @@ RUN git describe --always > VERSION
 
 RUN gem install bundler
 RUN bundle install --jobs $(nproc) --without development test --path vendor/bundle --deployment
-RUN NODE_ENV=production bundle exec yarn install --frozen-lockfile --non-interactive
-RUN NODE_ENV=production RAILS_ENV=production bundle exec rails assets:precompile
-RUN data +%s > BUILD_DATE
+RUN bundle exec yarn install --frozen-lockfile --non-interactive
+RUN SECRET_KEY_BASE=$(bundle exec rails secret) bundle exec rails assets:precompile
+RUN date +%s > BUILD_DATE

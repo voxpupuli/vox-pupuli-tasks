@@ -1,0 +1,38 @@
+version: '3'
+services:
+  redis:
+    restart: always
+    image: redis
+    container_name: vpt-redis
+    volumes:
+      - ./redis:/data
+  web:
+    restart: always
+    image: vpt
+    container_name: vpt-web
+    depends_on:
+      - redis
+    command: /vpt/entrypoint.sh
+    volumes:
+      - ./db:/vpt/db
+      - ./log:/vpt/log
+      - ./config/master.key:/vpt/config/master.key
+    ports:
+      - 127.0.0.1:3000:3000
+    environment:
+      RAILS_ENV: production
+      NODE_ENV: production
+      RAILS_SERVE_STATIC_FILES: y
+  sidekiq:
+    restart: always
+    image: vpt
+    container_name: vpt-sidekiq
+    depends_on:
+      - redis
+    volumes:
+      - ./db:/vpt/db
+      - ./log:/vpt/log
+      - ./config/master.key:/vpt/config/master.key
+    command: bundle exec sidekiq
+    environment:
+      RAILS_ENV: production

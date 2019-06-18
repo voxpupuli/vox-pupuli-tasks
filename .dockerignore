@@ -1,3 +1,7 @@
 Dockerfile
 /node_modules/
 /vendor/
+/config/master.key
+/tmp/
+/public/packs/
+/redis

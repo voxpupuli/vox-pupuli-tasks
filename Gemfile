@@ -17,6 +17,9 @@ gem 'fomantic-ui-sass'
 gem 'haml-rails'
 
 gem 'sidekiq'
+gem 'sidekiq-scheduler'
+
+gem 'jquery-rails'
 
 gem 'kaminari'
 

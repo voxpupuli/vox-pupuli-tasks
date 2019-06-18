@@ -1,0 +1,5 @@
+:logfile: log/sidekiq.log
+:schedule:
+  repo_status:
+    every: '6h'
+    class: IndexReposWorker

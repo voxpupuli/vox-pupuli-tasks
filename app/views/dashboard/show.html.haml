@@ -4,9 +4,19 @@
     = link_to '/auth/github', class: 'ui basic button center aligned' do
       Please log in first
 - else
-  %h1
+  %h1.ui.header
     What's up,
     = current_user.nickname
-  - @data.each do |type, repos|
-    %h3= type
-    = repos
+    .sub.header
+      Last sync was
+      = @last_sync
+  .ui.styled.fluid.accordion
+    - @data.each do |type, repos|
+      - next if repos.empty?
+      .title
+        .ui.primary.circular.label= repos.count
+        = semantic_icon(:dropdown)
+        = type.titleize
+      .content
+        - repos.each do |repo|
+          .ui.basic.label= repo
