@@ -20,6 +20,7 @@ gem 'sidekiq'
 gem 'sidekiq-scheduler'
 
 gem 'jquery-rails'
+gem 'jquery-datatables'
 
 gem 'kaminari'
 

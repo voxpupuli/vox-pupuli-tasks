@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
   include CacheHelper
 
+  before_action :logged_in
+
   helper_method :current_user, :github
 
   def current_user
@@ -13,5 +15,9 @@ class ApplicationController < ActionController::Base
     else
       Octokit::Client.new(auto_paginate: true)
     end
+  end
+
+  def logged_in
+    redirect_to(sessions_new_path) and return unless current_user
   end
 end

@@ -15,20 +15,21 @@
           .ui.avatar.image
             %img.logo{src: 'https://voxpupuli.org/static/images/8bit-vox.png'}
           Vox Pupuli Tasks
-        %a.item{href: '/repositories'}
-          = semantic_icon(:list)
-          Repositories
-        .right.menu
-          %a.item{href: '/sidekiq'}
-            = semantic_icon(:cogs)
-            Background Jobs
-          - if current_user.blank?
-            = link_to '/auth/github', class: 'item' do
-              = semantic_icon(:github)
-              Log in
-          - else
-            %span.item{style: 'padding: 0'}
-              %img.ui.avatar.image{style: 'margin-left: 7px; margin-right: 0px', src: current_user.avatar_url}
-            = react_component 'UserDropdown', username: current_user.username, avatar_url: current_user.avatar_url
+        - if current_user
+          %a.item{href: '/repositories'}
+            = semantic_icon(:list)
+            Repositories
+          .right.menu
+            %a.item{href: '/sidekiq'}
+              = semantic_icon(:cogs)
+              Background Jobs
+            - if current_user.blank?
+              = link_to '/auth/github', class: 'item' do
+                = semantic_icon(:github)
+                Log in
+            - else
+              %span.item{style: 'padding: 0'}
+                %img.ui.avatar.image{style: 'margin-left: 7px; margin-right: 0px', src: current_user.avatar_url}
+              = react_component 'UserDropdown', username: current_user.username, avatar_url: current_user.avatar_url
     .ui.container{style: 'padding-top: 58px;'}
       = yield

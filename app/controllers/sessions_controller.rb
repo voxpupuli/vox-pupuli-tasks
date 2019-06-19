@@ -1,4 +1,5 @@
 class SessionsController < ApplicationController
+  skip_before_action :logged_in, only: [:new, :create]
   def new; end
 
   def create
@@ -6,7 +7,8 @@ class SessionsController < ApplicationController
 
     if user.valid?
       session[:user_id] = user.id
-      redirect_to request.env['omniauth.origin']
+      redirect_to(root_path)
+      #redirect_to request.env['omniauth.origin']
     end
   end
 

@@ -14,8 +14,12 @@
 //= require activestorage
 //= require jquery
 //= require semantic-ui
+//= require datatables/jquery.dataTables
+//= require datatables/dataTables.semanticui
 //= require_tree .
 
 $( document ).ready(function() {
-  $('.ui.accordion').accordion()
+  $('.ui.accordion').accordion();
+  $('.popup').popup();
+  $("#dttb").dataTable();
 });

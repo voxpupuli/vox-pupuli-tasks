@@ -1,9 +1,4 @@
-%h1 Sessions#new
-- if current_user.blank?
-  %h1 Please Sign In
-  = link_to 'Sign In with Github', '/auth/github'
-- else
-  %p
-    You are signed in as #{current_user.username}.  Click the button below to sign out.
-    \#{current_user.inspect}
-  = button_to "Sign Out", signout_path, method: :delete
+.ui.placeholder.basic.segment
+  %img.ui.centered.small.image{src: 'https://voxpupuli.org/static/images/8bit-vox.png'}
+  = link_to '/auth/github', class: 'ui basic button center aligned' do
+    Please log in first

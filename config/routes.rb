@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   get 'sessions/create'
   get 'sessions/destroy'
 
-  resources :repositories, only: [:index]
+  resources :repositories, only: [:index, :show]
 
   get "/auth/:provider/callback", to: "sessions#create"
 
@@ -15,5 +15,7 @@ Rails.application.routes.draw do
   delete 'signout', to: 'sessions#destroy', as: 'signout'
   root to: 'dashboard#show'
 
-  mount Sidekiq::Web => '/sidekiq'
+  constraints ->(req) { req.session['user_id'] } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
 end
