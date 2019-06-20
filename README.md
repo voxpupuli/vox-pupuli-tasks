@@ -5,6 +5,7 @@
 * [Purpose](#purpose)
   * [Reviewing open Pull Requests](#reviewing-open-pull-requests)
   * [Yak shaving Puppet modules](#yak-shaving-puppet-modules)
+* [Local Setup](#local-setup)
 * [Contribution](#contribution)
 * [License](#license)
 
@@ -52,6 +53,35 @@ metadata.json files, allow new Puppet versions, drop legacy operating systems.
 There are many many tasks that collaborators do dfrom time to time and this
 project tries to make it as easy as possible or even automate stuff where it's
 suitable.
+
+## Local Setup
+
+To start the app locally, do (assumes that you've ruby, bundler and yarn
+available, also redis needs to be started):
+
+```sh
+git clone git@github.com:voxpupuli/vox-pupuli-tasks.git
+cd vox-pupuli-tasks
+bundle install --jobs $(nproc) --with development test --path vendor/bundle
+bundle exec yarn install --frozen-lockfile --non-interactive
+export SECRET_KEY_BASE=$(bundle exec rails secret)
+bundle exec rails assets:precompile
+# somehow generate config/master.key
+RAILS_ENV=development bundle exec rails db:migrate
+bundle exec foreman start
+```
+
+Secrets are stored as an encrypted yaml file. You can edit them by doing:
+
+```sh
+bundle exec rails credentials:edit
+```
+
+This only works properly if one od the developers sent you the `/config/master.key`
+file.
+
+[Foreman](https://rubygems.org/gems/foreman) will take care of the actual rails
+application, but it will also start [sidekiq](https://github.com/mperham/sidekiq#sidekiq).
 
 ## License
 
