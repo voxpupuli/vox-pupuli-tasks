@@ -8,13 +8,13 @@ services:
       - ./redis:/data
   web:
     restart: always
-    image: vpt
+    image: voxpupuli/vox-pupuli-tasks
     container_name: vpt-web
     depends_on:
       - redis
     command: /vpt/entrypoint.sh
     volumes:
-      - ./db:/vpt/db
+      - ./db/production.sqlite3:/vpt/db/production.sqlite3
       - ./log:/vpt/log
       - ./config/master.key:/vpt/config/master.key
     ports:
@@ -25,12 +25,12 @@ services:
       RAILS_SERVE_STATIC_FILES: y
   sidekiq:
     restart: always
-    image: vpt
+    image: voxpupuli/vox-pupuli-tasks
     container_name: vpt-sidekiq
     depends_on:
       - redis
     volumes:
-      - ./db:/vpt/db
+      - ./db/production.sqlite3:/vpt/db/production.sqlite3
       - ./log:/vpt/log
       - ./config/master.key:/vpt/config/master.key
     command: bundle exec sidekiq
