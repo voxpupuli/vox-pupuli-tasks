@@ -16,6 +16,10 @@ class Repository < ApplicationRecord
         pull_request.closed_at = gh_pull_request.closed_at
         pull_request.merged_at = gh_pull_request.merged_at
         pull_request.save
+
+        gh_pull_request.labels.each do |label|
+          pull_request.labels << Label.find_or_create_by(name: label.name, color: label.color)
+        end
       end
     end
 

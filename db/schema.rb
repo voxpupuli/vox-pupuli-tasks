@@ -10,7 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_20_083015) do
+ActiveRecord::Schema.define(version: 2019_06_20_095631) do
+
+  create_table "labels", force: :cascade do |t|
+    t.string "name"
+    t.string "color"
+    t.integer "pull_request_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["pull_request_id"], name: "index_labels_on_pull_request_id"
+  end
+
+  create_table "labels_pull_requests", id: false, force: :cascade do |t|
+    t.integer "label_id", null: false
+    t.integer "pull_request_id", null: false
+  end
 
   create_table "pull_requests", force: :cascade do |t|
     t.integer "number"
