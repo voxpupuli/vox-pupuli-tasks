@@ -2,6 +2,23 @@ class Repository < ApplicationRecord
   has_many :pull_requests
   has_many :open_pull_requests, -> { where(state: 'open') }, class_name: 'PullRequest'
 
+  def actions_needed
+    @action_needed ||= begin
+      actions = []
+      data = JSON.parse(RedisClient.client.get('repo_status_data').to_s)
+      data.each do |action, repos|
+        actions << action if repos.include? name
+      end
+      actions
+    rescue JSON::ParserError
+      nil
+    end
+  end
+
+  def github_url
+    'https://github.com/' + full_name
+  end
+
   def update_pull_requests
     open_pull_requests = Github.client.pull_requests("voxpupuli/#{name}")
     closed_pull_requests = Github.client.pull_requests("voxpupuli/#{name}", state: :closed)

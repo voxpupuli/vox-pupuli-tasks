@@ -1,4 +1,25 @@
-%h1.ui.header= @repository.name
+%h1.ui.dividing.header
+  %a.ui.right.floated.compact.basic.button{href: @repository.github_url, style: 'margin-top: 10px;'}
+    = semantic_icon(:github)
+    GitHub
+  = @repository.name
+  %span.ui.basic.tiny.labels
+    .ui.label
+      = semantic_icon(:star)
+      = @repository.stars
+    .ui.label
+      = semantic_icon(:eye)
+      = @repository.watchers
+    .ui.label
+      = semantic_icon(:exclamation, :mark)
+      = @repository.open_issues_count
+    - @repository.actions_needed.each do |action|
+      .ui.red.label
+        = semantic_icon(:cogs)
+        = action.titleize
+  .sub.header
+    = @repository.description
+
 %h3.ui.header Open Pull Requests
 .ui.fluid.styled.accordion
   - @repository.open_pull_requests.each do |pull_request|
@@ -6,6 +27,6 @@
       = semantic_icon(:dropdown)
       = pull_request.title
       - pull_request.labels.each do |label|
-        .ui.label{style: "background-color: ##{label.color}"}=label.name
+        .ui.small.horizontal.label{style: "background-color: ##{label.color}"}=label.name
     .content
       .ui.segment= markdown(pull_request.body)
