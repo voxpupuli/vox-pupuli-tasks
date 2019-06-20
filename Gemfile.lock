@@ -49,6 +49,7 @@ GEM
     arel (9.0.0)
     autoprefixer-rails (9.5.1.1)
       execjs
+    awesome_print (1.8.0)
     babel-source (5.8.35)
     babel-transpiler (0.7.0)
       babel-source (>= 4.0, < 6)
@@ -82,6 +83,14 @@ GEM
     connection_pool (2.2.2)
     crass (1.0.4)
     dotenv (0.7.0)
+    elasticsearch (7.1.0)
+      elasticsearch-api (= 7.1.0)
+      elasticsearch-transport (= 7.1.0)
+    elasticsearch-api (7.1.0)
+      multi_json
+    elasticsearch-transport (7.1.0)
+      faraday
+      multi_json
     erubi (1.8.0)
     erubis (2.7.0)
     et-orbi (1.2.1)
@@ -223,6 +232,9 @@ GEM
       nokogiri (>= 1.6)
     rails-html-sanitizer (1.0.4)
       loofah (~> 2.2, >= 2.2.2)
+    rails_semantic_logger (4.4.1)
+      rails (>= 3.2)
+      semantic_logger (~> 4.4)
     railties (5.2.3)
       actionpack (= 5.2.3)
       activesupport (= 5.2.3)
@@ -265,6 +277,8 @@ GEM
     selenium-webdriver (3.142.3)
       childprocess (>= 0.5, < 2.0)
       rubyzip (~> 1.2, >= 1.2.2)
+    semantic_logger (4.5.0)
+      concurrent-ruby (~> 1.0)
     sexp_processor (4.12.0)
     sidekiq (5.2.7)
       connection_pool (~> 2.2, >= 2.2.2)
@@ -311,11 +325,13 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  awesome_print
   bootsnap (>= 1.1.0)
   byebug
   capybara (>= 2.15)
   chromedriver-helper
   coffee-rails (~> 4.2)
+  elasticsearch
   execjs
   fomantic-ui-sass
   foreman
@@ -332,6 +348,7 @@ DEPENDENCIES
   puma (~> 3.11)
   puppet_forge
   rails (~> 5.2.3)
+  rails_semantic_logger
   react-rails
   redcarpet
   redis

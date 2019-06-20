@@ -35,8 +35,15 @@ gem 'octokit'
 
 gem 'bootsnap', '>= 1.1.0', require: false
 
+# support for direct logging to Elasticsearch
+# http://rocketjob.github.io/semantic_logger/rails#rails
+gem 'rails_semantic_logger'
+gem 'elasticsearch'
+
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  # provides colorized log output on the CLI (ANSI color codes)
+  gem 'awesome_print'
 end
 
 group :development do
