@@ -10,7 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_22_131343) do
+ActiveRecord::Schema.define(version: 2019_06_20_083015) do
+
+  create_table "pull_requests", force: :cascade do |t|
+    t.integer "number"
+    t.string "state"
+    t.string "title"
+    t.string "body"
+    t.datetime "gh_created_at"
+    t.datetime "gh_updated_at"
+    t.datetime "closed_at"
+    t.datetime "merged_at"
+    t.integer "repository_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["repository_id"], name: "index_pull_requests_on_repository_id"
+  end
 
   create_table "repositories", force: :cascade do |t|
     t.string "name"

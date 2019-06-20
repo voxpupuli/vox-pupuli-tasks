@@ -17,7 +17,7 @@ class IndexReposWorker
         repo.open_issues_count = github_repo.open_issues_count
         repo.save
 
-        RefreshRepoWorker.perform_async(repo.id)
+        repo.update_pull_requests
       end
     end
 
