@@ -7,4 +7,5 @@
       = pull_request.title
       - pull_request.labels.each do |label|
         .ui.label{style: "background-color: ##{label.color}"}=label.name
-    .content= pull_request.body
+    .content
+      .ui.segment= markdown(pull_request.body)
