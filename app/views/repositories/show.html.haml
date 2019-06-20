@@ -1,0 +1,8 @@
+%h1.ui.header= @repository.name
+%h3.ui.header Open Pull Requests
+.ui.fluid.styled.accordion
+  - @repository.open_pull_requests.each do |pull_request|
+    .title
+      = semantic_icon(:dropdown)
+      = pull_request.title
+    .content= pull_request.body

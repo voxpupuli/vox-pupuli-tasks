@@ -1,5 +1,6 @@
 class Repository < ApplicationRecord
   has_many :pull_requests
+  has_many :open_pull_requests, -> { where(state: 'open') }, class_name: 'PullRequest'
 
   def update_pull_requests
     open_pull_requests = Github.client.pull_requests("voxpupuli/#{name}")

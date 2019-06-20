@@ -16,7 +16,7 @@
           = type.titleize
         .content
           - repos.each do |repo|
-            .ui.basic.label= repo
+            = link_to(repo, repository_path(repo), class: 'ui basic label')
     - else
       .ui.error.message
         Something went wrong while fetching latest local data.

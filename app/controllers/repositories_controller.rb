@@ -3,5 +3,7 @@ class RepositoriesController < ApplicationController
     @repos = Repository.all
   end
 
-  def show; end
+  def show
+    @repository = Repository.find_by(name: params[:id])
+  end
 end
