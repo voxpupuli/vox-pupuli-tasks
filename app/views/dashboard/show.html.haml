@@ -7,12 +7,16 @@
       Last sync was
       = @last_sync
   .ui.styled.fluid.accordion
-    - @data.each do |type, repos|
-      - next if repos.empty?
-      .title
-        .ui.primary.circular.label= repos.count
-        = semantic_icon(:dropdown)
-        = type.titleize
-      .content
-        - repos.each do |repo|
-          .ui.basic.label= repo
+    - if @data
+      - @data.each do |type, repos|
+        - next if repos.empty?
+        .title
+          .ui.primary.circular.label= repos.count
+          = semantic_icon(:dropdown)
+          = type.titleize
+        .content
+          - repos.each do |repo|
+            .ui.basic.label= repo
+    - else
+      .ui.error.message
+        Something went wrong while fetching latest local data.
