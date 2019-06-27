@@ -32,3 +32,10 @@ environment ENV.fetch("RAILS_ENV") { "development" }
 
 # Allow puma to be restarted by `rails restart` command.
 plugin :tmp_restart
+
+# Reopen log files if puma forked itself
+# http://rocketjob.github.io/semantic_logger/forking.html#puma
+on_worker_boot do
+  # Re-open appenders after forking the process
+  SemanticLogger.reopen
+end
