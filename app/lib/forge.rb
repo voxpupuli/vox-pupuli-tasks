@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class Forge
   def self.user
-    @user ||= (
-      PuppetForge.user_agent = "vox-pupuli-tasks"
+    @user ||= begin
+      PuppetForge.user_agent = 'vox-pupuli-tasks'
       PuppetForge::User.find('puppet')
-    )
+    end
   end
 
   def self.module(query)

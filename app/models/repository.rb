@@ -15,6 +15,7 @@ class Repository < ApplicationRecord
            primary_key: :github_id,
            foreign_key: :gh_repository_id,
            inverse_of: :repository)
+  has_one :module
 
   ##
   #  Checks if the given Repository name is in our application scope (a module)
@@ -75,5 +76,14 @@ class Repository < ApplicationRecord
     end
 
     pull_requests.count
+  end
+
+  def update_forge_module
+    # we should save the json in Redis and cache it
+    content = Github.client.contents("voxpupuli/#{name}", path: 'metadata.json', query: { ref: 'master' })
+    metadata = content[:content]
+    module_name = JSON.load(Base64.decode64(metadata))['name']
+    # somehow save the result from the following lib in the module model
+    Forge.module(module_name)
   end
 end
