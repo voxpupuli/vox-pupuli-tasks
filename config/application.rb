@@ -17,8 +17,10 @@ module VoxPupuliTasks
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
 
-    Raven.configure do |config|
-      config.dsn = Rails.application.credentials.sentry[Rails.env.to_sym]
+    if Rails.application.credentials.sentry
+      Raven.configure do |config|
+        config.dsn = Rails.application.credentials.sentry[Rails.env.to_sym]
+      end
     end
   end
 end
