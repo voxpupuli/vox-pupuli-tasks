@@ -279,6 +279,8 @@ GEM
       rubyzip (~> 1.2, >= 1.2.2)
     semantic_logger (4.5.0)
       concurrent-ruby (~> 1.0)
+    sentry-raven (2.9.0)
+      faraday (>= 0.7.6, < 1.0)
     sexp_processor (4.12.0)
     sidekiq (5.2.7)
       connection_pool (~> 2.2, >= 2.2.2)
@@ -354,6 +356,7 @@ DEPENDENCIES
   redis
   sass-rails (~> 5.0)
   selenium-webdriver
+  sentry-raven
   sidekiq
   sidekiq-scheduler
   spring

@@ -20,6 +20,8 @@ gem 'redcarpet'
 gem 'sidekiq'
 gem 'sidekiq-scheduler'
 
+gem 'sentry-raven'
+
 gem 'jquery-rails'
 gem 'jquery-datatables'
 
