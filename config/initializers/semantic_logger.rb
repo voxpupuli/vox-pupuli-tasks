@@ -1,5 +1,7 @@
 # enable logging to elasticsearch
-SemanticLogger.add_appender(
-  appender: :elasticsearch,
-  url:      Rails.application.credentials.elasticsearch[:host]
-)
+if Rails.application.credentials.elasticsearch
+  SemanticLogger.add_appender(
+    appender: :elasticsearch,
+    url: Rails.application.credentials.elasticsearch[:host],
+  )
+end
