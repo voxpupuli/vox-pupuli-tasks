@@ -3,6 +3,6 @@ class IncomingController < ApplicationController
   skip_before_action :logged_in
 
   def github
-    Raven.capture_message('Received hook')
+    Raven.capture_message('Received hook', extra: params)
   end
 end
