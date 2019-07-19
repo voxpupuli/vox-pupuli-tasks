@@ -6,6 +6,10 @@
   * [Reviewing open Pull Requests](#reviewing-open-pull-requests)
   * [Yak shaving Puppet modules](#yak-shaving-puppet-modules)
 * [Local Setup](#local-setup)
+* [Production Setup](#production-setup)
+  * [Cerebro](#cerebro)
+  * [Elasticsearch](#elasticsearch)
+  * [Kibana](#kibana)
 * [Contribution](#contribution)
 * [License](#license)
 
@@ -82,6 +86,47 @@ file.
 
 [Foreman](https://rubygems.org/gems/foreman) will take care of the actual rails
 application, but it will also start [sidekiq](https://github.com/mperham/sidekiq#sidekiq).
+
+## Production Setup
+
+The production setup is a homage to microservices:
+
+![poo logo](poo.jpeg)
+
+The setup is deployed as docker microservices. This repository contains a
+[docker-compose.yaml](docker-compose.yaml) for this.
+
+We deploy multiple containers:
+
+* watchtower
+* [cerebro](https://github.com/lmenezes/cerebro#cerebro)
+* Elasticsearch
+* Redis
+* Sidekiq
+* [Kibana](https://www.elastic.co/products/kibana)
+* The actual application
+
+### Cerebro
+
+This is a webinterface for Elasticsearch. The service is available at
+localhost:9001. We highly suggest that you deploy an nginx in front of it with
+proper TLS certiicates. To access the elasticsearch container, you can use this
+URL:
+
+`http://localhost:9001/#/overview?host=http:%2F%2Felasticsearch:9200`
+
+The `docker-compose.yaml` sets `elasticsearch` as FQDN for the container.
+
+### Elasticsearch
+
+We use the [semantic logger](https://rocketjob.github.io/semantic_logger) to
+log all rails data to elasticsearch. Logs are important, and writing them to a
+file in a container is a bad idea.
+
+### Kibana
+
+Kibana is our frontend for elasticsearch. It's available at localhost on port
+5601.
 
 ## License
 
