@@ -24,7 +24,7 @@ We currently have a few tools for those jobs:
 * [https://octobox.io/](https://octobox.io/) is a nice external webinterface to work with github issues and pull requests
 * [https://voxpupuli-open-prs.herokuapp.com/](https://voxpupuli-open-prs.herokuapp.com/) is [our own](https://github.com/voxpupuli/open-prs#vox-pupuli-open-prs) Sinatra app to display all pull requests
 * GitHub has a nice search function for [pull requests](https://github.com/pulls?q=is%3Aopen+is%3Apr+user%3Avoxpupuli+archived%3Afalse+sort%3Acreated-asc) but also [for issues](https://github.com/issues?q=is%3Aopen+is%3Aissue+user%3Avoxpupuli+archived%3Afalse+sort%3Acreated-asc)
-* The [ommunity_management](https://github.com/underscorgan/community_management#community-management) project provides some CLI tools to generate different reports about open pull requests
+* The [community_management](https://github.com/underscorgan/community_management#community-management) project provides some CLI tools to generate different reports about open pull requests
 
 Collaborators review a lot of code in many pull requests. But there are even
 more pull requests that are open but don't need any attention. A collaborator
@@ -56,8 +56,8 @@ suitable.
 
 ## Local Setup
 
-To start the app locally, do (assumes that you've ruby, bundler and yarn
-available, also redis needs to be started):
+To start the app locally, do the following (assumes that you've ruby, bundler
+and yarn available, also redis needs to be started):
 
 ```sh
 git clone git@github.com:voxpupuli/vox-pupuli-tasks.git
