@@ -1,0 +1,23 @@
+---
+dist: xenial
+language: ruby
+cache: bundler
+script:
+  - 'bundle exec rake $CHECK'
+matrix:
+  fast_finish: true
+  include:
+  - rvm: 2.6.3
+    bundler_args: --without development
+    env: CHECK=rubocop
+branches:
+  only:
+  - master
+  - /^v\d/
+notifications:
+  email: false
+  irc:
+    on_success: always
+    on_failure: always
+    channels:
+      - "chat.freenode.org#voxpupuli-notifications"
