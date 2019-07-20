@@ -1,5 +1,7 @@
 # Vox Pupuli Tasks - The Webapp for community management
 
+[![Build Status](https://travis-ci.org/voxpupuli/vox-pupuli-tasks.svg?branch=master)](https://travis-ci.org/voxpupuli/vox-pupuli-tasks)
+
 ## Table of contents
 
 * [Purpose](#purpose)
