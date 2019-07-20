@@ -1,6 +1,12 @@
 # Vox Pupuli Tasks - The Webapp for community management
 
 [![Build Status](https://travis-ci.org/voxpupuli/vox-pupuli-tasks.svg?branch=master)](https://travis-ci.org/voxpupuli/vox-pupuli-tasks)
+[![AGPL v3 License](https://img.shields.io/github/license/voxpupuli/puppet-lldpd.svg)](LICENSE)
+[![microbadger layercounter](https://images.microbadger.com/badges/image/voxpupuli/vox-pupuli-tasks.svg)](https://microbadger.com/images/voxpupuli/vox-pupuli-tasks)
+[![display version](https://images.microbadger.com/badges/version/voxpupuli/vox-pupuli-tasks.svg)](https://microbadger.com/images/voxpupuli/vox-pupuli-tasks)
+[![GitHub release](https://img.shields.io/github/release/voxpupuli/vox-pupuli-tasks.svg)](https://GitHub.com/voxpupuli/vox-pupuli-tasks/releases/)
+[![Docker Stars](https://img.shields.io/docker/stars/jekyll/jekyll.svg)](https://hub.docker.com/r/voxpupuli/vox-pupuli-tasks)
+[![Docker Pulls](https://img.shields.io/docker/pulls/jekyll/jekyll.svg)](https://hub.docker.com/r/voxpupuli/vox-pupuli-tasks)
 
 ## Table of contents
 
