@@ -17,3 +17,8 @@ rescue LoadError
     raise 'rubocop is not available in this installation'
   end
 end
+
+desc 'Display the list of available rake tasks'
+task :help do
+  system('rake -T')
+end
