@@ -4,7 +4,7 @@ class IncomingController < ApplicationController
 
   def github
     # parse the JSON payload, that we get as string, to a hash
-    useable_body = JSON.parse(request.body.read()).to_h
+    useable_body = JSON.parse(request.body.read).to_h
 
     Raven.capture_message('Received hook', extra: useable_body)
   end
