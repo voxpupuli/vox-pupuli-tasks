@@ -7,6 +7,7 @@
 [![GitHub release](https://img.shields.io/github/release/voxpupuli/vox-pupuli-tasks.svg)](https://GitHub.com/voxpupuli/vox-pupuli-tasks/releases/)
 [![Docker Stars](https://img.shields.io/docker/stars/jekyll/jekyll.svg)](https://hub.docker.com/r/voxpupuli/vox-pupuli-tasks)
 [![Docker Pulls](https://img.shields.io/docker/pulls/jekyll/jekyll.svg)](https://hub.docker.com/r/voxpupuli/vox-pupuli-tasks)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/feabbbffc80343f48359590a124e8dab)](https://www.codacy.com/app/VoxPupuli/vox-pupuli-tasks)
 
 ## Table of contents
 
