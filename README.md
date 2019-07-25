@@ -14,13 +14,16 @@
 * [Purpose](#purpose)
   * [Reviewing open Pull Requests](#reviewing-open-pull-requests)
   * [Yak shaving Puppet modules](#yak-shaving-puppet-modules)
+* [Usage](#usage)
 * [Local Setup](#local-setup)
 * [Production Setup](#production-setup)
   * [Cerebro](#cerebro)
   * [Elasticsearch](#elasticsearch)
   * [Kibana](#kibana)
+  * [Sentry](#sentry)
 * [Contribution](#contribution)
 * [License](#license)
+* [Sponsor](#sponsor)
 
 ## Purpose
 
@@ -66,6 +69,57 @@ metadata.json files, allow new Puppet versions, drop legacy operating systems.
 There are many many tasks that collaborators do dfrom time to time and this
 project tries to make it as easy as possible or even automate stuff where it's
 suitable.
+
+## Usage
+
+You can currently access a beta version at [voxpupu.li](https://voxpupu.li).
+This is a MVP that we redeploy with enhancements every few days at the moment.
+The app uses GitHubs OAuth for authentication:
+
+[![login screenshot](login.png)](https://voxpupu.li)
+
+The application is developed by
+[Robert 'flipez' Müller](https://github.com/flipez) and
+[Tim 'bastelfreak' Meusel](https://github.com/bastelfreak). The current OAuth
+app is registed to their personal account but will soon be migrated to the Vox
+Pupuli GitHub organisation. You do not need to grant the application access to
+any repository. This OAuth setup is only used to authenticate the user.
+
+In the future it's possible to restrict the login or certain features to people
+that are members of specific GitHub organisations or teams. We didn't want to
+reimplement a whole usermanagement so we rely on GitHub OAuth.
+
+After the login, you see the following page:
+
+[![startpage screenshot](startpage.png)](https://voxpupu.li)
+
+Each yak shaving task is a row. It's prefixed with the number of modules that
+are in this category. For example:
+
+[![single yak shaving action](shave.png)](https://voxpupu.li)
+
+You can click on each PR. The app displays all the information that GitHub
+provides. It will also list open pull requests. It will be possible to filter
+this. The filtering will also work for all open pull requests in a namespace.
+The design and scope is currently discussed and implemented in
+[Issue #4](https://github.com/voxpupuli/vox-pupuli-tasks/issues/4).
+
+Besides being an OAuth application, this Ruby on Rails website is also a
+registered GitHub Application. This means that GitHub sends notifications
+for user interactions to the Rails app. The app gets information about every
+new pull request, new label, new code or comments in a pull request and much
+more. We currently store those notifications in a self hosted
+[Sentry](#sentry). The displayed data in the frontend comes from polling the
+GitHub API and from analysing the notifications. In the future we all add more
+automisation to the app, which will be based on the notifications. Use cases for
+automisation are discussed and developed at:
+
+* [Issue #1](https://github.com/voxpupuli/vox-pupuli-tasks/issues/1) - handle merge conflicts
+* [Issue #2](https://github.com/voxpupuli/vox-pupuli-tasks/issues/2) - handle CI failures
+
+Other [open issues](https://github.com/voxpupuli/vox-pupuli-tasks/issues) might
+also be good candidates for live interactions based on notifications. Please
+comment the open issues or raise new ones if you have crazy ideas.
 
 ## Local Setup
 
@@ -113,6 +167,7 @@ We deploy multiple containers:
 * Redis
 * Sidekiq
 * [Kibana](https://www.elastic.co/products/kibana)
+* [Sentry](https://sentry.io/welcome/)
 * The actual application
 
 ### Cerebro
@@ -137,6 +192,22 @@ file in a container is a bad idea.
 Kibana is our frontend for elasticsearch. It's available at localhost on port
 5601.
 
+## Sentry
+
+ToDo: Describe how we forward errors to Sentry
+
 ## License
 
 This project is licensed under [GNU Affero General Public License version 3](LICENSE)
+
+## Contribution
+
+## Sponsor
+
+[Hetzner Cloud GmbH](https://www.hetzner-cloud.de/) sponsors this project. They
+provide us with free cloud instances to host the application.
+
+[![hcloud](hetzner_cloud_logo.svg)](https://www.hetzner-cloud.de/)
+
+Are you interested as well in sponsoring parts of the Vox Pupuli organisation?
+Get in touch with the [Project Management Committee](mailto:pmc@voxpupuli.org).
