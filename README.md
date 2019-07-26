@@ -204,10 +204,10 @@ This project is licensed under [GNU Affero General Public License version 3](LIC
 
 ## Sponsor
 
-[Hetzner Cloud GmbH](https://www.hetzner-cloud.de/) sponsors this project. They
+This project is sponsored by [Hetzner Cloud](https://hetzner.com/cloud). They
 provide us with free cloud instances to host the application.
 
-[![hcloud](hetzner_cloud_logo.svg)](https://www.hetzner-cloud.de/)
+[![hcloud](hetzner_cloud_logo.svg)](https://hetzner.com/cloud)
 
 Are you interested as well in sponsoring parts of the Vox Pupuli organisation?
 Get in touch with the [Project Management Committee](mailto:pmc@voxpupuli.org).
