@@ -118,11 +118,11 @@ class RepoStatusWorker
           data.supports_eol_ubuntu << repo if os['operatingsystemrelease'].min < UBUNTU_SUPPORT_RANGE.min
           data.doesnt_support_latest_ubuntu << repo if os['operatingsystemrelease'].max < UBUNTU_SUPPORT_RANGE.max
         when 'Debian'
-          data.supports_eol_debian << repo if os['operatingsystemrelease'].min < DEBIAN_SUPPORT_RANGE.min
-          data.doesnt_support_latest_debian << repo if os['operatingsystemrelease'].max < DEBIAN_SUPPORT_RANGE.max
+          data.supports_eol_debian << repo if os['operatingsystemrelease'].all_i.min < DEBIAN_SUPPORT_RANGE.all_i.min
+          data.doesnt_support_latest_debian << repo if os['operatingsystemrelease'].all_i.max < DEBIAN_SUPPORT_RANGE.all_i.max
         when 'CentOS', 'RedHat'
-          data.supports_eol_centos << repo if os['operatingsystemrelease'].min <  CENTOS_SUPPORT_RANGE.min
-          data.doesnt_support_latest_centos << repo if os['operatingsystemrelease'].max <  CENTOS_SUPPORT_RANGE.max
+          data.supports_eol_centos << repo if os['operatingsystemrelease'].all_i.min <  CENTOS_SUPPORT_RANGE.all_i.min
+          data.doesnt_support_latest_centos << repo if os['operatingsystemrelease'].all_i.max <  CENTOS_SUPPORT_RANGE.all_i.max
         end
       end
       rescue NoMethodError
