@@ -69,10 +69,11 @@ class PullRequest < ApplicationRecord
   # We currently don't care about them
 
   def validate(_saved_changes)
+    label = Label.needs_rebase
     if mergeable
-      ensure_label_is_detached(Label.needs_rebase)
+      ensure_label_is_detached(label)
     else
-      repository.ensure_label_exists(Label.needs_rebase)
+      repository.ensure_label_exists(label)
       ensure_label_is_attached(label)
     end
   end
