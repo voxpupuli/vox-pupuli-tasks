@@ -24,7 +24,6 @@ class PullRequest < ApplicationRecord
       pull_request.closed_at        = gh_pull_request['closed_at']
       pull_request.merged_at        = gh_pull_request['merged_at']
       pull_request.mergeable        = gh_pull_request['mergeable']
-      pull_request.author           = gh_pull_request['user']['login']
       pull_request.save
 
       gh_pull_request['labels'].each do |label|
@@ -62,12 +61,6 @@ class PullRequest < ApplicationRecord
   end
 
   ##
-  #  Add a comment with the given text
-  def add_comment(text)
-    Github.client.add_comment(gh_repository_id, number, text)
-  end
-
-  ##
   #  if the PullRequest is mergeable we need to check if the 'needs-rebase' Label
   #  is attached. If so, we need to remove it.
   #
@@ -84,11 +77,6 @@ class PullRequest < ApplicationRecord
     elsif mergeable == false
       repository.ensure_label_exists(label)
       ensure_label_is_attached(label)
-      add_comment(
-        "Dear @#{author}, thanks for the PR! This is pccibot, your friendly " \
-        'Vox Pupuli GitHub Bot. I noticed that your pull request contains a ' \
-        'merge conflict. Can you please rebase?'
-      )
     end
   end
 
