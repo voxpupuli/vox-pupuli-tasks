@@ -143,5 +143,4 @@ class RepoStatusWorker
 
     save_data_to_redis(data)
   end
-  # rubocop:enable Metrics/AbcSize
 end
