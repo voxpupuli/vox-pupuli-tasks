@@ -37,6 +37,8 @@ class Repository < ApplicationRecord
   #
   def ensure_label_missing(label)
     Github.client.delete_label!(github_id, label.name)
+  rescue Octokit::NotFound
+    true
   end
 
   ##

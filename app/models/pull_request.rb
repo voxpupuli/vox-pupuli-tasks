@@ -56,6 +56,8 @@ class PullRequest < ApplicationRecord
 
   def ensure_label_is_detached(label)
     Github.client.remove_label(gh_repository_id, number, label.name)
+  rescue Octokit::NotFound
+    true
   end
 
   ##
