@@ -1,4 +1,5 @@
 ---
+services: docker
 dist: xenial
 language: ruby
 cache: bundler
@@ -21,3 +22,8 @@ notifications:
     on_failure: always
     channels:
       - "chat.freenode.org#voxpupuli-notifications"
+deploy:
+  provider: script
+  script: bash docker_push.sh
+  on:
+    branch: master
