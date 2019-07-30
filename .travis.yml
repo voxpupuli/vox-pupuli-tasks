@@ -3,12 +3,15 @@ services: docker
 dist: xenial
 language: ruby
 cache: bundler
+before_install:
+  - gem update --system
+  - gem install bundler
 script:
   - 'bundle exec rails $CHECK'
 matrix:
   fast_finish: true
   include:
-  - rvm: 2.6.3
+  - rvm: 2.5.3
     bundler_args: --without development --jobs "$(nproc)"
     env: CHECK=rubocop
 branches:
