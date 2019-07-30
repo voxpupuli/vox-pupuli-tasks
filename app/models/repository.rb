@@ -27,7 +27,7 @@ class Repository < ApplicationRecord
   #  If we get a 404 create the Label.
 
   def ensure_label_exists(label)
-    GitHub.client.label(github_id, label.name)
+    Github.client.label(github_id, label.name)
   rescue Octokit::NotFound
     Github.client.add_label(github_id, label.name, label.color)
   end
@@ -36,7 +36,7 @@ class Repository < ApplicationRecord
   #  Delete the given Label from the Repository
   #
   def ensure_label_missing(label)
-    GitHub.client.delete_label!(github_id, label.name)
+    Github.client.delete_label!(github_id, label.name)
   end
 
   ##
