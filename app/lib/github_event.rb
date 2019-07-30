@@ -13,7 +13,7 @@ class GithubEvent
     when 'pull_request'
       @processor = GithubEvent::PullRequest.new(payload)
     else
-      Raven.capture_message('Unknown Hook Received', extra: useable_body)
+      Raven.capture_message('Unknown Hook Received', extra: payload)
     end
   end
 end
