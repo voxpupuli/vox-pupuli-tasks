@@ -4,7 +4,7 @@ dist: xenial
 language: ruby
 cache: bundler
 script:
-  - 'bundle exec rake $CHECK'
+  - 'bundle exec rails $CHECK'
 matrix:
   fast_finish: true
   include:
