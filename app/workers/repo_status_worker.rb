@@ -11,7 +11,6 @@ class RepoStatusWorker
   # Categorizes repository based on their locally cached information
   # implements https://github.com/voxpupuli/modulesync_config/blob/master/bin/get_all_the_diffs
   # TODO: clean up stuff and make it less shitty
-  # rubocop:disable Metrics/AbcSize
   def perform
     repos = Repository.pluck(:name)
     data = OpenStruct.new
@@ -144,5 +143,4 @@ class RepoStatusWorker
 
     save_data_to_redis(data)
   end
-  # rubocop:enable Metrics/AbcSize
 end
