@@ -196,11 +196,26 @@ Kibana is our frontend for elasticsearch. It's available at localhost on port
 
 ToDo: Describe how we forward errors to Sentry
 
+## Contribution
+
+We have a helpful rake task available to run a ruby linter. It will inform you
+about styleguide violations. Please execute it before you provide a pull
+request:
+
+```sh
+bundle exec rake rubocop
+```
+
+This will execute the linter. You can also advice him to automatically fix
+things (works often, but not on all issues):
+
+```sh
+bundle exec rake rubocop::auto_correct
+```
+
 ## License
 
 This project is licensed under [GNU Affero General Public License version 3](LICENSE)
-
-## Contribution
 
 ## Sponsor
 
