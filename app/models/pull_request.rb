@@ -84,11 +84,7 @@ class PullRequest < ApplicationRecord
     elsif mergeable == false
       repository.ensure_label_exists(label)
       ensure_label_is_attached(label)
-      add_comment(
-        "Dear @#{author}, thanks for the PR! This is pccibot, your friendly " \
-        'Vox Pupuli GitHub Bot. I noticed that your pull request contains a ' \
-        'merge conflict. Can you please rebase?'
-      )
+      add_comment(I18n.t('comment.needs_rebase', author: author))
     end
   end
 
