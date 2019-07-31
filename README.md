@@ -15,6 +15,8 @@
   * [Reviewing open Pull Requests](#reviewing-open-pull-requests)
   * [Yak shaving Puppet modules](#yak-shaving-puppet-modules)
 * [Usage](#usage)
+* [Existing Automatisation](#existing-automatisation)
+  * [Merge Conflicts](#merge-conflicts)
 * [Local Setup](#local-setup)
 * [Production Setup](#production-setup)
   * [Cerebro](#cerebro)
@@ -120,6 +122,26 @@ automisation are discussed and developed at:
 Other [open issues](https://github.com/voxpupuli/vox-pupuli-tasks/issues) might
 also be good candidates for live interactions based on notifications. Please
 comment the open issues or raise new ones if you have crazy ideas.
+
+## Existing Automatisation
+
+We aim to automate different use cases. Each usecase gets a dedicated milestone
+at [GitHub](https://github.com/voxpupuli/vox-pupuli-tasks/milestones) to track
+the issues and pull requests.
+
+### Merge Conflicts - [Milestone 1](https://github.com/voxpupuli/vox-pupuli-tasks/milestone/1)
+
+At the moment, the application handles appearing and disappearing merge
+conflicts. Since
+[PR #35](https://github.com/voxpupuli/vox-pupuli-tasks/pull/35) went live, we
+are able to detect if a Pull request went from a mergeable into a non-mergeable
+state. In this case we check if the label `needs-rebase` is present in the
+repository. Afterwards we add it to the pull request.
+
+[![bot adds label](bot_label.png)](https://voxpupu.li)
+
+Also our bot Account adds a comment to the pull request. GitHub does not send
+notifications to the author whe a label was added, but for comments.
 
 ## Local Setup
 
