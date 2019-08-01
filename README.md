@@ -143,6 +143,8 @@ repository. Afterwards we add it to the pull request.
 Also our bot Account adds a comment to the pull request. GitHub does not send
 notifications to the author whe a label was added, but for comments.
 
+[![bot adds comment](images/bot_comment.png)](https://voxpupu.li)
+
 ## Local Setup
 
 To start the app locally, do the following (assumes that you've ruby, bundler
