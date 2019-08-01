@@ -11,7 +11,7 @@ class GithubEvent
   def initialize(payload, type)
     case type
     when 'pull_request'
-      next if Repository.notably? payload['repository']['name']
+      next unless Repository.notably? payload['repository']['name']
 
       @processor = GithubEvent::PullRequest.new(payload)
     else
