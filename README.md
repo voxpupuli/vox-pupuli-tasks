@@ -15,6 +15,8 @@
   * [Reviewing open Pull Requests](#reviewing-open-pull-requests)
   * [Yak shaving Puppet modules](#yak-shaving-puppet-modules)
 * [Usage](#usage)
+* [Existing Automatisation](#existing-automatisation)
+  * [Merge Conflicts](#merge-conflicts)
 * [Local Setup](#local-setup)
 * [Production Setup](#production-setup)
   * [Cerebro](#cerebro)
@@ -76,7 +78,7 @@ You can currently access a beta version at [voxpupu.li](https://voxpupu.li).
 This is a MVP that we redeploy with enhancements every few days at the moment.
 The app uses GitHubs OAuth for authentication:
 
-[![login screenshot](login.png)](https://voxpupu.li)
+[![login screenshot](images/login.png)](https://voxpupu.li)
 
 The application is developed by
 [Robert 'flipez' Müller](https://github.com/flipez) and
@@ -91,12 +93,12 @@ reimplement a whole usermanagement so we rely on GitHub OAuth.
 
 After the login, you see the following page:
 
-[![startpage screenshot](startpage.png)](https://voxpupu.li)
+[![startpage screenshot](images/startpage.png)](https://voxpupu.li)
 
 Each yak shaving task is a row. It's prefixed with the number of modules that
 are in this category. For example:
 
-[![single yak shaving action](shave.png)](https://voxpupu.li)
+[![single yak shaving action](images/shave.png)](https://voxpupu.li)
 
 You can click on each PR. The app displays all the information that GitHub
 provides. It will also list open pull requests. It will be possible to filter
@@ -120,6 +122,26 @@ automisation are discussed and developed at:
 Other [open issues](https://github.com/voxpupuli/vox-pupuli-tasks/issues) might
 also be good candidates for live interactions based on notifications. Please
 comment the open issues or raise new ones if you have crazy ideas.
+
+## Existing Automatisation
+
+We aim to automate different use cases. Each usecase gets a dedicated milestone
+at [GitHub](https://github.com/voxpupuli/vox-pupuli-tasks/milestones) to track
+the issues and pull requests.
+
+### Merge Conflicts - [Milestone 1](https://github.com/voxpupuli/vox-pupuli-tasks/milestone/1)
+
+At the moment, the application handles appearing and disappearing merge
+conflicts. Since
+[PR #35](https://github.com/voxpupuli/vox-pupuli-tasks/pull/35) went live, we
+are able to detect if a Pull request went from a mergeable into a non-mergeable
+state. In this case we check if the label `needs-rebase` is present in the
+repository. Afterwards we add it to the pull request.
+
+[![bot adds label](images/bot_label.png)](https://voxpupu.li)
+
+Also our bot Account adds a comment to the pull request. GitHub does not send
+notifications to the author whe a label was added, but for comments.
 
 ## Local Setup
 
@@ -154,7 +176,7 @@ application, but it will also start [sidekiq](https://github.com/mperham/sidekiq
 
 The production setup is a homage to microservices:
 
-![poo logo](poo.jpeg)
+![poo logo](images/poo.jpeg)
 
 The setup is deployed as docker microservices. This repository contains a
 [docker-compose.yaml](docker-compose.yaml) for this.
@@ -222,7 +244,7 @@ This project is licensed under [GNU Affero General Public License version 3](LIC
 This project is sponsored by [Hetzner Cloud](https://hetzner.com/cloud). They
 provide us with free cloud instances to host the application.
 
-[![hcloud](hetzner_cloud_logo.svg)](https://hetzner.com/cloud)
+[![hcloud](images/hetzner_cloud_logo.svg)](https://hetzner.com/cloud)
 
 Are you interested as well in sponsoring parts of the Vox Pupuli organisation?
 Get in touch with the [Project Management Committee](mailto:pmc@voxpupuli.org).
