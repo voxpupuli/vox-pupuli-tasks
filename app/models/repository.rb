@@ -5,6 +5,13 @@ class Repository < ApplicationRecord
   has_many :pull_requests, primary_key: :github_id, foreign_key: :gh_repository_id, inverse_of: :repository
   has_many :open_pull_requests, -> { where(state: 'open') }, class_name: 'PullRequest', primary_key: :github_id, foreign_key: :gh_repository_id
 
+  ##
+  #  Checks if the given Repository name is in our application scope (a module)
+
+  def self.notably?(name)
+    /^puppet-(?!lint)/.match?(name) && LEGACY_OR_BROKEN_NOBODY_KNOWS.exclude?(name)
+  end
+
   def actions_needed
     @action_needed ||= begin
       actions = []

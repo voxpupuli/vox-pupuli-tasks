@@ -4,8 +4,7 @@ class IndexReposWorker
   def perform
     group_repos = Github.client.repos('voxpupuli')
     group_repos.each do |github_repo|
-      next unless github_repo.name =~ /^puppet-(?!lint)/
-      next if LEGACY_OR_BROKEN_NOBODY_KNOWS.include? github_repo.name
+      next unless Repository.notably? github_repo.name
 
       Repository.where(github_id: github_repo.id).first_or_initialize.tap do |repo|
         repo.name = github_repo.name
