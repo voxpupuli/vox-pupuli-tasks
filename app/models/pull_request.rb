@@ -65,6 +65,7 @@ class PullRequest < ApplicationRecord
   #  Add a comment with the given text
   def add_comment(text)
     Github.client.add_comment(gh_repository_id, number, text)
+    update(eligible_for_comment: false)
   end
 
   ##
@@ -77,14 +78,18 @@ class PullRequest < ApplicationRecord
   # The saved_changes variable includes all the stuff that has changed.
   # We currently don't care about them
 
-  def validate(_saved_changes)
+  def validate(saved_changes)
+    # Don't run through the validaten, if only the eligable_for_comment attribute got updated
+    return if saved_changes.keys.sort == %w[updated_at eligable_for_comment].sort
+
     label = Label.needs_rebase
     if mergeable == true
       ensure_label_is_detached(label)
+      update(eligible_for_comment: true)
     elsif mergeable == false
       repository.ensure_label_exists(label)
       ensure_label_is_attached(label)
-      add_comment(I18n.t('comment.needs_rebase', author: author))
+      add_comment(I18n.t('comment.needs_rebase', author: author)) if eligible_for_comment
     end
   end
 
