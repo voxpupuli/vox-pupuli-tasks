@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_31_223410) do
+ActiveRecord::Schema.define(version: 2019_07_31_222648) do
 
   create_table "labels", force: :cascade do |t|
     t.string "name"
@@ -41,8 +41,8 @@ ActiveRecord::Schema.define(version: 2019_07_31_223410) do
     t.boolean "mergeable"
     t.integer "gh_repository_id"
     t.integer "github_id"
-    t.boolean "eligible_for_comment"
     t.string "author"
+    t.boolean "eligible_for_comment"
     t.index ["repository_id"], name: "index_pull_requests_on_repository_id"
   end
 
