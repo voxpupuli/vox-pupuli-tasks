@@ -68,6 +68,10 @@ class PullRequest < ApplicationRecord
     update(eligible_for_comment: false)
   end
 
+  def eligible_for_comment
+    super || true
+  end
+
   ##
   #  if the PullRequest is mergeable we need to check if the 'needs-rebase' Label
   #  is attached. If so, we need to remove it.
