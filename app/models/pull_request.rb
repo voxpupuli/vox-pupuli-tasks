@@ -73,10 +73,10 @@ class PullRequest < ApplicationRecord
   end
 
   ##
-  #  if the PullRequest is mergeable we need to check if the 'needs-rebase' Label
+  #  if the PullRequest is mergeable we need to check if the 'merge-conflicts' Label
   #  is attached. If so, we need to remove it.
   #
-  #  If the PullRequest is not yet mergeable we need to attach the 'needs-rebase'
+  #  If the PullRequest is not yet mergeable we need to attach the 'merge-conflicts'
   #  Label. Therefore we also need to check if the Label exists on repository level.
   #
   # The saved_changes variable includes all the stuff that has changed.
