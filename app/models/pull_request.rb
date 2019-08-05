@@ -69,7 +69,9 @@ class PullRequest < ApplicationRecord
   end
 
   def eligible_for_comment
-    super || true
+    return true if super.nil?
+
+    super
   end
 
   ##
