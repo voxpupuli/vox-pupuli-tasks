@@ -135,7 +135,7 @@ At the moment, the application handles appearing and disappearing merge
 conflicts. Since
 [PR #35](https://github.com/voxpupuli/vox-pupuli-tasks/pull/35) went live, we
 are able to detect if a Pull request went from a mergeable into a non-mergeable
-state. In this case we check if the label `needs-rebase` is present in the
+state. In this case we check if the label `merge-conflicts` is present in the
 repository. Afterwards we add it to the pull request.
 
 [![bot adds label](images/bot_label.png)](https://voxpupu.li)
