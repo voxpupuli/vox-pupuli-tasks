@@ -2,7 +2,7 @@
 # The modules in the list are broken, unfinished or got migrated (yes, that really happens from time to time)
 # ToDo: extend this list with repos that are archived on github
 # ToDo: Archive repos that we migrate away
-LEGACY_OR_BROKEN_NOBODY_KNOWS = ['puppet-bacula', 'puppet-nagios_providers', 'puppet-iis', 'puppet-syntax', 'puppet-blacksmith', 'puppet-mode']
+LEGACY_OR_BROKEN_NOBODY_KNOWS = %w[puppet-bacula puppet-nagios_providers puppet-iis puppet-syntax puppet-blacksmith puppet-mode]
 
 # define some versions that we want to match against
 PUPPET_SUPPORT_RANGE = '>= 5.5.8 < 7.0.0'

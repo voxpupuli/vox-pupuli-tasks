@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   get 'sessions/create'
   get 'sessions/destroy'
 
-  resources :repositories, only: [:index, :show]
+  resources :repositories, only: %i[index show]
 
   get "/auth/:provider/callback", to: "sessions#create"
 

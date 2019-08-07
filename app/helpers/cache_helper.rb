@@ -57,5 +57,4 @@ module CacheHelper
   def logger
     @logger ||= Logger.new('log/cache.log')
   end
-
 end

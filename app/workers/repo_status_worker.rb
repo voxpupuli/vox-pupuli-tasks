@@ -30,7 +30,6 @@ class RepoStatusWorker
     # get all modules that require a modulesync
     data.really_need_an_initial_modulesync = data.not_synced_repos.reject{|repo| LEGACY_OR_BROKEN_NOBODY_KNOWS.include?(repo)}
 
-
     # get all forge releases
     PuppetForge.user_agent = "VoxPupuli/Vox Pupuli Tasks"
     vp = PuppetForge::User.find('puppet')
@@ -78,7 +77,6 @@ class RepoStatusWorker
       metadatas[repo] = JSON.load(response)
     end
 
-
     # get the current modulesync version for all repos
     versions = {}
     msyncs.each do |repo, msync|
@@ -112,19 +110,19 @@ class RepoStatusWorker
 
       # check Ubuntu range
       begin
-      metadata['operatingsystem_support'].each do |os|
-        case os['operatingsystem']
-        when 'Ubuntu'
-          data.supports_eol_ubuntu << repo if os['operatingsystemrelease'].min < UBUNTU_SUPPORT_RANGE.min
-          data.doesnt_support_latest_ubuntu << repo if os['operatingsystemrelease'].max < UBUNTU_SUPPORT_RANGE.max
-        when 'Debian'
-          data.supports_eol_debian << repo if os['operatingsystemrelease'].all_i.min < DEBIAN_SUPPORT_RANGE.all_i.min
-          data.doesnt_support_latest_debian << repo if os['operatingsystemrelease'].all_i.max < DEBIAN_SUPPORT_RANGE.all_i.max
-        when 'CentOS', 'RedHat'
-          data.supports_eol_centos << repo if os['operatingsystemrelease'].all_i.min <  CENTOS_SUPPORT_RANGE.all_i.min
-          data.doesnt_support_latest_centos << repo if os['operatingsystemrelease'].all_i.max <  CENTOS_SUPPORT_RANGE.all_i.max
+        metadata['operatingsystem_support'].each do |os|
+          case os['operatingsystem']
+          when 'Ubuntu'
+            data.supports_eol_ubuntu << repo if os['operatingsystemrelease'].min < UBUNTU_SUPPORT_RANGE.min
+            data.doesnt_support_latest_ubuntu << repo if os['operatingsystemrelease'].max < UBUNTU_SUPPORT_RANGE.max
+          when 'Debian'
+            data.supports_eol_debian << repo if os['operatingsystemrelease'].all_i.min < DEBIAN_SUPPORT_RANGE.all_i.min
+            data.doesnt_support_latest_debian << repo if os['operatingsystemrelease'].all_i.max < DEBIAN_SUPPORT_RANGE.all_i.max
+          when 'CentOS', 'RedHat'
+            data.supports_eol_centos << repo if os['operatingsystemrelease'].all_i.min < CENTOS_SUPPORT_RANGE.all_i.min
+            data.doesnt_support_latest_centos << repo if os['operatingsystemrelease'].all_i.max < CENTOS_SUPPORT_RANGE.all_i.max
+          end
         end
-      end
       rescue NoMethodError
         data.modules_without_operatingsystems_support << repo
       end
