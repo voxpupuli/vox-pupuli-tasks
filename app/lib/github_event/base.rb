@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class GithubEvent
   class Base
     attr_reader :payload

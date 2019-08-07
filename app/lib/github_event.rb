@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class GithubEvent
   attr_reader :processor
   delegate :process, to: :processor

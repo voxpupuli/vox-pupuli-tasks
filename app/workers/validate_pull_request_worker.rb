@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ValidatePullRequestWorker
   include Sidekiq::Worker
 

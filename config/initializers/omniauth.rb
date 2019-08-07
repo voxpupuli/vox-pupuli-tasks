@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 opts = { scope: 'read:user,public_repo' }
 
 # TODO: this is a workaround to build the assets. Define how this will raise in real production

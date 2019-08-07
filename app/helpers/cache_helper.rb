@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module CacheHelper
-  SEED        = 'Eibae1Ox'.freeze
+  SEED        = 'Eibae1Ox'
   APP_NAME    = Rails.application.class.parent_name
-  PREFIX      = "#{APP_NAME}::cache::#{SEED}".freeze
+  PREFIX      = "#{APP_NAME}::cache::#{SEED}"
   DEFAULT_TTL = 6.hours
 
   def cached_data(name: nil, ttl: DEFAULT_TTL, id: nil, key: "#{PREFIX}::#{name}#{id}", fresh: false, &values)

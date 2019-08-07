@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 redis_conn = proc {
   Redis.new(Rails.application.credentials.redis[Rails.env.to_sym])
 }

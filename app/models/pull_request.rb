@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PullRequest < ApplicationRecord
   # It is easier overall to use the GitHub ID for relation management.
   # It allows us to maintain, update or the Repository or PullRequest without

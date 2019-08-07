@@ -80,13 +80,6 @@ Rails/OutputSafety:
 Style/Documentation:
   Enabled: false
 
-# Offense count: 63
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: always, never
-Style/FrozenStringLiteralComment:
-  Enabled: false
-
 # Offense count: 1
 # Configuration parameters: MinBodyLength.
 Style/GuardClause:
