@@ -20,8 +20,8 @@ class Repository < ApplicationRecord
         actions << action if repos.include? name
       end
       actions
-    rescue JSON::ParserError
-      nil
+                       rescue JSON::ParserError
+                         nil
     end
   end
 

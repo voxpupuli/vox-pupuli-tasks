@@ -28,7 +28,7 @@ class RepoStatusWorker
     data.not_synced_repos = repos.reject { |repo| modulesync_repos.include?(repo) }
 
     # get all modules that require a modulesync
-    data.really_need_an_initial_modulesync = data.not_synced_repos.reject{|repo| LEGACY_OR_BROKEN_NOBODY_KNOWS.include?(repo)}
+    data.really_need_an_initial_modulesync = data.not_synced_repos.reject { |repo| LEGACY_OR_BROKEN_NOBODY_KNOWS.include?(repo) }
 
     # get all forge releases
     PuppetForge.user_agent = "VoxPupuli/Vox Pupuli Tasks"
