@@ -16,10 +16,10 @@ class RepoStatusWorker
     data = OpenStruct.new
 
     # get all managed modules from our modulesync_config
-    modulesync_repos = YAML.load(open('https://raw.githubusercontent.com/voxpupuli/modulesync_config/master/managed_modules.yml').read)
+    modulesync_repos = YAML.safe_load(open('https://raw.githubusercontent.com/voxpupuli/modulesync_config/master/managed_modules.yml').read)
 
     # get all modules we have in plumbing
-    plumbing_modules = YAML.load(open('https://raw.githubusercontent.com/voxpupuli/plumbing/master/share/modules')).split(' ')
+    plumbing_modules = YAML.safe_load(open('https://raw.githubusercontent.com/voxpupuli/plumbing/master/share/modules')).split(' ')
 
     # get all modules that need to added to plumbing
     data.missing_in_plumbing = repos.reject { |repo| plumbing_modules.include?(repo) }
@@ -60,21 +60,21 @@ class RepoStatusWorker
         data.modules_that_were_added_but_never_synced << repo
         next
       end
-      msyncs[repo] = YAML.load(response)
+      msyncs[repo] = YAML.safe_load(response)
       begin
         response = open("https://raw.githubusercontent.com/voxpupuli/#{repo}/master/.sync.yml")
       rescue OpenURI::HTTPError
         data.modules_that_have_missing_secrets << repo
         next
       end
-      syncs[repo] = YAML.load(response)
+      syncs[repo] = YAML.safe_load(response)
       begin
         response = open("https://raw.githubusercontent.com/voxpupuli/#{repo}/master/metadata.json")
       rescue OpenURI::HTTPError
         puts "something is broken with #{repo} and https://raw.githubusercontent.com/voxpupuli/#{repo}/master/metadata.json"
         next
       end
-      metadatas[repo] = JSON.load(response)
+      metadatas[repo] = JSON.parse(response)
     end
 
     # get the current modulesync version for all repos
@@ -83,9 +83,9 @@ class RepoStatusWorker
       versions[repo] = msync['modulesync_config_version']
     end
 
-    # ToDo: get all modules that dont have a secret in .sync.yml
+    # TODO: get all modules that dont have a secret in .sync.yml
 
-    # ToDo: get all modules with outdated Puppet versions
+    # TODO: get all modules with outdated Puppet versions
     data.modules_without_puppet_version_range = []
     data.modules_with_incorrect_puppet_version_range = []
     data.modules_without_operatingsystems_support = []

@@ -5,6 +5,6 @@ class DashboardController < ApplicationController
             rescue JSON::ParserError
               nil
     end
-    @last_sync = Time.at(RedisClient.client.get('repo_status_time').to_i)
+    @last_sync = Time.zone.at(RedisClient.client.get('repo_status_time').to_i)
   end
 end

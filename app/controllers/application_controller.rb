@@ -18,6 +18,6 @@ class ApplicationController < ActionController::Base
   end
 
   def logged_in
-    redirect_to(sessions_new_path) and return unless current_user
+    redirect_to(sessions_new_path) && return unless current_user
   end
 end
