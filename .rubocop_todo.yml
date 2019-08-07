@@ -93,61 +93,11 @@ Style/GuardClause:
   Exclude:
     - 'app/controllers/sessions_controller.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/IfUnlessModifier:
-  Exclude:
-    - 'app/workers/repo_status_worker.rb'
-
 # Offense count: 2
 Style/MixinUsage:
   Exclude:
     - 'bin/setup'
     - 'bin/update'
-
-# Offense count: 5
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: literals, strict
-Style/MutableConstant:
-  Exclude:
-    - 'config/initializers/voxpupuli.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/RedundantBegin:
-  Exclude:
-    - 'bin/yarn'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/StderrPuts:
-  Exclude:
-    - 'bin/yarn'
-
-# Offense count: 39
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, ConsistentQuotesInMultiline.
-# SupportedStyles: single_quotes, double_quotes
-Style/StringLiterals:
-  Exclude:
-    - 'app/helpers/application_helper.rb'
-    - 'app/workers/repo_status_worker.rb'
-    - 'bin/webpack'
-    - 'bin/webpack-dev-server'
-    - 'bin/yarn'
-    - 'config/environments/production.rb'
-    - 'config/puma.rb'
-    - 'config/routes.rb'
-    - 'test/application_system_test_case.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyleForMultiline.
-# SupportedStylesForMultiline: comma, consistent_comma, no_comma
-Style/TrailingCommaInArguments:
-  Exclude:
-    - 'config/initializers/semantic_logger.rb'
 
 # Offense count: 74
 # Cop supports --auto-correct.

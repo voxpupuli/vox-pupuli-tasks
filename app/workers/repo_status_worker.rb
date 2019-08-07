@@ -31,7 +31,7 @@ class RepoStatusWorker
     data.really_need_an_initial_modulesync = data.not_synced_repos.reject { |repo| LEGACY_OR_BROKEN_NOBODY_KNOWS.include?(repo) }
 
     # get all forge releases
-    PuppetForge.user_agent = "VoxPupuli/Vox Pupuli Tasks"
+    PuppetForge.user_agent = 'VoxPupuli/Vox Pupuli Tasks'
     vp = PuppetForge::User.find('puppet')
     forge_releases = vp.modules.unpaginated.map(&:slug)
 
@@ -100,9 +100,7 @@ class RepoStatusWorker
       # check if Puppet version range is correct
       begin
         version_requirement = metadata['requirements'][0]['version_requirement']
-        if PUPPET_SUPPORT_RANGE != version_requirement
-          data.modules_with_incorrect_puppet_version_range << repo
-        end
+        data.modules_with_incorrect_puppet_version_range << repo if PUPPET_SUPPORT_RANGE != version_requirement
       # it's possible that the version range isn't present at all in the metadata.json
       rescue NoMethodError
         data.modules_without_puppet_version_range << repo

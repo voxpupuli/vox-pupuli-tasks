@@ -2,6 +2,6 @@
 if Rails.application.credentials.elasticsearch
   SemanticLogger.add_appender(
     appender: :elasticsearch,
-    url: Rails.application.credentials.elasticsearch[:host],
+    url: Rails.application.credentials.elasticsearch[:host]
   )
 end
