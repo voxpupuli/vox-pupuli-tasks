@@ -71,7 +71,7 @@ Some more examples are documented as [open issues](https://github.com/voxpupuli/
 
 This is the second big tasks for collaborators. Update dependencies in
 metadata.json files, allow new Puppet versions, drop legacy operating systems.
-There are many many tasks that collaborators do dfrom time to time and this
+There are many many tasks that collaborators do from time to time and this
 project tries to make it as easy as possible or even automate stuff where it's
 suitable.
 
