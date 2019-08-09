@@ -21,7 +21,9 @@ class RepoStatusWorker
     modulesync_repos = YAML.safe_load(open('https://raw.githubusercontent.com/voxpupuli/modulesync_config/master/managed_modules.yml').read)
 
     # get all modules we have in plumbing
-    plumbing_modules = YAML.safe_load(open('https://raw.githubusercontent.com/voxpupuli/plumbing/master/share/modules')).split(' ')
+    plumbing_modules = YAML.safe_load(
+      open('https://raw.githubusercontent.com/voxpupuli/plumbing/master/share/modules')
+    ).split(' ')
 
     # get all modules that need to added to plumbing
     data.missing_in_plumbing = repos.reject { |repo| plumbing_modules.include?(repo) }
@@ -30,7 +32,9 @@ class RepoStatusWorker
     data.not_synced_repos = repos.reject { |repo| modulesync_repos.include?(repo) }
 
     # get all modules that require a modulesync
-    data.really_need_an_initial_modulesync = data.not_synced_repos.reject { |repo| LEGACY_OR_BROKEN_NOBODY_KNOWS.include?(repo) }
+    data.really_need_an_initial_modulesync = data.not_synced_repos.reject do |repo|
+      LEGACY_OR_BROKEN_NOBODY_KNOWS.include?(repo)
+    end
 
     # get all forge releases
     PuppetForge.user_agent = 'VoxPupuli/Vox Pupuli Tasks'
@@ -44,7 +48,9 @@ class RepoStatusWorker
     data.really_unreleased_modules = repos.reject { |repo| forge_releases.include?(repo) }
 
     # get all modules that really need an initial release
-    data.really_need_an_inital_release = data.really_unreleased_modules.reject { |repo| LEGACY_OR_BROKEN_NOBODY_KNOWS.include?(repo) }
+    data.really_need_an_inital_release = data.really_unreleased_modules.reject do |repo|
+      LEGACY_OR_BROKEN_NOBODY_KNOWS.include?(repo)
+    end
 
     latest_release = Github.client.tags('voxpupuli/modulesync_config').first.name
 
@@ -73,7 +79,8 @@ class RepoStatusWorker
       begin
         response = open("https://raw.githubusercontent.com/voxpupuli/#{repo}/master/metadata.json")
       rescue OpenURI::HTTPError
-        puts "something is broken with #{repo} and https://raw.githubusercontent.com/voxpupuli/#{repo}/master/metadata.json"
+        puts("something is broken with #{repo} and https://raw.githubusercontent.com/voxpupuli/" |
+             "#{repo}/master/metadata.json")
         next
       end
       metadatas[repo] = JSON.parse(response)
@@ -102,7 +109,9 @@ class RepoStatusWorker
       # check if Puppet version range is correct
       begin
         version_requirement = metadata['requirements'][0]['version_requirement']
-        data.modules_with_incorrect_puppet_version_range << repo if PUPPET_SUPPORT_RANGE != version_requirement
+        if PUPPET_SUPPORT_RANGE != version_requirement
+          data.modules_with_incorrect_puppet_version_range << repo
+        end
       # it's possible that the version range isn't present at all in the metadata.json
       rescue NoMethodError
         data.modules_without_puppet_version_range << repo
@@ -113,14 +122,26 @@ class RepoStatusWorker
         metadata['operatingsystem_support'].each do |os|
           case os['operatingsystem']
           when 'Ubuntu'
-            data.supports_eol_ubuntu << repo if os['operatingsystemrelease'].min < UBUNTU_SUPPORT_RANGE.min
-            data.doesnt_support_latest_ubuntu << repo if os['operatingsystemrelease'].max < UBUNTU_SUPPORT_RANGE.max
+            if os['operatingsystemrelease'].min < UBUNTU_SUPPORT_RANGE.min
+              data.supports_eol_ubuntu << repo
+            end
+            if os['operatingsystemrelease'].max < UBUNTU_SUPPORT_RANGE.max
+              data.doesnt_support_latest_ubuntu << repo
+            end
           when 'Debian'
-            data.supports_eol_debian << repo if os['operatingsystemrelease'].all_i.min < DEBIAN_SUPPORT_RANGE.all_i.min
-            data.doesnt_support_latest_debian << repo if os['operatingsystemrelease'].all_i.max < DEBIAN_SUPPORT_RANGE.all_i.max
+            if os['operatingsystemrelease'].all_i.min < DEBIAN_SUPPORT_RANGE.all_i.min
+              data.supports_eol_debian << repo
+            end
+            if os['operatingsystemrelease'].all_i.max < DEBIAN_SUPPORT_RANGE.all_i.max
+              data.doesnt_support_latest_debian << repo
+            end
           when 'CentOS', 'RedHat'
-            data.supports_eol_centos << repo if os['operatingsystemrelease'].all_i.min < CENTOS_SUPPORT_RANGE.all_i.min
-            data.doesnt_support_latest_centos << repo if os['operatingsystemrelease'].all_i.max < CENTOS_SUPPORT_RANGE.all_i.max
+            if os['operatingsystemrelease'].all_i.min < CENTOS_SUPPORT_RANGE.all_i.min
+              data.supports_eol_centos << repo
+            end
+            if os['operatingsystemrelease'].all_i.max < CENTOS_SUPPORT_RANGE.all_i.max
+              data.doesnt_support_latest_centos << repo
+            end
           end
         end
       rescue NoMethodError
@@ -136,7 +157,9 @@ class RepoStatusWorker
     data.need_another_sync = []
     versions.each do |repo|
       # index 0 is the module name, index 1 is the used modulesync_config version
-      data.need_another_sync << repo[0] if Gem::Version.new(latest_release) >= Gem::Version.new(repo[1])
+      if Gem::Version.new(latest_release) >= Gem::Version.new(repo[1])
+        data.need_another_sync << repo[0]
+      end
     end
 
     save_data_to_redis(data)

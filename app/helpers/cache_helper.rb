@@ -6,7 +6,12 @@ module CacheHelper
   PREFIX      = "#{APP_NAME}::cache::#{SEED}"
   DEFAULT_TTL = 6.hours
 
-  def cached_data(name: nil, ttl: DEFAULT_TTL, id: nil, key: "#{PREFIX}::#{name}#{id}", fresh: false, &values)
+  def cached_data(name: nil,
+                  ttl: DEFAULT_TTL,
+                  id: nil,
+                  key: "#{PREFIX}::#{name}#{id}",
+                  fresh: false,
+                  &values)
     logger.info "Requesting #{name}"
     if !fresh && (cached_values = redis.get(key))
       logger.info 'Found cached data'

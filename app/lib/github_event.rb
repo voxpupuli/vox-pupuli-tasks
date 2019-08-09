@@ -13,7 +13,9 @@ class GithubEvent
   def initialize(payload, type)
     case type
     when 'pull_request'
-      @processor = GithubEvent::PullRequest.new(payload) if Repository.notably? payload['repository']['name']
+      if Repository.notably? payload['repository']['name']
+        @processor = GithubEvent::PullRequest.new(payload)
+      end
     else
       Raven.capture_message("Unknown Hook Received: #{type}", extra: payload)
     end

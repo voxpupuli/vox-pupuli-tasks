@@ -7,3 +7,6 @@ AllCops:
     - db/**/*
     - vendor/**/*
     - node_modules/**/*
+
+Metrics/LineLength:
+  Max: 100

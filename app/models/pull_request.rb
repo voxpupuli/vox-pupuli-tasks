@@ -4,7 +4,10 @@ class PullRequest < ApplicationRecord
   # It is easier overall to use the GitHub ID for relation management.
   # It allows us to maintain, update or the Repository or PullRequest without
   # the counterpart.
-  belongs_to :repository, primary_key: :github_id, foreign_key: :gh_repository_id, inverse_of: :pull_requests
+  belongs_to(:repository,
+             primary_key: :github_id,
+             foreign_key: :gh_repository_id,
+             inverse_of: :pull_requests)
 
   has_and_belongs_to_many :labels
   after_save :queue_validation

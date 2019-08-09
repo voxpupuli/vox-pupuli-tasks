@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
-# we removed the following modules from our modulesync_config / hide it because they are not Puppet modules but match the puppet- pattern
-# The modules in the list are broken, unfinished or got migrated (yes, that really happens from time to time)
+# we removed the following modules from our modulesync_config / hide it because they are not
+# Puppet modules but match the puppet- pattern
+# The modules in the list are broken, unfinished or got migrated
+# (yes, that really happens rom time to time)
 # ToDo: extend this list with repos that are archived on github
 # ToDo: Archive repos that we migrate away
-LEGACY_OR_BROKEN_NOBODY_KNOWS = %w[puppet-bacula puppet-nagios_providers puppet-iis puppet-syntax puppet-blacksmith puppet-mode].freeze
+LEGACY_OR_BROKEN_NOBODY_KNOWS = %w[puppet-bacula puppet-nagios_providers puppet-iis puppet-syntax
+                                   puppet-blacksmith puppet-mode].freeze
 
 # define some versions that we want to match against
 PUPPET_SUPPORT_RANGE = '>= 5.5.8 < 7.0.0'
