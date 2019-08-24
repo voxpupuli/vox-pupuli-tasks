@@ -7,12 +7,14 @@ class Repository < ApplicationRecord
   has_many(:pull_requests,
            primary_key: :github_id,
            foreign_key: :gh_repository_id,
-           inverse_of: :repository)
+           inverse_of: :repository,
+           dependent: :destroy)
   has_many(:open_pull_requests,
            -> { where(state: 'open') },
            class_name: 'PullRequest',
            primary_key: :github_id,
-           foreign_key: :gh_repository_id)
+           foreign_key: :gh_repository_id,
+           inverse_of: :repository)
 
   ##
   #  Checks if the given Repository name is in our application scope (a module)
@@ -22,16 +24,16 @@ class Repository < ApplicationRecord
   end
 
   def actions_needed
-    @action_needed ||= begin
-      actions = []
-      data = JSON.parse(RedisClient.client.get('repo_status_data').to_s)
-      data.each do |action, repos|
-        actions << action if repos.include? name
-      end
-      actions
-                       rescue JSON::ParserError
-                         nil
-    end
+    @actions_needed ||= begin
+                          actions = []
+                          data = JSON.parse(RedisClient.client.get('repo_status_data').to_s)
+                          data.each do |action, repos|
+                            actions << action if repos.include? name
+                          end
+                          actions
+                        rescue JSON::ParserError
+                          nil
+                        end
   end
 
   def github_url

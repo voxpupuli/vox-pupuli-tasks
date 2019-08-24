@@ -79,8 +79,8 @@ class RepoStatusWorker
       begin
         response = open("https://raw.githubusercontent.com/voxpupuli/#{repo}/master/metadata.json")
       rescue OpenURI::HTTPError
-        puts("something is broken with #{repo} and https://raw.githubusercontent.com/voxpupuli/" |
-             "#{repo}/master/metadata.json")
+        Rails.logger.error("something is broken with #{repo} and " \
+          "https://raw.githubusercontent.com/voxpupuli/#{repo}/master/metadata.json")
         next
       end
       metadatas[repo] = JSON.parse(response)

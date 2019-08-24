@@ -10,3 +10,8 @@ AllCops:
 
 Metrics/LineLength:
   Max: 100
+
+Style/MixinUsage:
+  Exclude:
+    - 'bin/setup'
+    - 'bin/update'
