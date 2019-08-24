@@ -5,6 +5,6 @@ class Label < ApplicationRecord
 
   # TODO: Find out how to manage predefined labels
   def self.needs_rebase
-    find_or_create_by(name: 'needs-rebase', color: '207de5')
+    find_or_create_by(name: 'merge-conflicts', color: '207de5')
   end
 end

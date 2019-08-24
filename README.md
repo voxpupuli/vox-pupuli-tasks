@@ -23,6 +23,9 @@
   * [Elasticsearch](#elasticsearch)
   * [Kibana](#kibana)
   * [Sentry](#sentry)
+  * [GitHub App Setup](#github-app-setup)
+    * [Permissions](#permission)
+    * [Events](#events)
 * [Contribution](#contribution)
 * [License](#license)
 * [Sponsor](#sponsor)
@@ -68,7 +71,7 @@ Some more examples are documented as [open issues](https://github.com/voxpupuli/
 
 This is the second big tasks for collaborators. Update dependencies in
 metadata.json files, allow new Puppet versions, drop legacy operating systems.
-There are many many tasks that collaborators do dfrom time to time and this
+There are many many tasks that collaborators do from time to time and this
 project tries to make it as easy as possible or even automate stuff where it's
 suitable.
 
@@ -135,7 +138,7 @@ At the moment, the application handles appearing and disappearing merge
 conflicts. Since
 [PR #35](https://github.com/voxpupuli/vox-pupuli-tasks/pull/35) went live, we
 are able to detect if a Pull request went from a mergeable into a non-mergeable
-state. In this case we check if the label `needs-rebase` is present in the
+state. In this case we check if the label `merge-conflicts` is present in the
 repository. Afterwards we add it to the pull request.
 
 [![bot adds label](images/bot_label.png)](https://voxpupu.li)
@@ -219,6 +222,55 @@ Kibana is our frontend for elasticsearch. It's available at localhost on port
 ## Sentry
 
 ToDo: Describe how we forward errors to Sentry
+
+## GitHub App Setup
+
+As mentioned in the [usage](#usage) section, this Ruby on Rails application can
+be registered as a GitHub App. To do this, a few things need to be configured.
+
+### `User authorization callback URL`
+
+The full URL to redirect to after a user authorizes an installation. For our
+instance this is [https://voxpupu.li/auth/github/callback](https://voxpupu.li/auth/github/callback)
+
+### `Request user authorization (OAuth) during installation`
+
+Requests that the installing user grants access to their identity during
+installation of the application.
+
+This allows us to validate if a user is in a specific GitHub organisation or
+Team.
+
+### `Webhook URL`
+
+Events will POST to this URL. For our instance this is [https://voxpupu.li/incoming/github](https://voxpupu.li/incoming/github)
+
+### Permissions
+
+We need `Read and write` access to issues because we add/remove labels and also
+comment on them. More information can be found at
+[the GitHub developer docs](https://developer.github.com/v3/apps/permissions/#permission-on-issues).
+
+[![issue perms](images/issues.png)](https://voxpupu.li)
+
+The same applies for the Pull requests. More information can be found at
+[the GitHub developer docs](https://developer.github.com/v3/apps/permissions/#permission-on-pull-requests)
+
+[![pr perms](images/prs.png)](https://voxpupu.li)
+
+### Events
+
+We also need to tell GitHub which events we would like to get:
+
+[![events](images/events.png)](https://voxpupu.li)
+
+API docs for:
+
+* [Issue comment](https://developer.github.com/v3/activity/events/types/#issuecommentevent)
+* [Label](https://developer.github.com/v3/activity/events/types/#labelevent)
+* [Repository](https://developer.github.com/v3/activity/events/types/#repositoryevent)
+* [Pull Request](https://developer.github.com/v3/activity/events/types/#pullrequestevent)
+* [Issues](https://developer.github.com/v3/activity/events/types/#issuesevent)
 
 ## Contribution
 
