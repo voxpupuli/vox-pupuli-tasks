@@ -17,7 +17,6 @@ gem 'fomantic-ui-sass'
 gem 'haml-rails'
 gem 'react-rails'
 gem 'redcarpet'
-gem 'webpacker'
 
 gem 'sidekiq'
 gem 'sidekiq-scheduler'
