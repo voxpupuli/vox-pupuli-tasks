@@ -14,6 +14,5 @@ RUN git describe --always > VERSION
 
 RUN gem install bundler
 RUN bundle install --jobs $(nproc) --without development test --path vendor/bundle --deployment
-RUN bundle exec yarn install --frozen-lockfile --non-interactive
 RUN SECRET_KEY_BASE=$(bundle exec rails secret) bundle exec rails assets:precompile
 RUN date +%s > BUILD_DATE
