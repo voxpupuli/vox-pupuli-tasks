@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Github
   def self.client
     @client ||= Octokit::Client.new(

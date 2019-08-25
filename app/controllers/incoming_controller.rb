@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class IncomingController < ApplicationController
   skip_before_action :verify_authenticity_token
   skip_before_action :logged_in

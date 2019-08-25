@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class GithubEvent
   class PullRequest < GithubEvent::Base
     attr_reader :gh_pull_request
