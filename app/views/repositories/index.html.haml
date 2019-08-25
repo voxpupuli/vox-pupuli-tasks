@@ -1,15 +1,12 @@
 %table.ui.celled.table#dttb
   %thead
-    %th #
     %th Name
     %th Description
     %th Last Sync
   %tbody
     - @repos.each do |repo|
       %tr
-        %td
-          = link_to repo.id, repository_path(repo), class: 'ui mini compact primary button'
-        %td= repo.name
+        %td= link_to repo.name, repository_path(repo.name), class: 'ui mini basic compact primary button'
         %td= repo.description
         %td
           = time_ago_in_words(repo.updated_at)
