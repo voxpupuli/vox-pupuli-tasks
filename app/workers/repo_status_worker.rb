@@ -83,7 +83,7 @@ class RepoStatusWorker
           "https://raw.githubusercontent.com/voxpupuli/#{repo}/master/metadata.json")
         next
       end
-      metadatas[repo] = JSON.parse(response)
+      metadatas[repo] = JSON.parse(response.string)
     end
 
     # get the current modulesync version for all repos
