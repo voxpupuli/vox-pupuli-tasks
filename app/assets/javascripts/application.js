@@ -19,7 +19,7 @@
 //= require_tree .
 
 $( document ).ready(function() {
-  $(".ui.accordion").accordion();
+  $(".ui.accordion").accordion({exclusive: false});
   $(".popup").popup();
   $(".ui.dropdown").dropdown();
   $("#dttb").dataTable();
