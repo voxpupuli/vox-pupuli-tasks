@@ -119,7 +119,11 @@ class PullRequest < ApplicationRecord
       ensure_label_is_attached(label)
       add_comment(I18n.t('comment.needs_rebase', author: author)) if eligible_for_comment
     elsif mergeable.nil?
-      ValidatePullRequestWorker.perform_in(30.minutes.from_now, id, saved_changes)
+      UpdateMergeableWorker.perform_in(30.minutes.from_now,
+                                       repository.name,
+                                       number,
+                                       id,
+                                       saved_changes)
     end
   end
 
