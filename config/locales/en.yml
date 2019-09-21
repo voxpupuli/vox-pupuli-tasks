@@ -36,6 +36,18 @@ en:
     doesnt_support_latest_ubuntu:
       title: Does not support latest Ubuntu
       description: We support Ubuntu 14.04, 16.04 and 18.04. Modules in here don't support Ubuntu 18.04.
+    doesnt_support_latest_freebsd:
+      title: Does not support latest FreeBSD
+      description: We support FreeBSD 11 and 12. Modules in here don't support FreeBSD 12.
+    supports_eol_freebsd:
+      title: Supports a end of life FreeBSD
+      description: We support FreeBSD 11 and 12. Modules in here support a end of life version (< FreeBSD 11)
+    doesnt_support_latest_fedora:
+      title: Does not support latest Fedora
+      description: We support Fedora 29, 30 and 31. Modules in here don't support Fedora 31.
+    supports_eol_fedora:
+      title: Supports a end of life Fedora
+      description: We support Fedora 29,30 and 31. Modules in here support a end of life version (< Fedora 29)
     supports_eol_debian:
       title: Supports a end of life Debian
       description: We support Debian 8, 9 and 10. Modules in here support a end of life version (< Debian 8)

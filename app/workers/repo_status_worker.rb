@@ -101,9 +101,13 @@ class RepoStatusWorker
     data.supports_eol_ubuntu = []
     data.supports_eol_debian = []
     data.supports_eol_centos = []
+    data.supports_eol_freebsd = []
+    data.supports_eol_fedora = []
     data.doesnt_support_latest_ubuntu = []
     data.doesnt_support_latest_debian = []
     data.doesnt_support_latest_centos = []
+    data.doesnt_support_latest_freebsd = []
+    data.doesnt_support_latest_fedora = []
 
     metadatas.each do |repo, metadata|
       # check if Puppet version range is correct
@@ -141,6 +145,20 @@ class RepoStatusWorker
             end
             if os['operatingsystemrelease'].all_i.max < CENTOS_SUPPORT_RANGE.all_i.max
               data.doesnt_support_latest_centos << repo
+            end
+          when 'FreeBSD'
+            if os['operatingsystemrelease'].all_i.min < FREEBSD_SUPPORT_RANGE.all_i.min
+              data.supports_eol_freebsd << repo
+            end
+            if os['operatingsystemrelease'].all_i.max < FREEBSD_SUPPORT_RANGE.all_i.max
+              data.doesnt_support_latest_freebsd << repo
+            end
+          when 'Fedora'
+            if os['operatingsystemrelease'].all_i.min < FEDORA_SUPPORT_RANGE.all_i.min
+              data.supports_eol_fedora << repo
+            end
+            if os['operatingsystemrelease'].all_i.max < FEDORA_SUPPORT_RANGE.all_i.max
+              data.doesnt_support_latest_fedora << repo
             end
           end
         end
