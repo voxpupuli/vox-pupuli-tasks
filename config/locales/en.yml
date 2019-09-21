@@ -10,3 +10,47 @@ en:
 
 
       You can find my sourcecode at [voxpupuli/vox-pupuli-tasks](https://github.com/voxpupuli/vox-pupuli-tasks#vox-pupuli-tasks---the-webapp-for-community-management)
+
+  repo_states:
+    really_need_an_initial_modulesync:
+      title: Really need an initial modulesync
+      description: Modules in here are missing from 'managed_modules.yml' in modulesync_config repo.
+    really_need_an_inital_release:
+      title: Need initial release
+      description: Modules in here are in modulesync_config but not in forge releases.
+    modules_that_were_added_but_never_synced:
+      title: Added but never synced
+      description: Modules in here are missing the .msync.yml file
+    modules_that_have_missing_secrets:
+      title: Missing secrets
+      description: Modules in here are missing the .sync.yml file
+    modules_without_puppet_version_range:
+      title: Without Puppet version range
+      description: Puppet version range is missing from requirements in metadata.json
+    modules_with_incorrect_puppet_version_range:
+      title: Incorrect Puppet version range
+      description: Supported Puppet version range is '>= 5.5.8 < 7.0.0'. Modules in here have a different range.
+    modules_without_operatingsystems_support:
+      title: Without 'operatingsystem_support'
+      description: We use 'operatingsystem_support' in the metadata.json to verify support ranges. It's missing in this modules.
+    doesnt_support_latest_ubuntu:
+      title: Does not support latest Ubuntu
+      description: We support Ubuntu 14.04, 16.04 and 18.04. Modules in here don't support Ubuntu 18.04.
+    supports_eol_debian:
+      title: Supports a end of life Debian
+      description: We support Debian 8, 9 and 10. Modules in here support a end of life version (< Debian 8)
+    doesnt_support_latest_debian:
+      title: Does not support latest Debian
+      description: We support Debian 8, 9 and 10. Modules in here don't support Debian 10.
+    supports_eol_centos:
+      title: Supports a end of life CentOS
+      description: We support CentOS 6 and 7. Modules in here support a end of life version (< CentOS 6)
+    doesnt_support_latest_centos:
+      title: Does not support latest CentOS
+      description: We support CentOS 6 and 7. Modules in here don't support CentOS 7.
+    missing_in_plumbing:
+      title: Missing in plumbing
+      description: Is missing in plumbing
+    need_another_sync:
+      title: Need another sync
+      description: ''

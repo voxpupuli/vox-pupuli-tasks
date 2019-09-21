@@ -29,10 +29,10 @@ class RepoStatusWorker
     data.missing_in_plumbing = repos.reject { |repo| plumbing_modules.include?(repo) }
 
     # get all modules that we have on github but are currently not managed by modulesync_config
-    data.not_synced_repos = repos.reject { |repo| modulesync_repos.include?(repo) }
+    not_synced_repos = repos.reject { |repo| modulesync_repos.include?(repo) }
 
     # get all modules that require a modulesync
-    data.really_need_an_initial_modulesync = data.not_synced_repos.reject do |repo|
+    data.really_need_an_initial_modulesync = not_synced_repos.reject do |repo|
       LEGACY_OR_BROKEN_NOBODY_KNOWS.include?(repo)
     end
 
@@ -41,14 +41,14 @@ class RepoStatusWorker
     vp = PuppetForge::User.find('puppet')
     forge_releases = vp.modules.unpaginated.map(&:slug)
 
-    # get all modules that are in modulesync_config but not released
-    data.unreleased_modules = modulesync_repos.reject { |repo| forge_releases.include?(repo) }
+    # # get all modules that are in modulesync_config but not released
+    # unreleased_modules = modulesync_repos.reject { |repo| forge_releases.include?(repo) }
 
     # get all modules we own but are unreleased
-    data.really_unreleased_modules = repos.reject { |repo| forge_releases.include?(repo) }
+    really_unreleased_modules = repos.reject { |repo| forge_releases.include?(repo) }
 
     # get all modules that really need an initial release
-    data.really_need_an_inital_release = data.really_unreleased_modules.reject do |repo|
+    data.really_need_an_inital_release = really_unreleased_modules.reject do |repo|
       LEGACY_OR_BROKEN_NOBODY_KNOWS.include?(repo)
     end
 

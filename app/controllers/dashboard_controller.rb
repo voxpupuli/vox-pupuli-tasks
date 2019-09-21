@@ -9,4 +9,6 @@ class DashboardController < ApplicationController
             end
     @last_sync = Time.zone.at(RedisClient.client.get('repo_status_time').to_i)
   end
+
+  def about; end
 end

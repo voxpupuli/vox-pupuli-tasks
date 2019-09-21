@@ -14,9 +14,9 @@
       = semantic_icon(:exclamation, :mark)
       = @repository.open_issues_count
     - @repository.actions_needed.each do |action|
-      .ui.red.label
+      .ui.red.label{data: { tooltip: I18n.t("repo_states.#{action}.description"), position: 'bottom center'}}
         = semantic_icon(:cogs)
-        = action.titleize
+        = I18n.t("repo_states.#{action}.title")
   .sub.header
     = @repository.description
 
