@@ -39,6 +39,20 @@ class PullRequest < ApplicationRecord
   end
 
   ##
+  # Shortcut to check if the PullRequest is closed
+
+  def closed?
+    state == 'closed'
+  end
+
+  ##
+  # Shortcut to check if the PullRequest is open
+
+  def open?
+    !closed?
+  end
+
+  ##
   #  Ensure that the Label is attached to the PullRequest
   #
   #  Therefore ensure that the Label exists for the corresponding repository
@@ -92,6 +106,9 @@ class PullRequest < ApplicationRecord
   def validate(saved_changes)
     # Don't run through the validaten, if only the eligable_for_comment attribute got updated
     return if saved_changes.keys.sort == %w[updated_at eligable_for_comment].sort
+
+    # if the pull request is now closed, dont attach/remove labels/comments
+    return if closed?
 
     label = Label.needs_rebase
     if mergeable == true
