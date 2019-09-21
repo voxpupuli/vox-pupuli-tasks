@@ -17,6 +17,8 @@ Rails.application.routes.draw do
   delete 'signout', to: 'sessions#destroy', as: 'signout'
   root to: 'dashboard#show'
 
+  get 'about', to: 'dashboard#about'
+
   post 'incoming/github', to: 'incoming#github'
 
   constraints ->(req) { req.session['user_id'] } do
