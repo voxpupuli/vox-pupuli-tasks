@@ -1,0 +1,35 @@
+%h1.ui.header
+  About VPT
+  .sub.header
+    Everything you need to know about Vox Pupuli Tasks
+
+.ui.four.column.grid
+  .column
+    %h3.ui.header VPT Version
+    = ::VERSION
+  .column
+    %h3.ui.header Ruby Version
+    = RUBY_VERSION
+  .column
+    %h3.ui.header Rails Version
+    = Rails.version
+  .column
+    %h3.ui.header Build at
+    = I18n.l Time.at(BUILD_DATE.to_i)
+
+.ui.divider
+
+.ui.two.column.grid
+  .column
+    %h2.ui.header
+      = semantic_icon(:github)
+      Github
+    You can find the GitHub repository including the source code
+    %a{href: 'https://github.com/voxpupuli/vox-pupuli-tasks'} here.
+  .column
+    %h2.ui.header
+      = semantic_icon(:dollar, :sign)
+      Sponsor
+    %a.ui.image{href: 'http://hetzner.com/cloud'}
+      = image_tag('hetzner_cloud_logo.svg')
+    %p Hetzner Cloud is sponsoring the server this app is running on. Thanks!
