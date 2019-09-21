@@ -6,6 +6,7 @@
     .sub.header
       Last sync was
       = @last_sync
+  .ui.basic.segment= area_chart PullRequest.group_by_day(:gh_created_at).count, title: 'Pull requests per day', library: {chart: {zoomType: 'x'}}
   .ui.styled.fluid.accordion
     - if @data
       - @data.each do |type, repos|

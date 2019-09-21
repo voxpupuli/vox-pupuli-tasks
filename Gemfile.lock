@@ -80,6 +80,7 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (~> 1.5)
       xpath (~> 3.2)
+    chartkick (3.2.1)
     childprocess (2.0.0)
       rake (< 13.0)
     chromedriver-helper (2.1.1)
@@ -146,6 +147,8 @@ GEM
       net-http-pipeline
     globalid (0.4.2)
       activesupport (>= 4.2.0)
+    groupdate (4.1.2)
+      activesupport (>= 4.2)
     haml (5.1.2)
       temple (>= 0.8.0)
       tilt
@@ -410,12 +413,14 @@ DEPENDENCIES
   bootsnap (>= 1.1.0)
   byebug
   capybara (>= 2.15)
+  chartkick
   chromedriver-helper
   coffee-rails (~> 4.2)
   elasticsearch
   execjs
   fomantic-ui-sass
   foreman
+  groupdate
   haml-lint
   haml-rails
   jbuilder (~> 2.5)

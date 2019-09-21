@@ -16,6 +16,8 @@
 //= require semantic-ui
 //= require datatables/jquery.dataTables
 //= require datatables/dataTables.semanticui
+//= require chartkick
+//= require highcharts
 //= require_tree .
 
 $( document ).ready(function() {
