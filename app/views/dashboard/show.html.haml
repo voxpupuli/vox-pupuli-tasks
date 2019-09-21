@@ -17,7 +17,7 @@
           %span{style: 'float: right;', data: { tooltip: I18n.t("repo_states.#{type}.description"), position: 'left center'}}
             %i.icon.question.mark.circle
         .content
-          - repos.each do |repo|
+          - repos.uniq.each do |repo|
             = link_to(repo, repository_path(repo), class: 'ui basic label')
     - else
       .ui.error.message
