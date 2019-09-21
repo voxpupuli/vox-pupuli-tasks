@@ -41,8 +41,8 @@ class RepoStatusWorker
     vp = PuppetForge::User.find('puppet')
     forge_releases = vp.modules.unpaginated.map(&:slug)
 
-    # get all modules that are in modulesync_config but not released
-    unreleased_modules = modulesync_repos.reject { |repo| forge_releases.include?(repo) }
+    # # get all modules that are in modulesync_config but not released
+    # unreleased_modules = modulesync_repos.reject { |repo| forge_releases.include?(repo) }
 
     # get all modules we own but are unreleased
     really_unreleased_modules = repos.reject { |repo| forge_releases.include?(repo) }
