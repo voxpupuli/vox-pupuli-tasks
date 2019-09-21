@@ -26,9 +26,10 @@ class IncomingController < ApplicationController
     signature = 'sha1=' + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'),
                                                   webhook_secret,
                                                   payload)
-
-    return if Rack::Utils.secure_compare(signature, request.env['HTTP_X_HUB_SIGNATURE'])
-
-    Raven.capture_message('Invalid webhook signature')
+    if Rack::Utils.secure_compare(signature, request.env['HTTP_X_HUB_SIGNATURE'])
+      Raven.capture_message('Valid webhook signature')
+    else
+      Raven.capture_message('Invalid webhook signature')
+    end
   end
 end
