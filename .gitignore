@@ -38,3 +38,7 @@ yarn-debug.log*
 .yarn-integrity
 /vendor
 /redis
+
+# those two files are generated when we build the docker image
+BUILD_DATE
+VERSION
