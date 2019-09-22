@@ -11,11 +11,28 @@ class GithubEvent
   # the next steps. If not kick off a Sentry error.
 
   def initialize(payload, type)
+    known_but_ignoreable_events = %w[
+      installation
+      issues
+      pull_request_review
+      issue_comment
+      label
+      pull_request_review_comment
+      installation_repositories
+      integration_installation_repositories
+      repository
+      integration_installation
+      ping
+      pull_request_review
+    ]
+
     case type
     when 'pull_request'
       if Repository.notably? payload['repository']['name']
         @processor = GithubEvent::PullRequest.new(payload)
       end
+    when *known_but_ignoreable_events
+      true
     else
       Raven.capture_message("Unknown Hook Received: #{type}", extra: payload)
     end
