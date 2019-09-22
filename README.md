@@ -247,9 +247,16 @@ Events will POST to this URL. For our instance this is [https://voxpupu.li/incom
 
 ### Permissions
 
-We need `Read and write` access to issues because we add/remove labels and also
-comment on them. More information can be found at
+Sadly, we require `Administration` access with `Read and write`. It will allow
+us to add labels to a project.
+
+[![issue perms](images/administration.png)](https://voxpupu.li)
+
+We need `Read and write` access to issues because we add/remove labels to pull
+requests and also comment on them. More information can be found at
 [the GitHub developer docs](https://developer.github.com/v3/apps/permissions/#permission-on-issues).
+(For GitHub, a pull request is a specific issue. That's why pull request
+permissions ar handled on the issue endpoints).
 
 [![issue perms](images/issues.png)](https://voxpupu.li)
 
