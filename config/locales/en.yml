@@ -56,10 +56,10 @@ en:
       description: We support Debian 8, 9 and 10. Modules in here don't support Debian 10.
     supports_eol_centos:
       title: Supports a end of life CentOS
-      description: We support CentOS 6 and 7. Modules in here support a end of life version (< CentOS 6)
+      description: We support CentOS 6, 7 and 8. Modules in here support a end of life version (< CentOS 6)
     doesnt_support_latest_centos:
       title: Does not support latest CentOS
-      description: We support CentOS 6 and 7. Modules in here don't support CentOS 7.
+      description: We support CentOS 6, 7 and 8. Modules in here don't support CentOS 8.
     missing_in_plumbing:
       title: Missing in plumbing
       description: Is missing in plumbing
