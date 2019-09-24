@@ -26,7 +26,8 @@
   * [GitHub App Setup](#github-app-setup)
     * [Permissions](#permission)
     * [Events](#events)
-* [Contribution](#contribution)
+* [Contribution and Development](#contribution-and-development)
+  * [Add new Operating system checks](#add-new-operating-system-checks)
 * [License](#license)
 * [Sponsor](#sponsor)
 
@@ -70,7 +71,7 @@ Some more examples are documented as [open issues](https://github.com/voxpupuli/
 * The [get_all_the_diffs](https://github.com/voxpupuli/modulesync_config/blob/master/bin/get_all_the_diffs) script, which detects inconsistencies in modules
 
 This is the second big tasks for collaborators. Update dependencies in
-metadata.json files, allow new Puppet versions, drop legacy operating systems.
+metadata.json files, allow new Puppet versions, drop legacy Operating Systems.
 There are many many tasks that collaborators do from time to time and this
 project tries to make it as easy as possible or even automate stuff where it's
 suitable.
@@ -279,7 +280,7 @@ API docs for:
 * [Pull Request](https://developer.github.com/v3/activity/events/types/#pullrequestevent)
 * [Issues](https://developer.github.com/v3/activity/events/types/#issuesevent)
 
-## Contribution
+## Contribution and Development
 
 We have a helpful rake task available to run a ruby linter. It will inform you
 about styleguide violations. Please execute it before you provide a pull
@@ -294,6 +295,56 @@ things (works often, but not on all issues):
 
 ```sh
 bundle exec rake rubocop::auto_correct
+```
+
+### Add new Operating system checks
+
+Among all the stuff we validate is also a check for supported operating systems
+in the `metadata.json` file in a Puppet module. Sometimes a new version
+[is released](https://lists.centos.org/pipermail/centos-announce/2019-September/023449.html).
+
+We need to update the checks. Currently, we need to adjust two places, the
+version array and the messages that are displayed in the UI:
+
+The array:
+
+```diff
+diff --git a/config/initializers/voxpupuli.rb b/config/initializers/voxpupuli.rb
+index 14b0459..cc4f26e 100644
+--- a/config/initializers/voxpupuli.rb
++++ b/config/initializers/voxpupuli.rb
+@@ -16,6 +16,6 @@ PUPPET_SUPPORT_RANGE = '>= 5.5.8 < 7.0.0'
+ # https://github.com/camptocamp/facterdb/pull/82#event-1600066178
+ UBUNTU_SUPPORT_RANGE = ['14.04', '16.04', '18.04'].freeze
+ DEBIAN_SUPPORT_RANGE = [8, 9, 10].freeze
+-CENTOS_SUPPORT_RANGE = [6, 7].freeze
++CENTOS_SUPPORT_RANGE = [6, 7, 8].freeze
+ FREEBSD_SUPPORT_RANGE = [11, 12].freeze
+ FEDORA_SUPPORT_RANGE = [29, 30, 31].freeze
+```
+
+and the messages:
+
+```diff
+diff --git a/config/locales/en.yml b/config/locales/en.yml
+index bbd6c7a..098d987 100644
+--- a/config/locales/en.yml
++++ b/config/locales/en.yml
+@@ -56,13 +56,13 @@ en:
+       description: We support Debian 8, 9 and 10. Modules in here don't support Debian 10.
+     supports_eol_centos:
+       title: Supports a end of life CentOS
+-      description: We support CentOS 6 and 7. Modules in here support a end of life version (< CentOS 6)
++      description: We support CentOS 6, 7 and 8. Modules in here support a end of life version (< CentOS 6)
+     doesnt_support_latest_centos:
+       title: Does not support latest CentOS
+-      description: We support CentOS 6 and 7. Modules in here don't support CentOS 7.
++      description: We support CentOS 6, 7 and 8. Modules in here don't support CentOS 8.
+     missing_in_plumbing:
+       title: Missing in plumbing
+       description: Is missing in plumbing
+     need_another_sync:
+       title: Need another sync
 ```
 
 ## License
