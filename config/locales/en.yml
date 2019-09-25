@@ -41,25 +41,25 @@ en:
       description: We support FreeBSD 11 and 12. Modules in here don't support FreeBSD 12.
     supports_eol_freebsd:
       title: Supports a end of life FreeBSD
-      description: We support FreeBSD 11 and 12. Modules in here support a end of life version (< FreeBSD 11)
+      description: We support FreeBSD 11 and 12. Modules in here support an end of life version (< FreeBSD 11)
     doesnt_support_latest_fedora:
       title: Does not support latest Fedora
       description: We support Fedora 29, 30 and 31. Modules in here don't support Fedora 31.
     supports_eol_fedora:
       title: Supports a end of life Fedora
-      description: We support Fedora 29,30 and 31. Modules in here support a end of life version (< Fedora 29)
+      description: We support Fedora 29,30 and 31. Modules in here support an end of life version (< Fedora 29)
     supports_eol_debian:
       title: Supports a end of life Debian
-      description: We support Debian 8, 9 and 10. Modules in here support a end of life version (< Debian 8)
+      description: We support Debian 8, 9 and 10. Modules in here support an end of life version (< Debian 8)
     doesnt_support_latest_debian:
       title: Does not support latest Debian
       description: We support Debian 8, 9 and 10. Modules in here don't support Debian 10.
     supports_eol_centos:
       title: Supports a end of life CentOS
-      description: We support CentOS 6 and 7. Modules in here support a end of life version (< CentOS 6)
+      description: We support CentOS 6, 7 and 8. Modules in here support an end of life version (< CentOS 6)
     doesnt_support_latest_centos:
       title: Does not support latest CentOS
-      description: We support CentOS 6 and 7. Modules in here don't support CentOS 7.
+      description: We support CentOS 6, 7 and 8. Modules in here don't support CentOS 8.
     missing_in_plumbing:
       title: Missing in plumbing
       description: Is missing in plumbing

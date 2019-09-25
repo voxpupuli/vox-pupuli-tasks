@@ -16,6 +16,6 @@ PUPPET_SUPPORT_RANGE = '>= 5.5.8 < 7.0.0'
 # https://github.com/camptocamp/facterdb/pull/82#event-1600066178
 UBUNTU_SUPPORT_RANGE = ['14.04', '16.04', '18.04'].freeze
 DEBIAN_SUPPORT_RANGE = [8, 9, 10].freeze
-CENTOS_SUPPORT_RANGE = [6, 7].freeze
+CENTOS_SUPPORT_RANGE = [6, 7, 8].freeze
 FREEBSD_SUPPORT_RANGE = [11, 12].freeze
 FEDORA_SUPPORT_RANGE = [29, 30, 31].freeze
