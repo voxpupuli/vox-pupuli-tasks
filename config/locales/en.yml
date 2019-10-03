@@ -24,6 +24,9 @@ en:
     modules_that_have_missing_secrets:
       title: Missing secrets
       description: Modules in here are missing the .sync.yml file
+    modules_without_reference_dot_md:
+      title: Missing REFERENCE.md
+      description: The repository has currently no REFERENCE.md. It needs to be generated / puppet-strings documentation is missing.
     modules_without_puppet_version_range:
       title: Without Puppet version range
       description: Puppet version range is missing from requirements in metadata.json

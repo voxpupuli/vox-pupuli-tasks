@@ -57,11 +57,17 @@ class RepoStatusWorker
     # get all the content of all .msync.yml, .sync.yml and metadata.json files
     data.modules_that_were_added_but_never_synced = []
     data.modules_that_have_missing_secrets = []
+    data.modules_without_reference_dot_md = []
     msyncs = {}
     syncs = {}
     metadatas = {}
 
     modulesync_repos.each do |repo|
+      begin
+        open("https://raw.githubusercontent.com/voxpupuli/#{repo}/master/REFERENCE.md")
+      rescue Errno::ENOENT
+        data.modules_without_reference_dot_md << repo
+      end
       begin
         response = open("https://raw.githubusercontent.com/voxpupuli/#{repo}/master/.msync.yml")
       rescue OpenURI::HTTPError
