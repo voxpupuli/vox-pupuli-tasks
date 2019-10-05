@@ -20,6 +20,10 @@
       .ui.header
         = semantic_icon(:sync)
         Sync
+    %a.item{data: {tab: :dependencies}}
+      .ui.header
+        = semantic_icon(:list)
+        Dependencies
   .ui.bottom.attached.active.tab.segment{data: {tab: :os}}
     .ui.header Modules which do not support the latest OS
     .ui.top.attached.tabular.menu
@@ -116,26 +120,63 @@
     .ui.bottom.attached.tab.segment{data: {tab: :eol_centos}}
       - @data['supports_eol_centos'].uniq.each do |repo|
         = link_to(repo, repository_path(repo), class: 'ui basic label')
+    
+    .ui.header Modules without 'operating_system_support'
+    - @data['modules_without_operatingsystems_support'].uniq.each do |repo|
+      = link_to(repo, repository_path(repo), class: 'ui basic label')
 
   .ui.bottom.attached.tab.segment{data: {tab: :plumbing}}
-    .ui.header Missing in plumbing
-    lorem ipsum
+    .ui.top.attached.tabular.menu
+      %a.item{data: {tab: :missing_in_plumbing}}
+        .ui.header
+          Missing in Plumbing
+          %span{style: 'float: right;', data: { tooltip: I18n.t("repo_states.missing_in_plumbing.description"), position: 'bottom center'}}
+            %i.icon.question.mark.circle.outline.small
+    .ui.bottom.attached.tab.segment{data: {tab: :missing_in_plumbing}}
+      - @data['missing_in_plumbing'].uniq.each do |repo|
+        = link_to(repo, repository_path(repo), class: 'ui basic label')
   .ui.bottom.attached.tab.segment{data: {tab: :sync}}
-    .ui.header Modules which need a sync
-    lorem ipsum
-  .ui.styled.fluid.accordion
-    - if @data
-      - @data.each do |type, repos|
-        - next if repos.empty?
-        .title
-          .ui.primary.circular.label= repos.count
-          = semantic_icon(:dropdown)
-          = I18n.t("repo_states.#{type}.title")
-          %span{style: 'float: right;', data: { tooltip: I18n.t("repo_states.#{type}.description"), position: 'left center'}}
-            %i.icon.question.mark.circle
-        .content
-          - repos.uniq.each do |repo|
-            = link_to(repo, repository_path(repo), class: 'ui basic label')
-    - else
-      .ui.error.message
-        Something went wrong while fetching latest local data.
+    .ui.top.attached.tabular.menu
+      %a.item{data: {tab: :need_another_sync}}
+        .ui.header
+          Need another sync
+          %span{style: 'float: right;', data: { tooltip: I18n.t("repo_states.need_another_sync.description"), position: 'bottom center'}}
+            %i.icon.question.mark.circle.outline.small
+      %a.item{data: {tab: :modules_that_were_added_but_never_synced}}
+        .ui.header
+          Added but never synced
+          %span{style: 'float: right;', data: { tooltip: I18n.t("repo_states.modules_that_were_added_but_never_synced.description"), position: 'bottom center'}}
+            %i.icon.question.mark.circle.outline.small
+      %a.item{data: {tab: :need_initial_modulesync}}
+        .ui.header
+          Need initial modulesync
+          %span{style: 'float: right;', data: { tooltip: I18n.t("repo_states.really_need_an_initial_modulesync.description"), position: 'bottom center'}}
+            %i.icon.question.mark.circle.outline.small
+    .ui.bottom.attached.tab.segment{data: {tab: :need_another_sync}}
+      - @data['need_another_sync'].uniq.each do |repo|
+        = link_to(repo, repository_path(repo), class: 'ui basic label')
+    .ui.bottom.attached.tab.segment{data: {tab: :modules_that_were_added_but_never_synced}}
+      - @data['modules_that_were_added_but_never_synced'].uniq.each do |repo|
+        = link_to(repo, repository_path(repo), class: 'ui basic label')
+    .ui.bottom.attached.tab.segment{data: {tab: :need_initial_modulesync}}
+      - @data['really_need_an_initial_modulesync'].uniq.each do |repo|
+        = link_to(repo, repository_path(repo), class: 'ui basic label')
+  
+  .ui.bottom.attached.tab.segment{data: {tab: :dependencies}}
+    .ui.top.attached.tabular.menu
+      %a.item{data: {tab: :modules_without_puppet_version_range}}
+        .ui.header
+          Without Puppet version range
+          %span{style: 'float: right;', data: { tooltip: I18n.t("repo_states.modules_without_puppet_version_range.description"), position: 'bottom center'}}
+            %i.icon.question.mark.circle.outline.small
+      %a.item{data: {tab: :modules_with_incorrect_puppet_version_range}}
+        .ui.header
+          With incorrect Puppet version range
+          %span{style: 'float: right;', data: { tooltip: I18n.t("repo_states.modules_without_puppet_version_range.description"), position: 'bottom center'}}
+            %i.icon.question.mark.circle.outline.small
+    .ui.bottom.attached.tab.segment{data: {tab: :modules_without_puppet_version_range}}
+      - @data['modules_without_puppet_version_range'].uniq.each do |repo|
+        = link_to(repo, repository_path(repo), class: 'ui basic label')
+    .ui.bottom.attached.tab.segment{data: {tab: :modules_with_incorrect_puppet_version_range}}
+      - @data['modules_with_incorrect_puppet_version_range'].uniq.each do |repo|
+        = link_to(repo, repository_path(repo), class: 'ui basic label')
