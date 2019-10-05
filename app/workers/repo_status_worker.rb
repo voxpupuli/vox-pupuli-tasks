@@ -142,7 +142,7 @@ class RepoStatusWorker
     modulesync_repos.each do |repo|
       begin
         open("https://raw.githubusercontent.com/voxpupuli/#{repo}/master/REFERENCE.md")
-      rescue Errno::ENOENT
+      rescue OpenURI::HTTPError
         data.modules_without_reference_dot_md << repo
       end
       begin
