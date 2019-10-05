@@ -27,6 +27,7 @@ class RepoStatusWorker
     data.doesnt_support_latest_fedora = []
 
     metadatas.each do |repo, metadata|
+      logger.info "RepoStatusWorker: starting validate_metadatas method for #{repo}"
       # check if Puppet version range is correct
       begin
         version_requirement = metadata['requirements'][0]['version_requirement']
@@ -89,6 +90,7 @@ class RepoStatusWorker
   # implements https://github.com/voxpupuli/modulesync_config/blob/master/bin/get_all_the_diffs
   # TODO: clean up stuff and make it less shitty
   def perform
+    logger.info 'RepoStatusWorker: starting perform method'
     repos = Repository.pluck(:name)
     data = OpenStruct.new
 
