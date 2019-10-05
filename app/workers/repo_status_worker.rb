@@ -175,6 +175,8 @@ class RepoStatusWorker
       versions[repo] = msync['modulesync_config_version']
     end
 
+    data = validate_metadatas(data, metadatas)
+
     # we have a list of CentOS and RedHat in this array, we need to clean it up
     data.supports_eol_centos.sort!.uniq!
     data.doesnt_support_latest_centos.sort!.uniq!
@@ -188,7 +190,6 @@ class RepoStatusWorker
       end
     end
 
-    data = validate_metadatas(data, metadatas)
     save_data_to_redis(data)
   end
 end
