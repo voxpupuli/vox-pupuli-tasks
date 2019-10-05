@@ -10,6 +10,81 @@ class RepoStatusWorker
     redis.set('repo_status_data', data.to_h.to_json)
   end
 
+  def validate_metadatas(data, metadatas)
+    # TODO: get all modules that dont have a secret in .sync.yml
+    data.modules_without_puppet_version_range = []
+    data.modules_with_incorrect_puppet_version_range = []
+    data.modules_without_operatingsystems_support = []
+    data.supports_eol_ubuntu = []
+    data.supports_eol_debian = []
+    data.supports_eol_centos = []
+    data.supports_eol_freebsd = []
+    data.supports_eol_fedora = []
+    data.doesnt_support_latest_ubuntu = []
+    data.doesnt_support_latest_debian = []
+    data.doesnt_support_latest_centos = []
+    data.doesnt_support_latest_freebsd = []
+    data.doesnt_support_latest_fedora = []
+
+    metadatas.each do |repo, metadata|
+      # check if Puppet version range is correct
+      begin
+        version_requirement = metadata['requirements'][0]['version_requirement']
+        if PUPPET_SUPPORT_RANGE != version_requirement
+          data.modules_with_incorrect_puppet_version_range << repo
+        end
+      # it's possible that the version range isn't present at all in the metadata.json
+      rescue NoMethodError
+        data.modules_without_puppet_version_range << repo
+      end
+
+      # check Ubuntu range
+      begin
+        metadata['operatingsystem_support'].each do |os|
+          case os['operatingsystem']
+          when 'Ubuntu'
+            if os['operatingsystemrelease'].min < UBUNTU_SUPPORT_RANGE.min
+              data.supports_eol_ubuntu << repo
+            end
+            if os['operatingsystemrelease'].max < UBUNTU_SUPPORT_RANGE.max
+              data.doesnt_support_latest_ubuntu << repo
+            end
+          when 'Debian'
+            if os['operatingsystemrelease'].all_i.min < DEBIAN_SUPPORT_RANGE.all_i.min
+              data.supports_eol_debian << repo
+            end
+            if os['operatingsystemrelease'].all_i.max < DEBIAN_SUPPORT_RANGE.all_i.max
+              data.doesnt_support_latest_debian << repo
+            end
+          when 'CentOS', 'RedHat'
+            if os['operatingsystemrelease'].all_i.min < CENTOS_SUPPORT_RANGE.all_i.min
+              data.supports_eol_centos << repo
+            end
+            if os['operatingsystemrelease'].all_i.max < CENTOS_SUPPORT_RANGE.all_i.max
+              data.doesnt_support_latest_centos << repo
+            end
+          when 'FreeBSD'
+            if os['operatingsystemrelease'].all_i.min < FREEBSD_SUPPORT_RANGE.all_i.min
+              data.supports_eol_freebsd << repo
+            end
+            if os['operatingsystemrelease'].all_i.max < FREEBSD_SUPPORT_RANGE.all_i.max
+              data.doesnt_support_latest_freebsd << repo
+            end
+          when 'Fedora'
+            if os['operatingsystemrelease'].all_i.min < FEDORA_SUPPORT_RANGE.all_i.min
+              data.supports_eol_fedora << repo
+            end
+            if os['operatingsystemrelease'].all_i.max < FEDORA_SUPPORT_RANGE.all_i.max
+              data.doesnt_support_latest_fedora << repo
+            end
+          end
+        end
+      rescue NoMethodError
+        data.modules_without_operatingsystems_support << repo
+      end
+    end
+  end
+
   # Categorizes repository based on their locally cached information
   # implements https://github.com/voxpupuli/modulesync_config/blob/master/bin/get_all_the_diffs
   # TODO: clean up stuff and make it less shitty
@@ -98,81 +173,6 @@ class RepoStatusWorker
       versions[repo] = msync['modulesync_config_version']
     end
 
-    # TODO: get all modules that dont have a secret in .sync.yml
-
-    # TODO: get all modules with outdated Puppet versions
-    data.modules_without_puppet_version_range = []
-    data.modules_with_incorrect_puppet_version_range = []
-    data.modules_without_operatingsystems_support = []
-    data.supports_eol_ubuntu = []
-    data.supports_eol_debian = []
-    data.supports_eol_centos = []
-    data.supports_eol_freebsd = []
-    data.supports_eol_fedora = []
-    data.doesnt_support_latest_ubuntu = []
-    data.doesnt_support_latest_debian = []
-    data.doesnt_support_latest_centos = []
-    data.doesnt_support_latest_freebsd = []
-    data.doesnt_support_latest_fedora = []
-
-    metadatas.each do |repo, metadata|
-      # check if Puppet version range is correct
-      begin
-        version_requirement = metadata['requirements'][0]['version_requirement']
-        if PUPPET_SUPPORT_RANGE != version_requirement
-          data.modules_with_incorrect_puppet_version_range << repo
-        end
-      # it's possible that the version range isn't present at all in the metadata.json
-      rescue NoMethodError
-        data.modules_without_puppet_version_range << repo
-      end
-
-      # check Ubuntu range
-      begin
-        metadata['operatingsystem_support'].each do |os|
-          case os['operatingsystem']
-          when 'Ubuntu'
-            if os['operatingsystemrelease'].min < UBUNTU_SUPPORT_RANGE.min
-              data.supports_eol_ubuntu << repo
-            end
-            if os['operatingsystemrelease'].max < UBUNTU_SUPPORT_RANGE.max
-              data.doesnt_support_latest_ubuntu << repo
-            end
-          when 'Debian'
-            if os['operatingsystemrelease'].all_i.min < DEBIAN_SUPPORT_RANGE.all_i.min
-              data.supports_eol_debian << repo
-            end
-            if os['operatingsystemrelease'].all_i.max < DEBIAN_SUPPORT_RANGE.all_i.max
-              data.doesnt_support_latest_debian << repo
-            end
-          when 'CentOS', 'RedHat'
-            if os['operatingsystemrelease'].all_i.min < CENTOS_SUPPORT_RANGE.all_i.min
-              data.supports_eol_centos << repo
-            end
-            if os['operatingsystemrelease'].all_i.max < CENTOS_SUPPORT_RANGE.all_i.max
-              data.doesnt_support_latest_centos << repo
-            end
-          when 'FreeBSD'
-            if os['operatingsystemrelease'].all_i.min < FREEBSD_SUPPORT_RANGE.all_i.min
-              data.supports_eol_freebsd << repo
-            end
-            if os['operatingsystemrelease'].all_i.max < FREEBSD_SUPPORT_RANGE.all_i.max
-              data.doesnt_support_latest_freebsd << repo
-            end
-          when 'Fedora'
-            if os['operatingsystemrelease'].all_i.min < FEDORA_SUPPORT_RANGE.all_i.min
-              data.supports_eol_fedora << repo
-            end
-            if os['operatingsystemrelease'].all_i.max < FEDORA_SUPPORT_RANGE.all_i.max
-              data.doesnt_support_latest_fedora << repo
-            end
-          end
-        end
-      rescue NoMethodError
-        data.modules_without_operatingsystems_support << repo
-      end
-    end
-
     # we have a list of CentOS and RedHat in this array, we need to clean it up
     data.supports_eol_centos.sort!.uniq!
     data.doesnt_support_latest_centos.sort!.uniq!
@@ -186,6 +186,7 @@ class RepoStatusWorker
       end
     end
 
+    data = validate_metadatas(data, metadatas)
     save_data_to_redis(data)
   end
 end
