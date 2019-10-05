@@ -83,6 +83,7 @@ class RepoStatusWorker
       rescue NoMethodError
         data.modules_without_operatingsystems_support << repo
       end
+      data
     end
   end
 
