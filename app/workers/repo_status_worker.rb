@@ -10,91 +10,8 @@ class RepoStatusWorker
     redis.set('repo_status_data', data.to_h.to_json)
   end
 
-  # Categorizes repository based on their locally cached information
-  # implements https://github.com/voxpupuli/modulesync_config/blob/master/bin/get_all_the_diffs
-  # TODO: clean up stuff and make it less shitty
-  def perform
-    repos = Repository.pluck(:name)
-    data = OpenStruct.new
-
-    # get all managed modules from our modulesync_config
-    modulesync_repos = YAML.safe_load(open('https://raw.githubusercontent.com/voxpupuli/modulesync_config/master/managed_modules.yml').read)
-
-    # get all modules we have in plumbing
-    plumbing_modules = YAML.safe_load(
-      open('https://raw.githubusercontent.com/voxpupuli/plumbing/master/share/modules')
-    ).split(' ')
-
-    # get all modules that need to added to plumbing
-    data.missing_in_plumbing = repos.reject { |repo| plumbing_modules.include?(repo) }
-
-    # get all modules that we have on github but are currently not managed by modulesync_config
-    not_synced_repos = repos.reject { |repo| modulesync_repos.include?(repo) }
-
-    # get all modules that require a modulesync
-    data.really_need_an_initial_modulesync = not_synced_repos.reject do |repo|
-      LEGACY_OR_BROKEN_NOBODY_KNOWS.include?(repo)
-    end
-
-    # get all forge releases
-    PuppetForge.user_agent = 'VoxPupuli/Vox Pupuli Tasks'
-    vp = PuppetForge::User.find('puppet')
-    forge_releases = vp.modules.unpaginated.map(&:slug)
-
-    # # get all modules that are in modulesync_config but not released
-    # unreleased_modules = modulesync_repos.reject { |repo| forge_releases.include?(repo) }
-
-    # get all modules we own but are unreleased
-    really_unreleased_modules = repos.reject { |repo| forge_releases.include?(repo) }
-
-    # get all modules that really need an initial release
-    data.really_need_an_inital_release = really_unreleased_modules.reject do |repo|
-      LEGACY_OR_BROKEN_NOBODY_KNOWS.include?(repo)
-    end
-
-    latest_release = Github.client.tags('voxpupuli/modulesync_config').first.name
-
-    # get all the content of all .msync.yml, .sync.yml and metadata.json files
-    data.modules_that_were_added_but_never_synced = []
-    data.modules_that_have_missing_secrets = []
-    msyncs = {}
-    syncs = {}
-    metadatas = {}
-
-    modulesync_repos.each do |repo|
-      begin
-        response = open("https://raw.githubusercontent.com/voxpupuli/#{repo}/master/.msync.yml")
-      rescue OpenURI::HTTPError
-        data.modules_that_were_added_but_never_synced << repo
-        next
-      end
-      msyncs[repo] = YAML.safe_load(response)
-      begin
-        response = open("https://raw.githubusercontent.com/voxpupuli/#{repo}/master/.sync.yml")
-      rescue OpenURI::HTTPError
-        data.modules_that_have_missing_secrets << repo
-        next
-      end
-      syncs[repo] = YAML.safe_load(response)
-      begin
-        response = open("https://raw.githubusercontent.com/voxpupuli/#{repo}/master/metadata.json")
-      rescue OpenURI::HTTPError
-        Rails.logger.error("something is broken with #{repo} and " \
-          "https://raw.githubusercontent.com/voxpupuli/#{repo}/master/metadata.json")
-        next
-      end
-      metadatas[repo] = JSON.parse(response.string)
-    end
-
-    # get the current modulesync version for all repos
-    versions = {}
-    msyncs.each do |repo, msync|
-      versions[repo] = msync['modulesync_config_version']
-    end
-
+  def validate_metadatas(data, metadatas)
     # TODO: get all modules that dont have a secret in .sync.yml
-
-    # TODO: get all modules with outdated Puppet versions
     data.modules_without_puppet_version_range = []
     data.modules_with_incorrect_puppet_version_range = []
     data.modules_without_operatingsystems_support = []
@@ -166,6 +83,95 @@ class RepoStatusWorker
         data.modules_without_operatingsystems_support << repo
       end
     end
+  end
+
+  # Categorizes repository based on their locally cached information
+  # implements https://github.com/voxpupuli/modulesync_config/blob/master/bin/get_all_the_diffs
+  # TODO: clean up stuff and make it less shitty
+  def perform
+    repos = Repository.pluck(:name)
+    data = OpenStruct.new
+
+    # get all managed modules from our modulesync_config
+    modulesync_repos = YAML.safe_load(open('https://raw.githubusercontent.com/voxpupuli/modulesync_config/master/managed_modules.yml').read)
+
+    # get all modules we have in plumbing
+    plumbing_modules = YAML.safe_load(
+      open('https://raw.githubusercontent.com/voxpupuli/plumbing/master/share/modules')
+    ).split(' ')
+
+    # get all modules that need to added to plumbing
+    data.missing_in_plumbing = repos.reject { |repo| plumbing_modules.include?(repo) }
+
+    # get all modules that we have on github but are currently not managed by modulesync_config
+    not_synced_repos = repos.reject { |repo| modulesync_repos.include?(repo) }
+
+    # get all modules that require a modulesync
+    data.really_need_an_initial_modulesync = not_synced_repos.reject do |repo|
+      LEGACY_OR_BROKEN_NOBODY_KNOWS.include?(repo)
+    end
+
+    # get all forge releases
+    PuppetForge.user_agent = 'VoxPupuli/Vox Pupuli Tasks'
+    vp = PuppetForge::User.find('puppet')
+    forge_releases = vp.modules.unpaginated.map(&:slug)
+
+    # # get all modules that are in modulesync_config but not released
+    # unreleased_modules = modulesync_repos.reject { |repo| forge_releases.include?(repo) }
+
+    # get all modules we own but are unreleased
+    really_unreleased_modules = repos.reject { |repo| forge_releases.include?(repo) }
+
+    # get all modules that really need an initial release
+    data.really_need_an_inital_release = really_unreleased_modules.reject do |repo|
+      LEGACY_OR_BROKEN_NOBODY_KNOWS.include?(repo)
+    end
+
+    latest_release = Github.client.tags('voxpupuli/modulesync_config').first.name
+
+    # get all the content of all .msync.yml, .sync.yml and metadata.json files
+    data.modules_that_were_added_but_never_synced = []
+    data.modules_that_have_missing_secrets = []
+    data.modules_without_reference_dot_md = []
+    msyncs = {}
+    syncs = {}
+    metadatas = {}
+
+    modulesync_repos.each do |repo|
+      begin
+        open("https://raw.githubusercontent.com/voxpupuli/#{repo}/master/REFERENCE.md")
+      rescue Errno::ENOENT
+        data.modules_without_reference_dot_md << repo
+      end
+      begin
+        response = open("https://raw.githubusercontent.com/voxpupuli/#{repo}/master/.msync.yml")
+      rescue OpenURI::HTTPError
+        data.modules_that_were_added_but_never_synced << repo
+        next
+      end
+      msyncs[repo] = YAML.safe_load(response)
+      begin
+        response = open("https://raw.githubusercontent.com/voxpupuli/#{repo}/master/.sync.yml")
+      rescue OpenURI::HTTPError
+        data.modules_that_have_missing_secrets << repo
+        next
+      end
+      syncs[repo] = YAML.safe_load(response)
+      begin
+        response = open("https://raw.githubusercontent.com/voxpupuli/#{repo}/master/metadata.json")
+      rescue OpenURI::HTTPError
+        Rails.logger.error("something is broken with #{repo} and " \
+          "https://raw.githubusercontent.com/voxpupuli/#{repo}/master/metadata.json")
+        next
+      end
+      metadatas[repo] = JSON.parse(response.string)
+    end
+
+    # get the current modulesync version for all repos
+    versions = {}
+    msyncs.each do |repo, msync|
+      versions[repo] = msync['modulesync_config_version']
+    end
 
     # we have a list of CentOS and RedHat in this array, we need to clean it up
     data.supports_eol_centos.sort!.uniq!
@@ -180,6 +186,7 @@ class RepoStatusWorker
       end
     end
 
+    data = validate_metadatas(data, metadatas)
     save_data_to_redis(data)
   end
 end

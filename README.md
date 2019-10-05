@@ -297,6 +297,14 @@ things (works often, but not on all issues):
 bundle exec rake rubocop::auto_correct
 ```
 
+We constantly improve our codebase. We adjusted a few rubocop cops to relax
+the default configuration. Also sometimes we need to merge important changes
+that violate the current rubocop config. For such situations we need to run
+
+```sh
+bundle exec rubocop --auto-gen-config
+```
+
 ### Add new Operating system checks
 
 Among all the stuff we validate is also a check for supported operating systems
