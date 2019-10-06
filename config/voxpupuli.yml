@@ -1,0 +1,41 @@
+---
+# we removed the following modules from our modulesync_config / hide it because they are not
+# Puppet modules but match the puppet- pattern
+# The modules in the list are broken, unfinished or got migrated
+# (yes, that really happens rom time to time)
+# ToDo: extend this list with repos that are archived on github
+# ToDo: Archive repos that we migrate away
+legacy_or_broken_nobody_knows:
+  - puppet-bacula
+  - puppet-nagios_providers
+  - puppet-iis puppet-syntax
+  - puppet-blacksmith
+  - puppet-mode
+
+# define some versions that we want to match against
+puppet_support_range: '>= 5.5.8 < 7.0.0'
+
+# Ubuntu 18.04 got released, but Puppet doesn't work yet on it
+# https://tickets.puppetlabs.com/browse/PA-1869
+# https://github.com/camptocamp/facterdb/pull/82#event-1600066178
+support_ranges:
+  ubuntu:
+    - '14.04'
+    - '16.04'
+    - '18.04'
+  debian:
+    - 8
+    - 9
+    - 10
+  centos:
+    - 6
+    - 7
+    - 8
+  freebsd:
+    - 11
+    - 12
+  fedora:
+    - 29
+    - 30
+    - 31
+    
