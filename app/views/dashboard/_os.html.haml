@@ -95,6 +95,6 @@
     - @data['supports_eol_centos'].uniq.each do |repo|
       = link_to(repo, repository_path(repo), class: 'ui basic label')
   
-  .ui.header Modules without 'operating_system_support'
+  .ui.header Modules without 'operating_system_support' in metadata.json
   - @data['modules_without_operatingsystems_support'].uniq.each do |repo|
     = link_to(repo, repository_path(repo), class: 'ui basic label')
