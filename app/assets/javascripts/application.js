@@ -25,4 +25,5 @@ $( document ).ready(function() {
   $(".popup").popup();
   $(".ui.dropdown").dropdown();
   $("#dttb").dataTable();
+  $(".menu .item").tab();
 });
