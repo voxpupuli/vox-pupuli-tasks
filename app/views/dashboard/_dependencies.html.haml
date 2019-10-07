@@ -1,0 +1,26 @@
+.ui.bottom.attached.tab.segment{data: {tab: :dependencies}}
+  .ui.top.attached.tabular.menu
+    %a.item{data: {tab: :modules_without_puppet_version_range}}
+      .ui.header
+        Without Puppet version range
+        %span{style: 'float: right;', data: { tooltip: I18n.t("repo_states.modules_without_puppet_version_range.description"), position: 'bottom center'}}
+          %i.icon.question.mark.circle.outline.small
+    %a.item{data: {tab: :modules_with_incorrect_puppet_version_range}}
+      .ui.header
+        With incorrect Puppet version range
+        %span{style: 'float: right;', data: { tooltip: I18n.t("repo_states.modules_without_puppet_version_range.description"), position: 'bottom center'}}
+          %i.icon.question.mark.circle.outline.small
+    %a.item{data: {tab: :modules_without_reference_dot_md}}
+      .ui.header
+        Without REFERENCE.md
+        %span{style: 'float: right;', data: { tooltip: I18n.t("repo_states.modules_without_reference_dot_md.description"), position: 'bottom center'}}
+          %i.icon.question.mark.circle.outline.small
+  .ui.bottom.attached.tab.segment{data: {tab: :modules_without_puppet_version_range}}
+    - @data['modules_without_puppet_version_range'].uniq.each do |repo|
+      = link_to(repo, repository_path(repo), class: 'ui basic label')
+  .ui.bottom.attached.tab.segment{data: {tab: :modules_with_incorrect_puppet_version_range}}
+    - @data['modules_with_incorrect_puppet_version_range'].uniq.each do |repo|
+      = link_to(repo, repository_path(repo), class: 'ui basic label')
+  .ui.bottom.attached.tab.segment{data: {tab: :modules_without_reference_dot_md}}
+    - @data['modules_without_reference_dot_md'].uniq.each do |repo|
+      = link_to(repo, repository_path(repo), class: 'ui basic label')

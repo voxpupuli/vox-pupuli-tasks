@@ -1,0 +1,10 @@
+.ui.bottom.attached.tab.segment{data: {tab: :plumbing}}
+  .ui.top.attached.tabular.menu
+    %a.item{data: {tab: :missing_in_plumbing}}
+      .ui.header
+        Missing in Plumbing
+        %span{style: 'float: right;', data: { tooltip: I18n.t("repo_states.missing_in_plumbing.description"), position: 'bottom center'}}
+          %i.icon.question.mark.circle.outline.small
+  .ui.bottom.attached.tab.segment{data: {tab: :missing_in_plumbing}}
+    - @data['missing_in_plumbing'].uniq.each do |repo|
+      = link_to(repo, repository_path(repo), class: 'ui basic label')
