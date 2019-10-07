@@ -33,7 +33,11 @@ class PullRequest < ApplicationRecord
       pull_request.save
 
       gh_pull_request['labels'].each do |label|
-        pull_request.labels << Label.find_or_create_by(name: label['name'], color: label['color'])
+        db_label = Label.find_or_create_by(name: label['name'], color: label['color'])
+
+        next if pull_request.labels.include? db_label
+
+        pull_request.labels << db_label
       end
     end
   end
