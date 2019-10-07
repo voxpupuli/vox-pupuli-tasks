@@ -1,0 +1,100 @@
+.ui.bottom.attached.active.tab.segment{data: {tab: :os}}
+  .ui.header Modules which do not support the latest OS
+  .ui.top.attached.tabular.menu
+    %a.item{data: {tab: :latest_ubuntu}}
+      .ui.header
+        %i.fl-ubuntu
+        Ubuntu
+        %span{style: 'float: right;', data: { tooltip: I18n.t("repo_states.latest_ubuntu.description"), position: 'bottom center'}}
+          %i.icon.question.mark.circle.outline.small
+    %a.item{data: {tab: :latest_debian}}
+      .ui.header
+        %i.fl-debian
+        Debian
+        %span{style: 'float: right;', data: { tooltip: I18n.t("repo_states.latest_debian.description"), position: 'bottom center'}}
+          %i.icon.question.mark.circle.outline.small
+    %a.item{data: {tab: :latest_fedora}}
+      .ui.header
+        %i.fl-fedora-inverse
+        Fedora
+        %span{style: 'float: right;', data: { tooltip: I18n.t("repo_states.latest_fedora.description"), position: 'bottom center'}}
+          %i.icon.question.mark.circle.outline.small
+    %a.item{data: {tab: :latest_centos}}
+      .ui.header
+        %i.fl-centos
+        CentOS
+        %span{style: 'float: right;', data: { tooltip: I18n.t("repo_states.latest_centos.description"), position: 'bottom center'}}
+          %i.icon.question.mark.circle.outline.small
+    %a.item{data: {tab: :latest_freebsd}}
+      .ui.header
+        %i.fl-freebsd
+        FreeBSD
+        %span{style: 'float: right;', data: { tooltip: I18n.t("repo_states.latest_freebsd.description"), position: 'bottom center'}}
+          %i.icon.question.mark.circle.outline.small
+  .ui.bottom.attached.tab.segment{data: {tab: :latest_ubuntu}}
+    - @data['doesnt_support_latest_ubuntu'].uniq.each do |repo|
+      = link_to(repo, repository_path(repo), class: 'ui basic label')
+  .ui.bottom.attached.tab.segment{data: {tab: :latest_debian}}
+    - @data['doesnt_support_latest_debian'].uniq.each do |repo|
+      = link_to(repo, repository_path(repo), class: 'ui basic label')
+  .ui.bottom.attached.tab.segment{data: {tab: :latest_fedora}}
+    - @data['doesnt_support_latest_fedora'].uniq.each do |repo|
+      = link_to(repo, repository_path(repo), class: 'ui basic label')
+  .ui.bottom.attached.tab.segment{data: {tab: :latest_freebsd}}
+    - @data['doesnt_support_latest_freebsd'].uniq.each do |repo|
+      = link_to(repo, repository_path(repo), class: 'ui basic label')
+  .ui.bottom.attached.tab.segment{data: {tab: :latest_centos}}
+    - @data['doesnt_support_latest_centos'].uniq.each do |repo|
+      = link_to(repo, repository_path(repo), class: 'ui basic label')
+
+  .ui.header Modules which support a EOL OS
+  .ui.top.attached.tabular.menu
+    %a.item{data: {tab: :eol_ubuntu}}
+      .ui.header
+        %i.fl-ubuntu
+        Ubuntu
+        %span{style: 'float: right;', data: { tooltip: I18n.t("repo_states.eol_ubuntu.description"), position: 'bottom center'}}
+          %i.icon.question.mark.circle.outline.small
+    %a.item{data: {tab: :eol_debian}}
+      .ui.header
+        %i.fl-debian
+        Debian
+        %span{style: 'float: right;', data: { tooltip: I18n.t("repo_states.eol_debian.description"), position: 'bottom center'}}
+          %i.icon.question.mark.circle.outline.small
+    %a.item{data: {tab: :eol_fedora}}
+      .ui.header
+        %i.fl-fedora-inverse
+        Fedora
+        %span{style: 'float: right;', data: { tooltip: I18n.t("repo_states.eol_fedora.description"), position: 'bottom center'}}
+          %i.icon.question.mark.circle.outline.small
+    %a.item{data: {tab: :eol_centos}}
+      .ui.header
+        %i.fl-centos
+        CentOS
+        %span{style: 'float: right;', data: { tooltip: I18n.t("repo_states.eol_centos.description"), position: 'bottom center'}}
+          %i.icon.question.mark.circle.outline.small
+    %a.item{data: {tab: :eol_freebsd}}
+      .ui.header
+        %i.fl-freebsd
+        FreeBSD
+        %span{style: 'float: right;', data: { tooltip: I18n.t("repo_states.eol_freebsd.description"), position: 'bottom center'}}
+          %i.icon.question.mark.circle.outline.small
+  .ui.bottom.attached.tab.segment{data: {tab: :eol_ubuntu}}
+    - @data['supports_eol_ubuntu'].uniq.each do |repo|
+      = link_to(repo, repository_path(repo), class: 'ui basic label')
+  .ui.bottom.attached.tab.segment{data: {tab: :eol_debian}}
+    - @data['supports_eol_debian'].uniq.each do |repo|
+      = link_to(repo, repository_path(repo), class: 'ui basic label')
+  .ui.bottom.attached.tab.segment{data: {tab: :eol_fedora}}
+    - @data['supports_eol_fedora'].uniq.each do |repo|
+      = link_to(repo, repository_path(repo), class: 'ui basic label')
+  .ui.bottom.attached.tab.segment{data: {tab: :eol_freebsd}}
+    - @data['supports_eol_freebsd'].uniq.each do |repo|
+      = link_to(repo, repository_path(repo), class: 'ui basic label')
+  .ui.bottom.attached.tab.segment{data: {tab: :eol_centos}}
+    - @data['supports_eol_centos'].uniq.each do |repo|
+      = link_to(repo, repository_path(repo), class: 'ui basic label')
+  
+  .ui.header Modules without 'operating_system_support'
+  - @data['modules_without_operatingsystems_support'].uniq.each do |repo|
+    = link_to(repo, repository_path(repo), class: 'ui basic label')

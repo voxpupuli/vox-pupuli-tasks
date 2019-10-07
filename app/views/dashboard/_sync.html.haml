@@ -1,0 +1,26 @@
+.ui.bottom.attached.tab.segment{data: {tab: :sync}}
+  .ui.top.attached.tabular.menu
+    %a.item{data: {tab: :need_another_sync}}
+      .ui.header
+        Need another sync
+        %span{style: 'float: right;', data: { tooltip: I18n.t("repo_states.need_another_sync.description"), position: 'bottom center'}}
+          %i.icon.question.mark.circle.outline.small
+    %a.item{data: {tab: :modules_that_were_added_but_never_synced}}
+      .ui.header
+        Added but never synced
+        %span{style: 'float: right;', data: { tooltip: I18n.t("repo_states.modules_that_were_added_but_never_synced.description"), position: 'bottom center'}}
+          %i.icon.question.mark.circle.outline.small
+    %a.item{data: {tab: :need_initial_modulesync}}
+      .ui.header
+        Need initial modulesync
+        %span{style: 'float: right;', data: { tooltip: I18n.t("repo_states.really_need_an_initial_modulesync.description"), position: 'bottom center'}}
+          %i.icon.question.mark.circle.outline.small
+  .ui.bottom.attached.tab.segment{data: {tab: :need_another_sync}}
+    - @data['need_another_sync'].uniq.each do |repo|
+      = link_to(repo, repository_path(repo), class: 'ui basic label')
+  .ui.bottom.attached.tab.segment{data: {tab: :modules_that_were_added_but_never_synced}}
+    - @data['modules_that_were_added_but_never_synced'].uniq.each do |repo|
+      = link_to(repo, repository_path(repo), class: 'ui basic label')
+  .ui.bottom.attached.tab.segment{data: {tab: :need_initial_modulesync}}
+    - @data['really_need_an_initial_modulesync'].uniq.each do |repo|
+      = link_to(repo, repository_path(repo), class: 'ui basic label')
