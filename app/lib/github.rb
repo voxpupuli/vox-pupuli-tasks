@@ -9,7 +9,6 @@ class Github
   end
   
   def self.client
-    #TODO: Do not generate jwt and app token per request!
     Octokit::Client.new(
       auto_paginate: true,
       access_token: app_token
