@@ -1,14 +1,15 @@
 # frozen_string_literal: true
 
 class Github
-  def self.client
+  def self.bot
     @client ||= Octokit::Client.new(
       auto_paginate: true,
       access_token: Rails.application.credentials.github[Rails.env.to_sym][:bot_token]
     )
   end
   
-  def self.app
+  def self.client
+    #TODO: Do not generate jwt and app token per request!
     Octokit::Client.new(
       auto_paginate: true,
       access_token: app_token
