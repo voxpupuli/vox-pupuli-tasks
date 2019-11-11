@@ -38,7 +38,7 @@ en:
       description: We use 'operatingsystem_support' in the metadata.json to verify support ranges. It's missing in this modules.
     doesnt_support_latest_ubuntu:
       title: Does not support latest Ubuntu
-      description: We support Ubuntu 14.04, 16.04 and 18.04. Modules in here don't support Ubuntu 18.04.
+      description: We support Ubuntu 16.04 and 18.04. Modules in here don't support Ubuntu 18.04.
     doesnt_support_latest_freebsd:
       title: Does not support latest FreeBSD
       description: We support FreeBSD 11 and 12. Modules in here don't support FreeBSD 12.

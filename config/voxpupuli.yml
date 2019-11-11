@@ -20,7 +20,6 @@ puppet_support_range: '>= 5.5.8 < 7.0.0'
 # https://github.com/camptocamp/facterdb/pull/82#event-1600066178
 support_ranges:
   ubuntu:
-    - '14.04'
     - '16.04'
     - '18.04'
   debian:
@@ -38,4 +37,4 @@ support_ranges:
     - 29
     - 30
     - 31
-    
+
