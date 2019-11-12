@@ -67,8 +67,12 @@ class PullRequest < ApplicationRecord
   #  If the list does not include the given Label we attach it
 
   def ensure_label_is_attached(label)
-    repository.ensure_label_exists(label)
+    Raven.capture_message('Going to attach a label',
+                          extra: { label: label,
+                                   repo: repository.github_url,
+                                   title: title })
 
+    repository.ensure_label_exists(label)
     attached_labels = Github.client.labels_for_issue(gh_repository_id, number)
     return if attached_labels.any? { |attached_label| attached_label['name'] == label.name }
 
@@ -79,6 +83,11 @@ class PullRequest < ApplicationRecord
   #  We simply remove the given Label if it exists
 
   def ensure_label_is_detached(label)
+    Raven.capture_message('Going to detach a label',
+                          extra: { label: label,
+                                   repo: repository.github_url,
+                                   title: title })
+
     Github.client.remove_label(gh_repository_id, number, label.name)
   rescue Octokit::NotFound
     true
@@ -87,6 +96,11 @@ class PullRequest < ApplicationRecord
   ##
   #  Add a comment with the given text
   def add_comment(text)
+    Raven.capture_message('Going to add a comment',
+                          extra: { text: text,
+                                   repo: repository.github_url,
+                                   title: title })
+
     Github.client.add_comment(gh_repository_id, number, text)
     update(eligible_for_comment: false)
   end
