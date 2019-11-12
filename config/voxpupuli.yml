@@ -8,7 +8,8 @@
 legacy_or_broken_nobody_knows:
   - puppet-bacula
   - puppet-nagios_providers
-  - puppet-iis puppet-syntax
+  - puppet-iis
+  - puppet-syntax
   - puppet-blacksmith
   - puppet-mode
 
@@ -37,4 +38,3 @@ support_ranges:
     - 29
     - 30
     - 31
-
