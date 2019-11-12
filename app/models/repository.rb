@@ -62,9 +62,14 @@ class Repository < ApplicationRecord
   ##
   #  Fetch all open and closed PullRequests and sync our database with them
   #
-  def update_pull_requests
+  def update_pull_requests(only_open: false)
     open_pull_requests = Github.client.pull_requests("voxpupuli/#{name}")
-    closed_pull_requests = Github.client.pull_requests("voxpupuli/#{name}", state: :closed)
+    closed_pull_requests = if only_open
+                             []
+                           else
+                             Github.client.pull_requests("voxpupuli/#{name}", state: :closed)
+                           end
+
     (open_pull_requests + closed_pull_requests).each do |gh_pull_request|
       PullRequest.update_with_github(gh_pull_request)
     end
