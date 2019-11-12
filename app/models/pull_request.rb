@@ -152,6 +152,6 @@ class PullRequest < ApplicationRecord
   #  stuff which might result in some new querys and api requests asyncronously.
 
   def queue_validation
-    ValidatePullRequestWorker.perform_async(id, saved_changes) if saved_changes?
+    ValidatePullRequestWorker.perform_async(id, saved_changes) if saved_changes? || mergeable.nil?
   end
 end
