@@ -28,6 +28,10 @@ class GithubEvent
 
     case type
     when 'pull_request'
+      ##
+      # Ignore events which are triggered by the bot
+      return if payload.dig('sender', id).to_i == 53702691
+
       if Repository.notably? payload['repository']['name']
         @processor = GithubEvent::PullRequest.new(payload)
       end
