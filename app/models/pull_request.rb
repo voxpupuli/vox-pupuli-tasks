@@ -123,7 +123,7 @@ class PullRequest < ApplicationRecord
 
   def validate(saved_changes)
     # Don't run through the validaten, if only the eligable_for_comment attribute got updated
-    return if saved_changes.keys.sort == %w[updated_at eligable_for_comment].sort
+    return if saved_changes.keys.sort == %w[updated_at eligable_for_comment].sort && !mergeable.nil?
 
     # if the pull request is now closed, dont attach/remove labels/comments
     return if closed?
