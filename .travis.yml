@@ -11,7 +11,7 @@ script:
 matrix:
   fast_finish: true
   include:
-  - rvm: 2.5.3
+  - rvm: 2.6.3
     bundler_args: --without development --jobs "$(nproc)"
     env: CHECK=rubocop
 branches:
