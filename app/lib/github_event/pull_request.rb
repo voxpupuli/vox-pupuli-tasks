@@ -10,6 +10,13 @@ class GithubEvent
 
     def process
       ::PullRequest.update_with_github(payload['pull_request'])
+
+      ##
+      # if a PullRequest action is closed and the PullRequest merged we want to recheck all
+      # other PulRequests in that repo to make sure we catch all new merge conflicts.
+      return unless payload['action'] == 'closed' && payload.dig('pull_request', 'merged')
+
+      Repository.find_by(github_id: payload.dig('repository', 'id')).update_pull_requests
     end
   end
 end
