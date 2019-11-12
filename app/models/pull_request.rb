@@ -69,9 +69,10 @@ class PullRequest < ApplicationRecord
   def ensure_label_is_attached(label)
     Raven.capture_message('Going to attach a label',
                           extra: { label: label,
-                                   repo: repository.github_url, title: title })
-    repository.ensure_label_exists(label)
+                                   repo: repository.github_url,
+                                   title: title })
 
+    repository.ensure_label_exists(label)
     attached_labels = Github.client.labels_for_issue(gh_repository_id, number)
     return if attached_labels.any? { |attached_label| attached_label['name'] == label.name }
 
@@ -84,7 +85,9 @@ class PullRequest < ApplicationRecord
   def ensure_label_is_detached(label)
     Raven.capture_message('Going to detach a label',
                           extra: { label: label,
-                                   repo: repository.github_url, title: title })
+                                   repo: repository.github_url,
+                                   title: title })
+
     Github.client.remove_label(gh_repository_id, number, label.name)
   rescue Octokit::NotFound
     true
