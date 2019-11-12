@@ -16,7 +16,8 @@ class GithubEvent
       # other PulRequests in that repo to make sure we catch all new merge conflicts.
       return unless payload['action'] == 'closed' && payload.dig('pull_request', 'merged')
 
-      Repository.find_by(github_id: payload.dig('repository', 'id')).update_pull_requests
+      Repository.find_by(github_id: payload.dig('repository', 'id'))
+                .update_pull_requests(only_open: true)
     end
   end
 end
