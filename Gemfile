@@ -43,7 +43,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 
 # support for direct logging to Elasticsearch
 # http://rocketjob.github.io/semantic_logger/rails#rails
-gem 'elasticsearch'
+gem 'elasticsearch', '7.3.0'
 gem 'rails_semantic_logger'
 
 group :development, :test do
