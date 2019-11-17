@@ -104,8 +104,8 @@ class PullRequest < ApplicationRecord
 
     ##
     # disabled for debug
-    #Github.client.add_comment(gh_repository_id, number, text)
-    #update(eligible_for_comment: false)
+    # Github.client.add_comment(gh_repository_id, number, text)
+    # update(eligible_for_comment: false)
   end
 
   def eligible_for_comment
