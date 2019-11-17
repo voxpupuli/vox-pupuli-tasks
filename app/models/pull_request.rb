@@ -99,10 +99,13 @@ class PullRequest < ApplicationRecord
     Raven.capture_message('Going to add a comment',
                           extra: { text: text,
                                    repo: repository.github_url,
-                                   title: title })
+                                   title: title,
+                                   request: request || nil })
 
-    Github.client.add_comment(gh_repository_id, number, text)
-    update(eligible_for_comment: false)
+    ##
+    # disabled for debug
+    #Github.client.add_comment(gh_repository_id, number, text)
+    #update(eligible_for_comment: false)
   end
 
   def eligible_for_comment
