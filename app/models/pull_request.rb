@@ -96,21 +96,8 @@ class PullRequest < ApplicationRecord
   ##
   #  Add a comment with the given text
   def add_comment(text)
-    req = begin
-            request
-          rescue StandardError
-            nil
-          end
-    Raven.capture_message('Going to add a comment',
-                          extra: { text: text,
-                                   repo: repository.github_url,
-                                   title: title,
-                                   request: req })
-
-    ##
-    # disabled for debug
-    # Github.client.add_comment(gh_repository_id, number, text)
-    # update(eligible_for_comment: false)
+    Github.client.add_comment(gh_repository_id, number, text)
+    update(eligible_for_comment: false)
   end
 
   def eligible_for_comment
@@ -142,8 +129,11 @@ class PullRequest < ApplicationRecord
       update(eligible_for_comment: true)
     elsif mergeable == false
       repository.ensure_label_exists(label)
-      ensure_label_is_attached(label)
-      add_comment(I18n.t('comment.needs_rebase', author: author)) if eligible_for_comment
+
+      ##
+      # We only add a comment if we addded a label. If the label already is present
+      # we also already added the comment. So no need for a new one.
+      add_comment(I18n.t('comment.needs_rebase', author: author)) if ensure_label_is_attached(label)
     elsif mergeable.nil?
       UpdateMergeableWorker.perform_in(1.minute.from_now,
                                        repository.name,
