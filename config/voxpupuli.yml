@@ -38,3 +38,108 @@ support_ranges:
     - 29
     - 30
     - 31
+
+# labels that we would like to have on all repositories
+labels:
+  - name: backwards-incompatible
+    color: eb6420
+    aliases:
+    - backwards-incompatible
+    - breaking
+    - breaking-change
+  - name: beginner-friendly
+    color: d4c5f9
+    aliases:
+    - beginner
+    - beginner friendly
+  - name: bug
+    description: "Something isn't working"
+    color: 0e8a16
+    aliases:
+    - bug
+    - bugfix
+  - name: docs
+    description: "Improvements or additions to documentation"
+    color: 006b75
+    aliases:
+    - docs
+    - documentation
+  - name: duplicate
+    description: "This issue or pull request already exists"
+    color: cccccc
+    aliases:
+    - duplicate
+  - name: enhancement
+    description: "New feature or request"
+    color: 0052cc
+    aliases:
+    - enhancement
+    - feature
+  - name: modulesync
+    color: fbca04
+    aliases:
+    - msync
+  - name: needs-docs
+    color: 006b75
+    aliases:
+    - needs-docs
+  - name: needs-feedback
+    description: "Further information is requested"
+    color: 5319e7
+    aliases:
+    - feedback
+    - feedback-needed
+    - needs-feedback
+    - question
+  - name: needs-help
+    description: "Extra attention is needed"
+    color: d4c5f9
+    aliases:
+    - help
+    - help wanted
+    - needs-help
+    - help-wanted
+  - name: needs-rebase
+    color: 207de5
+    aliases:
+    - needs-rebase
+    - rebaseneeded
+    - rebase
+  - name: needs-squash
+    color: c2e0c6
+    aliases:
+    - needs-squash
+    - squash
+  - name: needs-tests
+    color: f7c6c7
+    aliases:
+    - needs-tests
+    - tests
+  - name: needs-work
+    color: fbca04
+    aliases:
+    - in progress
+    - needs-work
+  - name: question
+    color: bfd4f2
+    aliases:
+    - question
+  - name: tests-fail
+    color: e11d21
+    aliases:
+    - tests-fail
+  - name: wont-fix
+    description: "This will not be worked on"
+    color: '000000'
+    aliases:
+    - wontfix
+    - wont-fix
+    - won't-fix
+  - name: skip-changelog
+    color: 343e4c
+    aliases:
+    - changelog
+  - name: release-summary
+    color: bfdadc
+    aliases:
+    - release-summary
