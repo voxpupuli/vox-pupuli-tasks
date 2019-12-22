@@ -3,7 +3,7 @@
 class Travis < ApplicationRecord
   belongs_to(:pull_requests)
 
-  def sef.update_with_travis_payload(payload)
+  def self.update_with_travis_payload(payload)
     Travis.where(travis_id: payload['id']).first_or_initialize.tap do |travis|
       travis.type                = payload['type']
       travis.state               = payload['state']
