@@ -21,6 +21,8 @@ Rails.application.routes.draw do
 
   post 'incoming/github', to: 'incoming#github'
 
+  post 'incoming/travis', to: 'incoming#travis'
+
   constraints ->(req) { req.session['user_id'] } do
     mount Sidekiq::Web => '/sidekiq'
   end
