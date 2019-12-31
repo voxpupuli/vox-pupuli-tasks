@@ -116,14 +116,11 @@ labels:
     - needs-tests
     - tests
   - name: needs-work
+    description: "not ready to merge just yet"
     color: fbca04
     aliases:
     - in progress
     - needs-work
-  - name: question
-    color: bfd4f2
-    aliases:
-    - question
   - name: tests-fail
     color: e11d21
     aliases:
@@ -143,3 +140,9 @@ labels:
     color: bfdadc
     aliases:
     - release-summary
+  - name: "good first issue"
+    description: "Good for newcomers"
+    color: 7057ff
+  - name: invalid
+    description: "This doesn't seem right"
+    color: e4e669
