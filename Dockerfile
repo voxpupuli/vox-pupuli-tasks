@@ -4,7 +4,7 @@ ENV NODE_ENV production
 ENV RAILS_ENV production
 
 RUN apk update && apk upgrade
-RUN apk add build-base linux-headers git nodejs yarn tzdata sqlite-dev
+RUN apk add build-base linux-headers git nodejs yarn tzdata postgresql-dev postgresql-client
 
 RUN mkdir /vpt
 WORKDIR /vpt
