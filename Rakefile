@@ -15,12 +15,12 @@ begin
   end
 rescue LoadError
   desc 'rubocop is not available in this installation'
-  task :rubocop do
+  task rubocop: :environment do
     raise 'rubocop is not available in this installation'
   end
 end
 
 desc 'Display the list of available rake tasks'
-task :help do
+task help: :environment do
   system('rake -T')
 end
