@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/rack/rack.git
+  revision: f690bb71425aa31d7b9b3113829af773950d8ab5
+  ref: f690bb71425aa31d7b9b3113829af773950d8ab5
+  specs:
+    rack (2.2.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -261,7 +268,6 @@ GEM
       json
       websocket (~> 1.0)
     raabro (1.1.6)
-    rack (2.1.1)
     rack-protection (2.0.8.1)
       rack
     rack-test (1.1.0)
@@ -440,6 +446,7 @@ DEPENDENCIES
   pry-rails
   puma (~> 3.12)
   puppet_forge
+  rack!
   rails (~> 6.0)
   rails_semantic_logger
   react-rails
