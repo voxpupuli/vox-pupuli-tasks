@@ -7,7 +7,6 @@ gem 'execjs'
 gem 'puma', '~> 3.12'
 gem 'rails', '~> 6.0'
 gem 'sass-rails', '~> 5.0'
-gem 'sqlite3'
 gem 'uglifier', '>= 1.3.0'
 
 gem 'coffee-rails', '~> 4.2'
@@ -46,10 +45,15 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'elasticsearch', '7.3.0'
 gem 'rails_semantic_logger'
 
+group :production do
+  gem 'pg'
+end
+
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   # provides colorized log output on the CLI (ANSI color codes)
   gem 'awesome_print'
+  gem 'sqlite3'
 end
 
 group :development do
