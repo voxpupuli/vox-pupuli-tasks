@@ -169,11 +169,11 @@ Update the file to automatically update all labels in a repository. This app
 does not remove labels that aren't in the yaml. It just ensures that all labels
 from the yaml file are present in the repositories.
 
+Future work: The yaml already supports aliases for labels. The idea is that the
+app searches for labels in repositories with an alias. Matching labels could be
+renamed to the correct one.
 
-Future work:
-The yaml already supports aliases for labels. The idea is that the app searches
-for labels in repositories with an alias. Matching labels could be renamed to
-the correct one.
+The work for this feature is/was tracked in [issue #131](https://github.com/voxpupuli/vox-pupuli-tasks/issues/131).
 
 ## Local Setup
 
