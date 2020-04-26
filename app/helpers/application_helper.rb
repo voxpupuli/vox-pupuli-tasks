@@ -2,6 +2,8 @@
 
 module ApplicationHelper
   def markdown(text)
+    return '' unless text
+
     options = {
       filter_html: true,
       hard_wrap: true,
@@ -19,6 +21,6 @@ module ApplicationHelper
     renderer = Redcarpet::Render::HTML.new(options)
     markdown = Redcarpet::Markdown.new(renderer, extensions)
 
-    markdown.render(text).html_safe
+    markdown.render(text.to_s).html_safe
   end
 end
