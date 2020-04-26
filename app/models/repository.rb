@@ -76,7 +76,9 @@ class Repository < ApplicationRecord
   def labels
     @labels ||= begin
       Github.client.labels("voxpupuli/#{name}").map do |label|
-        Label.find_or_create_by!(name: label[:name], color: label[:color], description: label[:description])
+        Label.find_or_create_by!(name: label[:name],
+                                 color: label[:color],
+                                 description: label[:description])
       end
     end
   end
@@ -117,19 +119,23 @@ class Repository < ApplicationRecord
   #
   def sync_label_colors_and_descriptions
     config_labels = VOXPUPULI_CONFIG['labels'].map do |label|
-      Label.new(name: label['name'], color: label['color'], description: label['description'])
+      Label.new(name: label['name'],
+                color: label['color'],
+                description: label['description'])
     end
 
     labels.each do |label|
-      config_label = config_labels.select{|c_label| c_label.name == label.name}.first
-
-      p config_label
-
+      config_label = config_labels.select { |c_label| c_label.name == label.name }.first
 
       next unless config_label
       next if (label.color == config_label.color) && (label.description == config_label.description)
 
-      Github.client.update_label(github_id, config_label.name, { color: config_label.color, description: config_label.description })
+      Github.client.update_label(github_id,
+                                 config_label.name,
+                                 {
+                                   color: config_label.color,
+                                   description: config_label.description
+                                 })
     end
   end
 

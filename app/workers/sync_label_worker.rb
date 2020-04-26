@@ -8,4 +8,5 @@ class SyncLabelWorker
       repository.attach_missing_labels
       repository.sync_label_colors_and_descriptions
     end
+  end
 end
