@@ -67,7 +67,6 @@ class PullRequest < ApplicationRecord
   #  If the list does not include the given Label we attach it
 
   def ensure_label_is_attached(label)
-
     repository.ensure_label_exists(label)
     attached_labels = Github.client.labels_for_issue(gh_repository_id, number)
     return if attached_labels.any? { |attached_label| attached_label['name'] == label.name }
