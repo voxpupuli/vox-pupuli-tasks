@@ -51,7 +51,7 @@ class Repository < ApplicationRecord
 
     Raven.capture_message('Attached a label to an repository',
                           extra: { label_color: label.color,
-                                   label_name: label.name
+                                   label_name: label.name,
                                    repo: github_id })
   end
 
@@ -63,7 +63,7 @@ class Repository < ApplicationRecord
 
     Raven.capture_message('Detached a label to an repository',
                           extra: { label_color: label.color,
-                                   label_name: label.name
+                                   label_name: label.name,
                                    repo: github_id })
   rescue Octokit::NotFound
     true
