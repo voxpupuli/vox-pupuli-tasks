@@ -61,7 +61,7 @@ class Repository < ApplicationRecord
   def ensure_label_missing(label)
     Github.client.delete_label!(github_id, label.name)
 
-    Raven.capture_message('Detached a label to an repository',
+    Raven.capture_message('Detached a label from an repository',
                           extra: { label_color: label.color,
                                    label_name: label.name,
                                    repo: github_id })

@@ -86,7 +86,7 @@ class PullRequest < ApplicationRecord
   def ensure_label_is_detached(label)
     Github.client.remove_label(gh_repository_id, number, label.name)
 
-    Raven.capture_message('Detached a label',
+    Raven.capture_message('Detached a label from an issue',
                           extra: { label: label,
                                    repo: repository.github_url,
                                    title: title })
