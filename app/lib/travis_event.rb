@@ -24,5 +24,7 @@ class TravisEvent
     # else
     #  Raven.capture_message("Unknown Hook Received: #{payload['type']}", extra: payload)
     # end
+  rescue StandardError
+    nil
   end
 end

@@ -48,6 +48,11 @@ class Repository < ApplicationRecord
     Github.client.label(github_id, label.name)
   rescue Octokit::NotFound
     Github.client.add_label(github_id, label.name, label.color)
+
+    Raven.capture_message('Attached a label to an repository',
+                          extra: { label_color: label.color,
+                                   label_name: label.name,
+                                   repo: github_id })
   end
 
   ##
@@ -55,6 +60,11 @@ class Repository < ApplicationRecord
   #
   def ensure_label_missing(label)
     Github.client.delete_label!(github_id, label.name)
+
+    Raven.capture_message('Detached a label from an repository',
+                          extra: { label_color: label.color,
+                                   label_name: label.name,
+                                   repo: github_id })
   rescue Octokit::NotFound
     true
   end
