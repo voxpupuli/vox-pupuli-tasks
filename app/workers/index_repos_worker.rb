@@ -23,5 +23,6 @@ class IndexReposWorker
     end
 
     RepoStatusWorker.perform_async
+    SyncLabelWorker.perform_async
   end
 end

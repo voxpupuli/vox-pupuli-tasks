@@ -70,6 +70,76 @@ class Repository < ApplicationRecord
   end
 
   ##
+  #  Fetch the Labels for this Repository from GitHub
+  #  and create it in our database
+  #
+  def labels
+    @labels ||= begin
+      Github.client.labels("voxpupuli/#{name}").map do |label|
+        Label.find_or_create_by!(name: label[:name],
+                                 color: label[:color],
+                                 description: label[:description])
+      end
+    end
+  end
+
+  ##
+  #  Find all Labels which are in our config but are missing from the
+  #  Repository on GitHub
+  #
+  def missing_labels
+    required_label_names = VOXPUPULI_CONFIG['labels'].map do |label|
+      label['name']
+    end
+
+    label_names = labels.pluck(:name)
+
+    missing_label_names = required_label_names.reject do |name|
+      label_names.include?(name)
+    end
+
+    missing_label_names.map do |name|
+      Label.find_by(name: name)
+    end
+  end
+
+  ##
+  #  Create each missing Label for the repository on GitHub
+  #
+  def attach_missing_labels
+    missing_labels.each do |label|
+      ensure_label_exists(label)
+    end
+  end
+
+  ##
+  #  Compare the Labels on GitHub with the ones from our config
+  #  If we have the Label in our config but the color or
+  #  description differs we update the Label on GitHub to match the config.
+  #
+  def sync_label_colors_and_descriptions
+    config_labels = VOXPUPULI_CONFIG['labels'].map do |label|
+      Label.new(name: label['name'],
+                color: label['color'],
+                description: label['description'])
+    end
+
+    labels.each do |label|
+      config_label = config_labels.select { |c_label| c_label.name == label.name }.first
+
+      next unless config_label
+      next if (label.color == config_label.color) && (label.description == config_label.description)
+
+      Github.client.update_label(github_id,
+                                 config_label.name,
+                                 {
+                                   color: config_label.color,
+                                   description: config_label.description
+                                 })
+    end
+  end
+
+  ##
   #  Fetch all open and closed PullRequests and sync our database with them
   #
   def update_pull_requests(only_open: false)
