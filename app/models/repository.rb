@@ -76,7 +76,7 @@ class Repository < ApplicationRecord
   def labels
     @labels ||= begin
       Github.client.labels("voxpupuli/#{name}").map do |label|
-        Label.find_or_create_by!(name: label[:name], color: label[:color])
+        Label.find_or_create_by!(name: label[:name], color: label[:color], description: label[:description])
       end
     end
   end
@@ -112,21 +112,24 @@ class Repository < ApplicationRecord
 
   ##
   #  Compare the Labels on GitHub with the ones from our config
-  #  If we have the Label in our config but the color differs
-  #  we update the Label on GitHub to match the config.
+  #  If we have the Label in our config but the color or
+  #  description differs we update the Label on GitHub to match the config.
   #
-  def sync_label_colors
+  def sync_label_colors_and_descriptions
     config_labels = VOXPUPULI_CONFIG['labels'].map do |label|
-      Label.new(name: label['name'], color: label['color'])
+      Label.new(name: label['name'], color: label['color'], description: label['description'])
     end
 
     labels.each do |label|
       config_label = config_labels.select{|c_label| c_label.name == label.name}.first
 
-      next unless config_label
-      next if label.color == config_label.color
+      p config_label
 
-      Github.client.update_label(github_id, config_label.name, { color: config_label.color })
+
+      next unless config_label
+      next if (label.color == config_label.color) && (label.description == config_label.description)
+
+      Github.client.update_label(github_id, config_label.name, { color: config_label.color, description: config_label.description })
     end
   end
 

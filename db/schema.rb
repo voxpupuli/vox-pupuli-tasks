@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_24_091954) do
+ActiveRecord::Schema.define(version: 2020_04_26_200729) do
 
   create_table "labels", force: :cascade do |t|
     t.string "name"
@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 2019_08_24_091954) do
     t.integer "pull_request_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "description"
     t.index ["pull_request_id"], name: "index_labels_on_pull_request_id"
   end
 
