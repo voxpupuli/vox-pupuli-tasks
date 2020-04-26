@@ -100,7 +100,7 @@ class Repository < ApplicationRecord
 
     missing_label_names.map do |name|
       Label.find_by(name: name)
-    end
+    end.compact
   end
 
   ##
