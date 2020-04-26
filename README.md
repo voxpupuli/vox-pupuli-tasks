@@ -5,8 +5,8 @@
 [![microbadger layercounter](https://images.microbadger.com/badges/image/voxpupuli/vox-pupuli-tasks.svg)](https://microbadger.com/images/voxpupuli/vox-pupuli-tasks)
 [![display version](https://images.microbadger.com/badges/version/voxpupuli/vox-pupuli-tasks.svg)](https://microbadger.com/images/voxpupuli/vox-pupuli-tasks)
 [![GitHub release](https://img.shields.io/github/release/voxpupuli/vox-pupuli-tasks.svg)](https://GitHub.com/voxpupuli/vox-pupuli-tasks/releases/)
-[![Docker Stars](https://img.shields.io/docker/stars/jekyll/jekyll.svg)](https://hub.docker.com/r/voxpupuli/vox-pupuli-tasks)
-[![Docker Pulls](https://img.shields.io/docker/pulls/jekyll/jekyll.svg)](https://hub.docker.com/r/voxpupuli/vox-pupuli-tasks)
+[![Docker Stars](https://img.shields.io/docker/stars/voxpupuli/vox-pupuli-tasks.svg)](https://hub.docker.com/r/voxpupuli/vox-pupuli-tasks)
+[![Docker Pulls](https://img.shields.io/docker/pulls/voxpupuli/vox-pupuli-tasks.svg)](https://hub.docker.com/r/voxpupuli/vox-pupuli-tasks)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/feabbbffc80343f48359590a124e8dab)](https://www.codacy.com/app/VoxPupuli/vox-pupuli-tasks)
 
 ## Table of contents
