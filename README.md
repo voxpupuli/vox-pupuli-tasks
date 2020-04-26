@@ -17,6 +17,7 @@
 * [Usage](#usage)
 * [Existing Automatisation](#existing-automatisation)
   * [Merge Conflicts](#merge-conflicts)
+  * [Sync GitHub labels](#sync-github-labels)
 * [Local Setup](#local-setup)
 * [Production Setup](#production-setup)
   * [Cerebro](#cerebro)
@@ -148,6 +149,31 @@ Also our bot Account adds a comment to the pull request. GitHub does not send
 notifications to the author whe a label was added, but for comments.
 
 [![bot adds comment](images/bot_comment.png)](https://voxpupu.li)
+
+### Sync GitHub Labels
+
+People heavily depend on labels for their daily collaborator work. To ensure
+that they can use the correct labels, this App tracks an authoritative list
+of:
+
+* Label names
+* Their colour
+* Their description
+
+The application ensures that all those labels are configured in all
+repositories.
+
+This is all managed in [one yaml file](https://github.com/voxpupuli/vox-pupuli-tasks/blob/67d27076e025de2d8336d535da91eac8bb5d667f/config/voxpupuli.yml#L41).
+
+Update the file to automatically update all labels in a repository. This app
+does not remove labels that aren't in the yaml. It just ensures that all labels
+from the yaml file are present in the repositories.
+
+
+Future work:
+The yaml already supports aliases for labels. The idea is that the app searches
+for labels in repositories with an alias. Matching labels could be renamed to
+the correct one.
 
 ## Local Setup
 
