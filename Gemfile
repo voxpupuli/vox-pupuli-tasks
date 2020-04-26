@@ -40,6 +40,8 @@ gem 'puppet_forge'
 gem 'octokit'
 gem 'omniauth-github'
 
+gem 'lograge'
+
 gem 'bootsnap', '>= 1.1.0', require: false
 
 group :production do
