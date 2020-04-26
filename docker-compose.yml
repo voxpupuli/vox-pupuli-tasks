@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3'
 services:
   redis:
     restart: always
@@ -10,14 +10,15 @@ services:
     restart: always
     image: voxpupuli/vox-pupuli-tasks
     container_name: vpt-web
-    hostname: vpt-web
     depends_on:
       - redis
+      - postgres
     command: /vpt/entrypoint.sh
     volumes:
       - ./db/production.sqlite3:/vpt/db/production.sqlite3
       - ./log:/vpt/log
       - ./config/master.key:/vpt/config/master.key
+      - ./config/database.yml:/vpt/config/database.yml
     ports:
       - 127.0.0.1:3000:3000
     environment:
@@ -30,10 +31,12 @@ services:
     container_name: vpt-sidekiq
     depends_on:
       - redis
+      - postgres
     volumes:
       - ./db/production.sqlite3:/vpt/db/production.sqlite3
-      - ./log:/vpt/log
+      - ./log-sidekiq:/vpt/log
       - ./config/master.key:/vpt/config/master.key
+      - ./config/database.yml:/vpt/config/database.yml
     command: bundle exec sidekiq
     environment:
       RAILS_ENV: production
@@ -41,39 +44,12 @@ services:
     image: containrrr/watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    command: --interval 30
-  elasticsearch:
-    container_name: vpt-elastic1
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
+    command: --interval 60
+  postgres:
+    image: postgres:12.1
+    environment:
+      POSTGRES_PASSWORD: vptpgpassword
+      POSTGRES_USER: vpt
     volumes:
-      - ./esdata1:/usr/share/elasticsearch/data
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    environment:
-      - cluster.name=docker-cluster
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx1G"
-      - discovery.type=single-node
-      - cluster.routing.allocation.disk.watermark.low=97%
-      - cluster.routing.allocation.disk.watermark.high=98%
-      - cluster.routing.allocation.disk.watermark.flood_stage=99%
-      - node.name=vpt-elastic1
-    ports:
-      - 127.0.0.1:9200:9200
-  cerebro:
-    container_name: vpt-cerebro
-    image: lmenezes/cerebro:0.8.3
-    ports:
-      - 127.0.0.1:9001:9000
-    depends_on:
-      - elasticsearch
-  kibana:
-    image: docker.elastic.co/kibana/kibana:7.2.0
-    environment:
-      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
-    depends_on:
-      - elasticsearch
-    ports:
-      - 127.0.0.1:5601:5601
+      - ./postgres-data:/var/lib/postgresql/data
+      - ./db/production.sqlite3:/vpt/db/production.sqlite3
