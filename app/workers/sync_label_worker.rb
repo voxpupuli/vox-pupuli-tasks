@@ -6,5 +6,6 @@ class SyncLabelWorker
   def perform
     Repository.each do |repository|
       repository.attach_missing_labels
+      repository.sync_label_colors
     end
 end
