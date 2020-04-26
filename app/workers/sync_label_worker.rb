@@ -4,7 +4,7 @@ class SyncLabelWorker
   include Sidekiq::Worker
 
   def perform
-    Repository.each do |repository|
+    Repository.all.each do |repository|
       repository.attach_missing_labels
       repository.sync_label_colors_and_descriptions
     end
