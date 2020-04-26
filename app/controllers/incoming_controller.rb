@@ -23,8 +23,8 @@ class IncomingController < ApplicationController
     # https://github.com/travis-ci/webhook-signature-verifier/blob/master/lib/webhook-signature-verifier.rb#L40
     # https://docs.travis-ci.com/user/notifications/#verifying-webhook-requests
     payload = request.body.read
-    # useable_body = JSON.parse(payload).to_h
-    TravisEvent.new(payload)
+    useable_body = JSON.parse(payload).to_h
+    TravisEvent.new(useable_body)
   end
 
   private
