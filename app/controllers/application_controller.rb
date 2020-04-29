@@ -3,7 +3,7 @@
 class ApplicationController < ActionController::Base
   include CacheHelper
 
-  before_action :logged_in
+  before_action :logged_in, only: []
 
   helper_method :current_user, :github, :admin?
 

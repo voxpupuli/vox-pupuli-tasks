@@ -1,31 +1,32 @@
-- if current_user.blank?
-- else
-  %h1.ui.header
+%h1.ui.header
+  - if current_user
     What's up,
     = current_user.nickname
-    .sub.header
-      Last sync was
-      = @last_sync
-  .ui.basic.segment= area_chart PullRequest.group_by_day(:gh_created_at).count, title: 'Pull requests per day', library: {chart: {zoomType: 'x'}}
-  .ui.top.attached.tabular.menu
-    %a.active.item{data: {tab: :os}}
-      .ui.header
-        = semantic_icon(:linux)
-        Operating System
-    %a.item{data: {tab: :plumbing}}
-      .ui.header
-        = semantic_icon(:bath)
-        Plumbing
-    %a.item{data: {tab: :sync}}
-      .ui.header
-        = semantic_icon(:sync)
-        Sync
-    %a.item{data: {tab: :dependencies}}
-      .ui.header
-        = semantic_icon(:list)
-        Dependencies
+  - else
+    Hej! Nice to meet you :)
+  .sub.header
+    Last sync was
+    = @last_sync
+.ui.basic.segment= area_chart PullRequest.group_by_day(:gh_created_at).count, title: 'Pull requests per day', library: {chart: {zoomType: 'x'}}
+.ui.top.attached.tabular.menu
+  %a.active.item{data: {tab: :os}}
+    .ui.header
+      = semantic_icon(:linux)
+      Operating System
+  %a.item{data: {tab: :plumbing}}
+    .ui.header
+      = semantic_icon(:bath)
+      Plumbing
+  %a.item{data: {tab: :sync}}
+    .ui.header
+      = semantic_icon(:sync)
+      Sync
+  %a.item{data: {tab: :dependencies}}
+    .ui.header
+      = semantic_icon(:list)
+      Dependencies
 
-  = render partial: 'dashboard/plumbing'
-  = render partial: 'dashboard/sync'
-  = render partial: 'dashboard/dependencies'
-  = render partial: 'dashboard/os'
+= render partial: 'dashboard/plumbing'
+= render partial: 'dashboard/sync'
+= render partial: 'dashboard/dependencies'
+= render partial: 'dashboard/os'
