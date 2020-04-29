@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 
   before_action :logged_in
 
-  helper_method :current_user, :github, :is_admin?
+  helper_method :current_user, :github, :admin?
 
   def current_user
     session[:user_id].nil? ? nil : User.find_by(id: session[:user_id])
@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
     redirect_to(sessions_new_path) && return unless current_user
   end
 
-  def is_admin?
+  def admin?
     session[:admin]
   end
 end

@@ -7,7 +7,7 @@ class SessionsController < ApplicationController
   def create
     user = User.from_omniauth(request.env['omniauth.auth'])
 
-    session[:admin] = is_admin?(user)
+    session[:admin] = admin?(user)
 
     (session[:user_id] = user.id) && redirect_to(root_path) if user.valid?
   end
@@ -19,14 +19,14 @@ class SessionsController < ApplicationController
 
   private
 
-  def is_admin?(user)
+  def admin?(user)
     user_teams = Octokit::Client.new(auto_paginate: true, access_token: user.oauth_token).user_teams
     admin_teams = VOXPUPULI_CONFIG['teams_with_admin_access']
 
     user_teams.any? do |user_team|
-      at.any? do|admin_team|
+      admin_teams.any? do |admin_team|
         (admin_team['org-login'] == user_team[:organization][:login]) &&
-        (admin_team['team-slug'] == user_team[:slug])
+          (admin_team['team-slug'] == user_team[:slug])
       end
     end
   rescue StandardError

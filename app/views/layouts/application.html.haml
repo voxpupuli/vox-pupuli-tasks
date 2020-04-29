@@ -35,7 +35,7 @@
                 .text
                   %img.ui.avatar.image{src: current_user.avatar_url}
                   = current_user.username
-                  - if is_admin?
+                  - if admin?
                     = semantic_icon(:spy)
                 .menu
                   %a.item{href: '/sessions/destroy'} Log Out
