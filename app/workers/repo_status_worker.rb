@@ -87,48 +87,38 @@ class RepoStatusWorker
     data
   end
 
+  def refresh_managed_modules
+    data = Github.get_file('voxpupuli/modulesync_config', 'managed_modules.yml')
+    RepoStatusData.modulesync_repos = YAML.safe_load(data)
+  rescue StandardError
+    RepoStatusData.modulesync_repos = []
+  end
+
+  def refresh_plumbing_modules
+    data = Github.get_file('voxpupuli/plumbing', 'share/modules')
+    RepoStatusData.plumbing_modules = data.split("\n")
+  rescue StandardError
+    RepoStatusData.plumbing_modules = []
+  end
+
+  def refresh_forge_releases
+    PuppetForge.user_agent = 'VoxPupuli/Vox Pupuli Tasks'
+    vp = PuppetForge::User.find('puppet')
+    RepoStatusData.forge_releases = vp.modules.unpaginated.map(&:slug)
+  end
+
   # Categorizes repository based on their locally cached information
   # implements https://github.com/voxpupuli/modulesync_config/blob/master/bin/get_all_the_diffs
   # TODO: clean up stuff and make it less shitty
   def perform
     logger.info 'RepoStatusWorker: starting perform method'
-    repos = Repository.pluck(:name)
+
+    refresh_plumbing_modules
+    refresh_managed_modules
+
+    modulesync_repos = RepoStatusData.modulesync_repos
+
     data = OpenStruct.new
-
-    # get all managed modules from our modulesync_config
-    modulesync_repos = YAML.safe_load(open('https://raw.githubusercontent.com/voxpupuli/modulesync_config/master/managed_modules.yml').read)
-
-    # get all modules we have in plumbing
-    plumbing_modules = YAML.safe_load(
-      open('https://raw.githubusercontent.com/voxpupuli/plumbing/master/share/modules')
-    ).split(' ')
-
-    # get all modules that need to added to plumbing
-    data.missing_in_plumbing = repos.reject { |repo| plumbing_modules.include?(repo) }
-
-    # get all modules that we have on github but are currently not managed by modulesync_config
-    not_synced_repos = repos.reject { |repo| modulesync_repos.include?(repo) }
-
-    # get all modules that require a modulesync
-    data.really_need_an_initial_modulesync = not_synced_repos.reject do |repo|
-      LEGACY_OR_BROKEN_NOBODY_KNOWS.include?(repo)
-    end
-
-    # get all forge releases
-    PuppetForge.user_agent = 'VoxPupuli/Vox Pupuli Tasks'
-    vp = PuppetForge::User.find('puppet')
-    forge_releases = vp.modules.unpaginated.map(&:slug)
-
-    # # get all modules that are in modulesync_config but not released
-    # unreleased_modules = modulesync_repos.reject { |repo| forge_releases.include?(repo) }
-
-    # get all modules we own but are unreleased
-    really_unreleased_modules = repos.reject { |repo| forge_releases.include?(repo) }
-
-    # get all modules that really need an initial release
-    data.really_need_an_inital_release = really_unreleased_modules.reject do |repo|
-      LEGACY_OR_BROKEN_NOBODY_KNOWS.include?(repo)
-    end
 
     latest_release = Github.client.tags('voxpupuli/modulesync_config').first.name
 
@@ -141,11 +131,6 @@ class RepoStatusWorker
     metadatas = {}
 
     modulesync_repos.each do |repo|
-      begin
-        open("https://raw.githubusercontent.com/voxpupuli/#{repo}/master/REFERENCE.md")
-      rescue OpenURI::HTTPError
-        data.modules_without_reference_dot_md << repo
-      end
       begin
         response = open("https://raw.githubusercontent.com/voxpupuli/#{repo}/master/.msync.yml")
       rescue OpenURI::HTTPError

@@ -156,4 +156,22 @@ class Repository < ApplicationRecord
 
     pull_requests.count
   end
+
+  def update_todos
+    todos = {}
+
+    todos['missing_in_plumbing'] = RepoStatusData.plumbing_modules.include?(name)
+
+    todos['really_need_an_initial_modulesync'] = (RepoStatusData.modulesync_repos.include?(name) &&
+                                                  !LEGACY_OR_BROKEN_NOBODY_KNOWS.include?(name))
+
+    todos['really_need_an_initial_release'] = (RepoStatusData.forge_releases.include?(name) &&
+                                                  !LEGACY_OR_BROKEN_NOBODY_KNOWS.include?(name))
+
+    todos['modules_without_reference_dot_md'] = !!Github.get_file(full_name, 'REFERENCE.md')
+    todos['modules_that_were_added_but_never_synced'] = !!Github.get_file(full_name, '.msync.yml')
+    todos['modules_that_were_added_but_never_synced'] = !!Github.get_file(full_name, '.msync.yml')
+
+    todos
+  end
 end

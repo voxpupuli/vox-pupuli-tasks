@@ -15,6 +15,12 @@ class Github
     )
   end
 
+  def self.get_file(repo, path)
+    client.contents(repo, path: path, headers: { 'Accept': 'application/vnd.github.v3.raw' })
+  rescue Octokit::NotFound
+    false
+  end
+
   def self.jwt
     private_pem = Rails.application.credentials.github[Rails.env.to_sym][:private_key]
     private_key = OpenSSL::PKey::RSA.new(private_pem)
