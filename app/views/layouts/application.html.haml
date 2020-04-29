@@ -23,9 +23,10 @@
             = semantic_icon(:hand, :spock)
             About
           .right.menu
-            %a.item{href: '/sidekiq', target: '_blank'}
-              = semantic_icon(:cogs)
-              Background Jobs
+            - if admin?
+              %a.item{href: '/sidekiq', target: '_blank'}
+                = semantic_icon(:cogs)
+                Background Jobs
             - if current_user.blank?
               = link_to '/auth/github', class: 'item' do
                 = semantic_icon(:github)
