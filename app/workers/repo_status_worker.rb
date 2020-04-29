@@ -186,7 +186,7 @@ class RepoStatusWorker
     data.need_another_sync = []
     versions.each do |repo|
       # index 0 is the module name, index 1 is the used modulesync_config version
-      if Gem::Version.new(latest_release) >= Gem::Version.new(repo[1])
+      if Gem::Version.new(latest_release) > Gem::Version.new(repo[1])
         data.need_another_sync << repo[0]
       end
     end
