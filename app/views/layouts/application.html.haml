@@ -15,31 +15,30 @@
           .ui.avatar.image
             %img.logo{src: 'https://voxpupuli.org/static/images/8bit-vox.png'}
           Vox Pupuli Tasks
-        - if current_user
-          %a.item{href: '/repositories'}
-            = semantic_icon(:list)
-            Repositories
-          %a.item{href: '/about'}
-            = semantic_icon(:hand, :spock)
-            About
-          .right.menu
-            - if admin?
-              %a.item{href: '/sidekiq', target: '_blank'}
-                = semantic_icon(:cogs)
-                Background Jobs
-            - if current_user.blank?
-              = link_to '/auth/github', class: 'item' do
-                = semantic_icon(:github)
-                Log in
-            - else
-              .ui.item.dropdown
-                .text
-                  %img.ui.avatar.image{src: current_user.avatar_url}
-                  = current_user.username
-                  - if admin?
-                    = semantic_icon(:spy)
-                .menu
-                  %a.item{href: '/sessions/destroy'} Log Out
-                = semantic_icon(:dropdown)
+        %a.item{href: '/repositories'}
+          = semantic_icon(:list)
+          Repositories
+        %a.item{href: '/about'}
+          = semantic_icon(:hand, :spock)
+          About
+        .right.menu
+          - if admin?
+            %a.item{href: '/sidekiq', target: '_blank'}
+              = semantic_icon(:cogs)
+              Background Jobs
+          - if current_user.blank?
+            = link_to '/auth/github', class: 'item' do
+              = semantic_icon(:github)
+              Log in
+          - else
+            .ui.item.dropdown
+              .text
+                %img.ui.avatar.image{src: current_user.avatar_url}
+                = current_user.username
+                - if admin?
+                  = semantic_icon(:spy)
+              .menu
+                %a.item{href: '/sessions/destroy'} Log Out
+              = semantic_icon(:dropdown)
     .ui.container{style: 'padding-top: 58px;'}
       = yield
