@@ -14,14 +14,14 @@ legacy_or_broken_nobody_knows:
   - puppet-mode
 
 # define some versions that we want to match against
-puppet_support_range: '>= 5.5.8 < 7.0.0'
+puppet_support_range: ">= 5.5.8 < 7.0.0"
 
 # Updates here probably also need an update here: config/locales/*.yml
 support_ranges:
   ubuntu:
-    - '16.04'
-    - '18.04'
-    - '20.04'
+    - "16.04"
+    - "18.04"
+    - "20.04"
   debian:
     - 8
     - 9
@@ -43,105 +43,109 @@ labels:
   - name: backwards-incompatible
     color: eb6420
     aliases:
-    - backwards-incompatible
-    - breaking
-    - breaking-change
+      - backwards-incompatible
+      - breaking
+      - breaking-change
   - name: beginner-friendly
     color: d4c5f9
     aliases:
-    - beginner
-    - beginner friendly
+      - beginner
+      - beginner friendly
   - name: bug
     description: "Something isn't working"
     color: 0e8a16
     aliases:
-    - bug
-    - bugfix
+      - bug
+      - bugfix
   - name: docs
     description: "Improvements or additions to documentation"
     color: 006b75
     aliases:
-    - docs
-    - documentation
+      - docs
+      - documentation
   - name: duplicate
     description: "This issue or pull request already exists"
     color: cccccc
     aliases:
-    - duplicate
+      - duplicate
   - name: enhancement
     description: "New feature or request"
     color: 0052cc
     aliases:
-    - enhancement
-    - feature
+      - enhancement
+      - feature
   - name: modulesync
     color: fbca04
     aliases:
-    - msync
+      - msync
   - name: needs-docs
     color: 006b75
     aliases:
-    - needs-docs
+      - needs-docs
   - name: needs-feedback
     description: "Further information is requested"
     color: 5319e7
     aliases:
-    - feedback
-    - feedback-needed
-    - needs-feedback
-    - question
+      - feedback
+      - feedback-needed
+      - needs-feedback
+      - question
   - name: needs-help
     description: "Extra attention is needed"
     color: d4c5f9
     aliases:
-    - help
-    - help wanted
-    - needs-help
-    - help-wanted
+      - help
+      - help wanted
+      - needs-help
+      - help-wanted
   - name: needs-rebase
     color: 207de5
     aliases:
-    - needs-rebase
-    - rebaseneeded
-    - rebase
+      - needs-rebase
+      - rebaseneeded
+      - rebase
   - name: needs-squash
     color: c2e0c6
     aliases:
-    - needs-squash
-    - squash
+      - needs-squash
+      - squash
   - name: needs-tests
     color: f7c6c7
     aliases:
-    - needs-tests
-    - tests
+      - needs-tests
+      - tests
   - name: needs-work
     description: "not ready to merge just yet"
     color: fbca04
     aliases:
-    - in progress
-    - needs-work
+      - in progress
+      - needs-work
   - name: tests-fail
     color: e11d21
     aliases:
-    - tests-fail
+      - tests-fail
   - name: wont-fix
     description: "This will not be worked on"
-    color: '000000'
+    color: "000000"
     aliases:
-    - wontfix
-    - wont-fix
-    - won't-fix
+      - wontfix
+      - wont-fix
+      - won't-fix
   - name: skip-changelog
     color: 343e4c
     aliases:
-    - changelog
+      - changelog
   - name: release-summary
     color: bfdadc
     aliases:
-    - release-summary
+      - release-summary
   - name: "good first issue"
     description: "Good for newcomers"
     color: 7057ff
   - name: invalid
     description: "This doesn't seem right"
     color: e4e669
+
+teams_with_admin_access:
+  - org-login: voxpupuli
+    team-slug: project-maintainers
