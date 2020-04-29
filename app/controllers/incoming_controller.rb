@@ -22,9 +22,12 @@ class IncomingController < ApplicationController
     # TODO: verify the payload
     # https://github.com/travis-ci/webhook-signature-verifier/blob/master/lib/webhook-signature-verifier.rb#L40
     # https://docs.travis-ci.com/user/notifications/#verifying-webhook-requests
+    # https://stackoverflow.com/a/2775086
     payload = request.body.read
-    useable_body = JSON.parse(payload).to_h
-    TravisEvent.new(useable_body)
+    parsed_payload = Rack::Utils.parse_nested_query(payload)
+    # the query param that contains everything is named payload
+    useable_data = JSON.parse(parsed_payload['payload']).to_h
+    TravisEvent.new(useable_data)
   end
 
   private
