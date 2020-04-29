@@ -23,7 +23,7 @@ Rails.application.routes.draw do
 
   post 'incoming/travis', to: 'incoming#travis'
 
-  constraints ->(req) { req.session['user_id'] } do
+  constraints ->(req) { req.session['admin'] } do
     mount Sidekiq::Web => '/sidekiq'
   end
 end
