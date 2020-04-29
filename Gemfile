@@ -20,6 +20,8 @@ gem 'haml-rails'
 gem 'react-rails'
 gem 'redcarpet'
 
+gem "rails-settings-cached", "~> 2.0"
+
 gem 'sidekiq', '~> 5.0'
 gem 'sidekiq-scheduler'
 
