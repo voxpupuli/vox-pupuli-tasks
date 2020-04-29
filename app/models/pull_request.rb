@@ -110,6 +110,12 @@ class PullRequest < ApplicationRecord
     update(eligible_for_comment: false)
   end
 
+  ##
+  # mock the method eligible_for_comment. We call it and check if it's nil
+  # in that case, we return true. That means you can create a comment there
+  # if it's not true, we call it again and return the value.
+  # eligible_for_comment from the above object is a getter/setter for the
+  # attribute. see db/schema.rb for details
   def eligible_for_comment
     return true if super.nil?
 
@@ -127,8 +133,8 @@ class PullRequest < ApplicationRecord
   # We currently don't care about them
 
   def validate(saved_changes)
-    # Don't run through the validaten, if only the eligable_for_comment attribute got updated
-    return if saved_changes.keys.sort == %w[updated_at eligable_for_comment].sort && !mergeable.nil?
+    # Don't run through the validaten, if only the eligible_for_comment attribute got updated
+    return if saved_changes.keys.sort == %w[updated_at eligible_for_comment].sort && !mergeable.nil?
 
     # if the pull request is now closed, dont attach/remove labels/comments
     return if closed?
@@ -141,7 +147,7 @@ class PullRequest < ApplicationRecord
       repository.ensure_label_exists(label)
 
       ##
-      # We only add a comment if we addded a label. If the label already is present
+      # We only add a comment if we added a label. If the label already is present
       # we also already added the comment. So no need for a new one.
       add_comment(I18n.t('comment.needs_rebase', author: author)) if ensure_label_is_attached(label)
     elsif mergeable.nil?
