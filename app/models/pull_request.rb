@@ -141,7 +141,7 @@ class PullRequest < ApplicationRecord
       repository.ensure_label_exists(label)
 
       ##
-      # We only add a comment if we addded a label. If the label already is present
+      # We only add a comment if we added a label. If the label already is present
       # we also already added the comment. So no need for a new one.
       add_comment(I18n.t('comment.needs_rebase', author: author)) if ensure_label_is_attached(label)
     elsif mergeable.nil?
