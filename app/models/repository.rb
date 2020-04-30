@@ -160,45 +160,45 @@ class Repository < ApplicationRecord
   def update_todos
     todos = {}
 
-    todos['missing_in_plumbing'] = RepoStatusData.plumbing_modules.include?(name)
+    todos['missing_in_plumbing'] = !RepoStatusData.plumbing_modules.include?(name)
 
-    todos['really_need_an_initial_modulesync'] = (RepoStatusData.modulesync_repos.include?(name) &&
+    todos['really_need_an_initial_modulesync'] = (!RepoStatusData.modulesync_repos.include?(name) &&
                                                   !LEGACY_OR_BROKEN_NOBODY_KNOWS.include?(name))
 
-    todos['really_need_an_initial_release'] = (RepoStatusData.forge_releases.include?(name) &&
+    todos['really_need_an_initial_release'] = (!RepoStatusData.forge_releases.include?(name) &&
                                                   !LEGACY_OR_BROKEN_NOBODY_KNOWS.include?(name))
 
-    todos['modules_without_reference_dot_md'] = !!Github.get_file(full_name, 'REFERENCE.md')
-    todos['modules_that_were_added_but_never_synced'] = !!Github.get_file(full_name, '.msync.yml')
-    todos['modules_that_were_added_but_never_synced'] = !!Github.get_file(full_name, '.msync.yml')
+    todos['modules_without_reference_dot_md'] = !Github.get_file(full_name, 'REFERENCE.md')
+    todos['modules_that_were_added_but_never_synced'] = !Github.get_file(full_name, '.msync.yml')
 
-    if RepoStatusData.modulesync_repos.include?(name)
-      msync_file = Github.get_file(full_name, '.msync.yml')
-      if msync_file
-        msync_version = YAML.safe_load(msync_file)['modulesync_config_version']
+    todos['missing_in_modulesync_repo '] = !RepoStatusData.modulesync_repos.include?(name)
+    msync_file = Github.get_file(full_name, '.msync.yml')
+    if msync_file
+      msync_version = YAML.safe_load(msync_file)['modulesync_config_version']
 
-        todos['needs_another_sync'] = (
-          Gem::Version.new(RepoStatusData.latest_modulesync_version) >
-            Gem::Version.new(msync_version)
-        )
-      else
-        todos['never_synced'] = false
-      end
-
-      todos['missing_secrets'] = !!Github.get_file(full_name, '.sync.yml')
-
-      metadata = Github.get_file(full_name, 'metadata.json')
-      if metadata
-        parse_metadata(Oj.load(metadata))
-      else
-        todos['broken_metadata'] = true
-      end
+      todos['needs_another_sync'] = (
+        Gem::Version.new(RepoStatusData.latest_modulesync_version) >
+          Gem::Version.new(msync_version)
+      )
+    else
+      todos['never_synced'] = false
     end
 
-    todos
+    todos['missing_secrets'] = !Github.get_file(full_name, '.sync.yml')
+
+    metadata = Github.get_file(full_name, 'metadata.json')
+    if metadata
+      parse_metadata(Oj.load(metadata), todos)
+    else
+      todos['broken_metadata'] = true
+    end
+
+    update(todos: todos)
+
+    true
   end
 
-  def parse_metadata(metadata)
+  def parse_metadata(metadata, todos)
     begin
       version_requirement = metadata['requirements'][0]['version_requirement']
 
