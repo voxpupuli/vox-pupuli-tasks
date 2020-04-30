@@ -2,15 +2,17 @@
 # we removed the following modules from our modulesync_config / hide it because they are not
 # Puppet modules but match the puppet- pattern
 # The modules in the list are broken, unfinished or got migrated
-# (yes, that really happens rom time to time)
+# (yes, that really happens from time to time)
 # ToDo: extend this list with repos that are archived on github
 # ToDo: Archive repos that we migrate away
 legacy_or_broken_nobody_knows:
   - puppet-bacula
   - puppet-nagios_providers
   - puppet-iis
+  # Actually a gem
   - puppet-syntax
   - puppet-blacksmith
+  # Actually an emacs plugin
   - puppet-mode
 
 # define some versions that we want to match against
@@ -34,9 +36,9 @@ support_ranges:
     - 11
     - 12
   fedora:
-    - 29
     - 30
     - 31
+    - 32
 
 # labels that we would like to have on all repositories
 labels:
