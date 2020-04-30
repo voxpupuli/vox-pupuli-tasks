@@ -16,6 +16,8 @@ class Repository < ApplicationRecord
            foreign_key: :gh_repository_id,
            inverse_of: :repository)
 
+  has_many :repository_statuses, dependent: :destroy
+
   ##
   #  Checks if the given Repository name is in our application scope (a module)
 
