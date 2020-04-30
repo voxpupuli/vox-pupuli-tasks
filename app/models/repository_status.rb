@@ -37,7 +37,7 @@ class RepositoryStatus < ApplicationRecord
           Gem::Version.new(msync_version)
       )
     else
-      self.never_synced = false
+      self.never_synced = true
     end
 
     self.missing_secrets = !Github.get_file(full_name, '.sync.yml')
@@ -77,12 +77,12 @@ class RepositoryStatus < ApplicationRecord
         supported_versions = os['operatingsystemrelease'].all_i
       end
 
-      self.send(
+      send(
         "supports_eol_#{os_type.downcase}=",
         supported_versions.min < support_range.min
       )
 
-      self.send(
+      send(
         "doesnt_support_latest_#{os_type.downcase}=",
         supported_versions.max < support_range.max
       )
