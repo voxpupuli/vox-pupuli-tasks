@@ -96,11 +96,16 @@ class PullRequest < ApplicationRecord
   ##
   #  Add a comment with the given text
   def add_comment(text)
+    # TODO: why can request be nil and what is request
     req = begin
             request
           rescue StandardError
             nil
           end
+    # Only attach a comment if eligible_for_comment is true (The first iteration
+    # after the mergeable state changed to false)
+    return unless eligible_for_comment
+
     Raven.capture_message('Added a comment',
                           extra: { text: text,
                                    repo: repository.github_url,
