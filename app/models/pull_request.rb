@@ -153,9 +153,7 @@ class PullRequest < ApplicationRecord
     elsif mergeable.nil?
       UpdateMergeableWorker.perform_in(1.minute.from_now,
                                        repository.name,
-                                       number,
-                                       id,
-                                       saved_changes)
+                                       number)
     end
   end
 
