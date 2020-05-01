@@ -19,17 +19,31 @@ class PullRequest < ApplicationRecord
 
   def self.update_with_github(gh_pull_request)
     PullRequest.where(github_id: gh_pull_request['id']).first_or_initialize.tap do |pull_request|
+      # get current status. GitHub API does not expose it as an atttribute of a PR
+      # However, https://github.com/search does
+      repo_id = gh_pull_request['base']['repo']['id']
+      status = begin
+                statuses = Github.client.combined_status(repo_id, gh_pull_request[:head][:sha])
+                statuses[:state]
+               rescue StandardError => e
+                 Raven.capture_message('validate status', extra: {
+                                         error: e.inspect,
+                                         github_data: gh_pull_request
+                                       })
+                 nil
+              end
       pull_request.number           = gh_pull_request['number']
       pull_request.state            = gh_pull_request['state']
       pull_request.title            = gh_pull_request['title']
       pull_request.body             = gh_pull_request['body']
       pull_request.gh_created_at    = gh_pull_request['created_at']
       pull_request.gh_updated_at    = gh_pull_request['updated_at']
-      pull_request.gh_repository_id = gh_pull_request['base']['repo']['id']
+      pull_request.gh_repository_id = repo_id
       pull_request.closed_at        = gh_pull_request['closed_at']
       pull_request.merged_at        = gh_pull_request['merged_at']
       pull_request.mergeable        = gh_pull_request['mergeable']
       pull_request.author           = gh_pull_request['user']['login']
+      pull_request.status           = status
       pull_request.save
 
       gh_pull_request['labels'].each do |label|
@@ -188,14 +202,6 @@ class PullRequest < ApplicationRecord
 
   def validate_status
     label = Label.tests_fail
-    # get current status
-    state = begin
-              statuses = Github.client.combined_status(gh_repository_id, github[:head][:sha])
-              statuses[:state]
-            rescue StandardError => e
-              Raven.capture_message('validate status', extra: { error: e.inspect })
-              nil
-            end
 
     case state
     when 'failure'
