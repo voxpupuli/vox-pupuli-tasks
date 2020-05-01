@@ -1,4 +1,5 @@
+# frozen_string_literal: true
+
 class MissingInPlumbing < RepositoryCheck
-  def perform(repository)
-  end
+  def perform(repository); end
 end
