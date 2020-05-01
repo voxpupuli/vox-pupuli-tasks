@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class RepositoryCheck
+class RepositoryCheckBase
   def self.init
     REPOSITORY_STATUS_CHECKS << name
   end

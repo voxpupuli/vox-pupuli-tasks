@@ -14,4 +14,4 @@ FEDORA_SUPPORT_RANGE  = VOXPUPULI_CONFIG.dig('support_ranges', 'fedora')
 
 REPOSITORY_STATUS_CHECKS = []
 
-RepositoryCheck.load_checks
+RepositoryCheckBase.load_checks
