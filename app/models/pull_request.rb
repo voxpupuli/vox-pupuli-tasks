@@ -167,8 +167,8 @@ class PullRequest < ApplicationRecord
     # check merge status and do work if required
     validate_mergeable
 
-    # check CI status and wo work if required
-    validate_status
+    # check CI status and do work if required
+    validate_status(saved_changes)
   end
 
   private
@@ -200,12 +200,17 @@ class PullRequest < ApplicationRecord
     end
   end
 
-  def validate_status
+  def validate_status(saved_changes)
     label = Label.tests_fail
 
-    case state
+    case status
     when 'failure'
+      # if CI failed, add a label to repo
       repository.ensure_label_exists(label)
+      # if CI failed AND was green, add a new comment
+      # TODO: Check if it was `success` previously / Check what it was before it was `pending`
+      return unless saved_changes.keys.sort.include?('status')
+
       add_comment(I18n.t('comment.tests_fail', author: author)) if ensure_label_is_attached(label)
     when 'success'
       ensure_label_is_detached(label)
