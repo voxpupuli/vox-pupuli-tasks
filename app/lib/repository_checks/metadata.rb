@@ -1,18 +1,30 @@
 # frozen_string_literal: true
 
 class Metadata < RepositoryCheckBase
-  def perform(repo)
-    metadata = Github.get_file(full_name, 'metadata.json')
+  attr_reader :repo, :status
 
-    repo.broken_metadata = true && return unless metadata
+  def perform(repo, status)
+    @repo = repo
+    @status = status
+
+    metadata = Github.get_file(repo.full_name, 'metadata.json')
+
+    if metadata
+      status.broken_metadata = false
+    else
+      status.broken_metadata = true
+      return
+    end
 
     metadata = Oj.load(metadata)
 
     check_puppet_version(metadata)
 
     if metadata['operatingsystem_support'].nil?
-      repo.without_operatingsystems_support = true
+      status.without_operatingsystems_support = true
       return
+    else
+      status.without_operatingsystems_support = false
     end
 
     check_operating_system_support(metadata)
@@ -30,12 +42,12 @@ class Metadata < RepositoryCheckBase
         supported_versions = os['operatingsystemrelease'].all_i
       end
 
-      repo.send(
+      status.send(
         "supports_eol_#{os_type.downcase}=",
         supported_versions.min < support_range.min
       )
 
-      repo.send(
+      status.send(
         "doesnt_support_latest_#{os_type.downcase}=",
         supported_versions.max < support_range.max
       )
@@ -47,8 +59,9 @@ class Metadata < RepositoryCheckBase
   def check_puppet_version(metadata)
     version_requirement = metadata['requirements'][0]['version_requirement']
 
-    reop.incorrect_puppet_version_range = PUPPET_SUPPORT_RANGE != version_requirement
+    status.incorrect_puppet_version_range = PUPPET_SUPPORT_RANGE != version_requirement
+    status.without_puppet_version_range = false
   rescue NoMethodError
-    repo.without_puppet_version_range = true
+    status.without_puppet_version_range = true
   end
 end

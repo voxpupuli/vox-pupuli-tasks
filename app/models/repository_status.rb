@@ -15,7 +15,7 @@ class RepositoryStatus < ApplicationRecord
 
   def perform_checks
     REPOSITORY_STATUS_CHECKS.each do |check|
-      check.constantize.perform(repository)
+      check.constantize.new.perform(repository, self)
     end
   end
 end
