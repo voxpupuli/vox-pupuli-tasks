@@ -43,6 +43,12 @@ class PullRequest < ApplicationRecord
   end
 
   ##
+  # helper method to create a github object for the pullrequest
+  def github
+    @github ||= Github.client.pull_request(gh_repository_id, number)
+  end
+
+  ##
   # Shortcut to check if the PullRequest is closed
 
   def closed?
@@ -144,6 +150,24 @@ class PullRequest < ApplicationRecord
     # if the pull request is now closed, dont attach/remove labels/comments
     return if closed?
 
+    # check merge status and do work if required
+    validate_mergeable
+
+    # check CI status and wo work if required
+    validate_status
+  end
+
+  private
+
+  ##
+  #  Since we want to be a fancy responsive application we to all the validation
+  #  stuff which might result in some new querys and api requests asyncronously.
+
+  def queue_validation
+    ValidatePullRequestWorker.perform_async(id, saved_changes) if saved_changes? || mergeable.nil?
+  end
+
+  def validate_mergeable
     label = Label.needs_rebase
     if mergeable == true
       ensure_label_is_detached(label)
@@ -162,13 +186,31 @@ class PullRequest < ApplicationRecord
     end
   end
 
-  private
+  def validate_status
+    label = Label.tests_fail
+    # get current status
+    state = begin
+              statuses = Github.client.combined_status(gh_repository_id, github[:head][:sha])
+              statuses[:state]
+            rescue StandardError => e
+              Raven.capture_message('validate status', extra: { error: e.inspect })
+              nil
+            end
 
-  ##
-  #  Since we want to be a fancy responsive application we to all the validation
-  #  stuff which might result in some new querys and api requests asyncronously.
-
-  def queue_validation
-    ValidatePullRequestWorker.perform_async(id, saved_changes) if saved_changes? || mergeable.nil?
+    case state
+    when 'failure'
+      repository.ensure_label_exists(label)
+      add_comment(I18n.t('comment.tests_fail', author: author)) if ensure_label_is_attached(label)
+    when 'success'
+      ensure_label_is_detached(label)
+    when 'pending'
+      # recheck in 10min? do get get an event if the status changes?
+      true
+    else
+      Raven.capture_message('Unknown PR state /o\\',
+                            extra: { state: state,
+                                     repo: repository.github_url,
+                                     title: title })
+    end
   end
 end
