@@ -19,17 +19,31 @@ class PullRequest < ApplicationRecord
 
   def self.update_with_github(gh_pull_request)
     PullRequest.where(github_id: gh_pull_request['id']).first_or_initialize.tap do |pull_request|
+      # get current status. GitHub API does not expose it as an atttribute of a PR
+      # However, https://github.com/search does
+      repo_id = gh_pull_request['base']['repo']['id']
+      status = begin
+                statuses = Github.client.combined_status(repo_id, gh_pull_request[:head][:sha])
+                statuses[:state]
+               rescue StandardError => e
+                 Raven.capture_message('validate status', extra: {
+                                         error: e.inspect,
+                                         github_data: gh_pull_request
+                                       })
+                 nil
+              end
       pull_request.number           = gh_pull_request['number']
       pull_request.state            = gh_pull_request['state']
       pull_request.title            = gh_pull_request['title']
       pull_request.body             = gh_pull_request['body']
       pull_request.gh_created_at    = gh_pull_request['created_at']
       pull_request.gh_updated_at    = gh_pull_request['updated_at']
-      pull_request.gh_repository_id = gh_pull_request['base']['repo']['id']
+      pull_request.gh_repository_id = repo_id
       pull_request.closed_at        = gh_pull_request['closed_at']
       pull_request.merged_at        = gh_pull_request['merged_at']
       pull_request.mergeable        = gh_pull_request['mergeable']
       pull_request.author           = gh_pull_request['user']['login']
+      pull_request.status           = status
       pull_request.save
 
       gh_pull_request['labels'].each do |label|
@@ -40,6 +54,12 @@ class PullRequest < ApplicationRecord
         pull_request.labels << db_label
       end
     end
+  end
+
+  ##
+  # helper method to create a github object for the pullrequest
+  def github
+    @github ||= Github.client.pull_request(gh_repository_id, number)
   end
 
   ##
@@ -96,11 +116,16 @@ class PullRequest < ApplicationRecord
   ##
   #  Add a comment with the given text
   def add_comment(text)
+    # TODO: why can request be nil and what is request
     req = begin
             request
           rescue StandardError
             nil
           end
+    # Only attach a comment if eligible_for_comment is true (The first iteration
+    # after the mergeable state changed to false)
+    return unless eligible_for_comment
+
     Raven.capture_message('Added a comment',
                           extra: { text: text,
                                    repo: repository.github_url,
@@ -139,6 +164,24 @@ class PullRequest < ApplicationRecord
     # if the pull request is now closed, dont attach/remove labels/comments
     return if closed?
 
+    # check merge status and do work if required
+    validate_mergeable
+
+    # check CI status and do work if required
+    validate_status(saved_changes)
+  end
+
+  private
+
+  ##
+  #  Since we want to be a fancy responsive application we to all the validation
+  #  stuff which might result in some new querys and api requests asyncronously.
+
+  def queue_validation
+    ValidatePullRequestWorker.perform_async(id, saved_changes) if saved_changes? || mergeable.nil?
+  end
+
+  def validate_mergeable
     label = Label.needs_rebase
     if mergeable == true
       ensure_label_is_detached(label)
@@ -153,19 +196,32 @@ class PullRequest < ApplicationRecord
     elsif mergeable.nil?
       UpdateMergeableWorker.perform_in(1.minute.from_now,
                                        repository.name,
-                                       number,
-                                       id,
-                                       saved_changes)
+                                       number)
     end
   end
 
-  private
+  def validate_status(saved_changes)
+    label = Label.tests_fail
 
-  ##
-  #  Since we want to be a fancy responsive application we to all the validation
-  #  stuff which might result in some new querys and api requests asyncronously.
+    case status
+    when 'failure'
+      # if CI failed, add a label to repo
+      repository.ensure_label_exists(label)
+      # if CI failed AND was green, add a new comment
+      # TODO: Check if it was `success` previously / Check what it was before it was `pending`
+      return unless saved_changes.keys.sort.include?('status')
 
-  def queue_validation
-    ValidatePullRequestWorker.perform_async(id, saved_changes) if saved_changes? || mergeable.nil?
+      add_comment(I18n.t('comment.tests_fail', author: author)) if ensure_label_is_attached(label)
+    when 'success'
+      ensure_label_is_detached(label)
+    when 'pending'
+      # recheck in 10min? do get get an event if the status changes?
+      true
+    else
+      Raven.capture_message('Unknown PR state /o\\',
+                            extra: { state: state,
+                                     repo: repository.github_url,
+                                     title: title })
+    end
   end
 end
