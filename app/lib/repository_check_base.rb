@@ -28,7 +28,7 @@ class RepositoryCheckBase
   end
 
   def submit_result(name, result)
-    checks[name.to_s] = result
-    save
+    status.checks[name.to_s] = result
+    status.save
   end
 end

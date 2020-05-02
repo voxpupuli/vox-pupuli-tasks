@@ -2,6 +2,6 @@
 
 class MissingInPlumbing < RepositoryCheckBase
   def perform
-    submit_result :in_plumbing = RepoStatusData.plumbing_modules.include?(repo.name)
+    submit_result :in_plumbing, RepoStatusData.plumbing_modules.include?(repo.name)
   end
 end

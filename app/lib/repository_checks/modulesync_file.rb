@@ -8,7 +8,7 @@ class ModulesyncFile < RepositoryCheckBase
       submit_result :synced, true
       msync_version = YAML.safe_load(msync_file)['modulesync_config_version']
 
-      submit_result :latest_modulesync = (
+      submit_result :latest_modulesync, (
         Gem::Version.new(RepoStatusData.latest_modulesync_version) ==
           Gem::Version.new(msync_version)
       )
