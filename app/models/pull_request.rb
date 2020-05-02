@@ -123,9 +123,9 @@ class PullRequest < ApplicationRecord
           rescue StandardError
             nil
           end
-    # Only attach a comment if eligible_for_comment is true (The first iteration
+    # Only attach a comment if eligible_for_merge_comment is true (The first iteration
     # after the mergeable state changed to false)
-    return unless eligible_for_comment
+    return unless eligible_for_merge_comment
 
     Raven.capture_message('Added a comment',
                           extra: { text: text,
@@ -133,7 +133,7 @@ class PullRequest < ApplicationRecord
                                    title: title,
                                    request: req })
     Github.client.add_comment(gh_repository_id, number, text)
-    update(eligible_for_comment: false)
+    update(eligible_for_merge_comment: false)
   end
 
   ##
@@ -147,8 +147,8 @@ class PullRequest < ApplicationRecord
   # We currently don't care about them
 
   def validate(saved_changes)
-    # Don't run through the validaten, if only the eligible_for_comment attribute got updated
-    return if saved_changes.keys.sort == %w[updated_at eligible_for_comment].sort && !mergeable.nil?
+    # Don't run through the validaten, if only the eligible_for_merge_comment attribute got updated
+    return if saved_changes.keys.sort == %w[updated_at eligible_for_merge_comment].sort && !mergeable.nil?
 
     # Don't run through validation if it's a draft
     return if draft
@@ -177,7 +177,7 @@ class PullRequest < ApplicationRecord
     label = Label.needs_rebase
     if mergeable == true
       ensure_label_is_detached(label)
-      update(eligible_for_comment: true)
+      update(eligible_for_merge_comment: true)
     elsif mergeable == false
       repository.ensure_label_exists(label)
 
