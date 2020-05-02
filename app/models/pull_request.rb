@@ -19,17 +19,31 @@ class PullRequest < ApplicationRecord
 
   def self.update_with_github(gh_pull_request)
     PullRequest.where(github_id: gh_pull_request['id']).first_or_initialize.tap do |pull_request|
+      # get current status. GitHub API does not expose it as an atttribute of a PR
+      # However, https://github.com/search does
+      repo_id = gh_pull_request['base']['repo']['id']
+      status = begin
+                statuses = Github.client.combined_status(repo_id, gh_pull_request[:head][:sha])
+                statuses[:state]
+               rescue StandardError => e
+                 Raven.capture_message('validate status', extra: {
+                                         error: e.inspect,
+                                         github_data: gh_pull_request
+                                       })
+                 nil
+              end
       pull_request.number           = gh_pull_request['number']
       pull_request.state            = gh_pull_request['state']
       pull_request.title            = gh_pull_request['title']
       pull_request.body             = gh_pull_request['body']
       pull_request.gh_created_at    = gh_pull_request['created_at']
       pull_request.gh_updated_at    = gh_pull_request['updated_at']
-      pull_request.gh_repository_id = gh_pull_request['base']['repo']['id']
+      pull_request.gh_repository_id = repo_id
       pull_request.closed_at        = gh_pull_request['closed_at']
       pull_request.merged_at        = gh_pull_request['merged_at']
       pull_request.mergeable        = gh_pull_request['mergeable']
       pull_request.author           = gh_pull_request['user']['login']
+      pull_request.status           = status
       pull_request.save
 
       gh_pull_request['labels'].each do |label|
@@ -153,8 +167,8 @@ class PullRequest < ApplicationRecord
     # check merge status and do work if required
     validate_mergeable
 
-    # check CI status and wo work if required
-    validate_status
+    # check CI status and do work if required
+    validate_status(saved_changes)
   end
 
   private
@@ -186,20 +200,17 @@ class PullRequest < ApplicationRecord
     end
   end
 
-  def validate_status
+  def validate_status(saved_changes)
     label = Label.tests_fail
-    # get current status
-    state = begin
-              statuses = Github.client.combined_status(gh_repository_id, github[:head][:sha])
-              statuses[:state]
-            rescue StandardError => e
-              Raven.capture_message('validate status', extra: { error: e.inspect })
-              nil
-            end
 
-    case state
+    case status
     when 'failure'
+      # if CI failed, add a label to repo
       repository.ensure_label_exists(label)
+      # if CI failed AND was green, add a new comment
+      # TODO: Check if it was `success` previously / Check what it was before it was `pending`
+      return unless saved_changes.keys.sort.include?('status')
+
       add_comment(I18n.t('comment.tests_fail', author: author)) if ensure_label_is_attached(label)
     when 'success'
       ensure_label_is_detached(label)
