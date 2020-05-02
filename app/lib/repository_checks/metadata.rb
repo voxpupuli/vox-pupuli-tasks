@@ -29,13 +29,8 @@ class Metadata < RepositoryCheckBase
     metadata['operatingsystem_support'].each do |os|
       os_type = os['operatingsystem']
 
-      if os_type == 'Ubuntu'
-        support_range = "#{os_type.upcase}_SUPPORT_RANGE".constantize
-        supported_versions = os['operatingsystemrelease']
-      else
-        support_range = "#{os_type.upcase}_SUPPORT_RANGE".constantize.all_i
-        supported_versions = os['operatingsystemrelease'].all_i
-      end
+      supported_versions = calculate_supported_versions(os_type, os)
+      support_range = calculate_support_range(os_type)
 
       submit_result("supports_only_current_#{os_type.downcase}",
                     supported_versions.min > support_range.min)
@@ -43,6 +38,22 @@ class Metadata < RepositoryCheckBase
                     supported_versions.max == support_range.max)
     rescue NameError
       next
+    end
+  end
+
+  def calculate_support_range(os_type)
+    if os_type == 'Ubuntu'
+      "#{os_type.upcase}_SUPPORT_RANGE".constantize
+    else
+      "#{os_type.upcase}_SUPPORT_RANGE".constantize.all_i
+    end
+  end
+
+  def calculate_supported_versions(os_type, os)
+    if os_type == 'Ubuntu'
+      os['operatingsystemrelease']
+    else
+      os['operatingsystemrelease'].all_i
     end
   end
 
