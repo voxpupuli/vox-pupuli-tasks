@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_30_222103) do
+ActiveRecord::Schema.define(version: 2020_05_01_212046) do
+
   create_table "labels", force: :cascade do |t|
     t.string "name"
     t.string "color"
@@ -43,7 +44,7 @@ ActiveRecord::Schema.define(version: 2020_04_30_222103) do
     t.integer "github_id"
     t.string "author"
     t.boolean "eligible_for_comment"
-    t.string "status", :default => "success"
+    t.string "status", default: "success"
     t.index ["repository_id"], name: "index_pull_requests_on_repository_id"
   end
 
