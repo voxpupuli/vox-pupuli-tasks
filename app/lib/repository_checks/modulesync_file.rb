@@ -1,19 +1,19 @@
 # frozen_string_literal: true
 
 class ModulesyncFile < RepositoryCheckBase
-  def perform(repo, status)
+  def perform
     msync_file = Github.get_file(repo.full_name, '.msync.yml')
 
     if msync_file
-      status.never_synced = false
+      submit_result :synced, true
       msync_version = YAML.safe_load(msync_file)['modulesync_config_version']
 
-      status.needs_another_sync = (
-        Gem::Version.new(RepoStatusData.latest_modulesync_version) >
+      submit_result :latest_modulesync = (
+        Gem::Version.new(RepoStatusData.latest_modulesync_version) ==
           Gem::Version.new(msync_version)
       )
     else
-      status.never_synced = true
+      submit_result :synced, false
     end
   end
 end

@@ -21,6 +21,10 @@ class Github
     false
   end
 
+  def self.check_file(repo, path)
+    !!get_file(repo, path)
+  end
+
   def self.jwt
     private_pem = Rails.application.credentials.github[Rails.env.to_sym][:private_key]
     private_key = OpenSSL::PKey::RSA.new(private_pem)

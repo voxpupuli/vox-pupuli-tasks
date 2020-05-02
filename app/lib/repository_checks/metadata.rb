@@ -1,18 +1,13 @@
 # frozen_string_literal: true
 
 class Metadata < RepositoryCheckBase
-  attr_reader :repo, :status
-
-  def perform(repo, status)
-    @repo = repo
-    @status = status
-
+  def perform
     metadata = Github.get_file(repo.full_name, 'metadata.json')
 
     if metadata
-      status.broken_metadata = false
+      submit_result :metadata_valid, true
     else
-      status.broken_metadata = true
+      submit_result :metadata_valid, false
       return
     end
 
@@ -20,11 +15,11 @@ class Metadata < RepositoryCheckBase
 
     check_puppet_version(metadata)
 
-    if metadata['operatingsystem_support'].nil?
-      status.without_operatingsystems_support = true
-      return
+    if metadata['operatingsystem_support']
+      submit_result :with_operatingsystem_support, true
     else
-      status.without_operatingsystems_support = false
+      submit_result :with_operatingsystem_support, false
+      return
     end
 
     check_operating_system_support(metadata)
@@ -42,15 +37,10 @@ class Metadata < RepositoryCheckBase
         supported_versions = os['operatingsystemrelease'].all_i
       end
 
-      status.send(
-        "supports_eol_#{os_type.downcase}=",
-        supported_versions.min < support_range.min
-      )
-
-      status.send(
-        "doesnt_support_latest_#{os_type.downcase}=",
-        supported_versions.max < support_range.max
-      )
+      submit_result("supports_only_current_#{os_type.downcase}",
+                    supported_versions.min > support_range.min)
+      submit_result("supports_latest_#{os_type.downcase}",
+                    supported_versions.max == support_range.max)
     rescue NameError
       next
     end
@@ -59,9 +49,9 @@ class Metadata < RepositoryCheckBase
   def check_puppet_version(metadata)
     version_requirement = metadata['requirements'][0]['version_requirement']
 
-    status.incorrect_puppet_version_range = PUPPET_SUPPORT_RANGE != version_requirement
-    status.without_puppet_version_range = false
+    submit_result :correct_puppet_version_range, PUPPET_SUPPORT_RANGE == version_requirement
+    submit_result :with_puppet_version_range, true
   rescue NoMethodError
-    status.without_puppet_version_range = true
+    submit_result :with_puppet_version_range, false
   end
 end

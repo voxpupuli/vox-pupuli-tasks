@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
 class RepositoryCheckBase
+  attr_reader :status, :repo
+
   def self.init
     REPOSITORY_STATUS_CHECKS << name
   end
 
-  def self.load_checks
+  def self.register_checks
     Dir[Rails.root.join('app/lib/repository_checks/*.rb')].sort.each do |file|
       require file
       clazz = File.basename(file, '.rb').camelcase.constantize
@@ -18,5 +20,15 @@ class RepositoryCheckBase
 
   def self.valid?(clazz)
     clazz.method_defined?('perform') && (clazz < self)
+  end
+
+  def initialize(repo, status)
+    @repo = repo
+    @status = status
+  end
+
+  def submit_result(name, result)
+    checks[name.to_s] = result
+    save
   end
 end
