@@ -44,6 +44,7 @@ class PullRequest < ApplicationRecord
       pull_request.mergeable        = gh_pull_request['mergeable']
       pull_request.author           = gh_pull_request['user']['login']
       pull_request.status           = status
+      pull_request.draft            = gh_pull_request['draft']
       pull_request.save
 
       gh_pull_request['labels'].each do |label|
@@ -160,6 +161,9 @@ class PullRequest < ApplicationRecord
   def validate(saved_changes)
     # Don't run through the validaten, if only the eligible_for_comment attribute got updated
     return if saved_changes.keys.sort == %w[updated_at eligible_for_comment].sort && !mergeable.nil?
+
+    # Don't run through validation if it's a draft
+    return if draft
 
     # if the pull request is now closed, dont attach/remove labels/comments
     return if closed?
