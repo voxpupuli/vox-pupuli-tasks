@@ -18,8 +18,4 @@ class RepositoryStatus < ApplicationRecord
       check.constantize.new(repository, self).perform
     end
   end
-
-  def healty?
-    checks.values.all?
-  end
 end

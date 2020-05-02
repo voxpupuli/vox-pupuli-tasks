@@ -159,6 +159,10 @@ class Repository < ApplicationRecord
     pull_requests.count
   end
 
+  def healty?
+    repository_statuses.last.checks.values.all?
+  end
+
   def fetch_status
     RepositoryStatus.create!(repository_id: id)
   end
