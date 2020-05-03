@@ -1,0 +1,13 @@
+.ui.card
+  .content
+    .ui.large.header
+      = check_title
+      %span{data: { tooltip: I18n.t("check_descriptions.#{check_name}"), position: 'top center'}}
+        %i.icon.question.mark.circle.outline.tiny
+  .content
+    - pass_count = @statuses.count{|rs| rs.checks[check_name]}
+    %div{style: 'padding-bottom: 10px;'}
+    %span.ui.huge.text{class: color_by_passed_checks(pass_count, @statuses.count)}= pass_count
+    %span.ui.big.grey.text{style: 'padding-left: 5px;'}
+      \/
+      = @statuses.count

@@ -22,61 +22,18 @@ en:
 
       You can find my sourcecode at [voxpupuli/vox-pupuli-tasks](https://github.com/voxpupuli/vox-pupuli-tasks#vox-pupuli-tasks---the-webapp-for-community-management)
 
+  check_descriptions:
+    supports_latest: Modules which supports the latest version of %{os} (%{version})
+    supports_only_current: Modules which support only current versions of %{os} (%{versions})
+    reference_dot_md: The repository has a REFERENCE.md. It needs to be generated / puppet-strings documentation is missing.
+    with_puppet_version_range: Puppet version range is present in requirements in metadata.json
+    correct_puppet_version_range: Supported Puppet version range is %{PUPPET_VERSION_RANGE}
+    in_plumbing: Is in plumbing
+    has_modulesync: Is present in voxpupuli/modulesync_config/managed_modules.yml
+    synced: Has a .msync.yml file
+    has_secrets: Has a .sync.yml file
+    released: Is in modulesync_config and in forge releases.
   repo_states:
-    really_need_an_initial_modulesync:
-      title: Really need an initial modulesync
-      description: Modules in here are missing from 'managed_modules.yml' in modulesync_config repo.
-    really_need_an_inital_release:
-      title: Need initial release
-      description: Modules in here are in modulesync_config but not in forge releases.
-    modules_that_were_added_but_never_synced:
-      title: Added but never synced
-      description: Modules in here are missing the .msync.yml file
-    modules_that_have_missing_secrets:
-      title: Missing secrets
-      description: Modules in here are missing the .sync.yml file
-    modules_without_reference_dot_md:
-      title: Missing REFERENCE.md
-      description: The repository has currently no REFERENCE.md. It needs to be generated / puppet-strings documentation is missing.
-    modules_without_puppet_version_range:
-      title: Without Puppet version range
-      description: Puppet version range is missing from requirements in metadata.json
-    modules_with_incorrect_puppet_version_range:
-      title: Incorrect Puppet version range
-      description: Supported Puppet version range is '>= 5.5.8 < 7.0.0'. Modules in here have a different range.
     modules_without_operatingsystems_support:
       title: Without 'operatingsystem_support'
       description: We use 'operatingsystem_support' in the metadata.json to verify support ranges. It's missing in this modules.
-    doesnt_support_latest_ubuntu:
-      title: Does not support latest Ubuntu
-      description: We support Ubuntu 16.04, 18.04 and 20.04. Modules in here don't support Ubuntu 20.04.
-    doesnt_support_latest_freebsd:
-      title: Does not support latest FreeBSD
-      description: We support FreeBSD 11 and 12. Modules in here don't support FreeBSD 12.
-    supports_eol_freebsd:
-      title: Supports a end of life FreeBSD
-      description: We support FreeBSD 11 and 12. Modules in here support an end of life version (< FreeBSD 11)
-    doesnt_support_latest_fedora:
-      title: Does not support latest Fedora
-      description: We support Fedora 29, 30 and 31. Modules in here don't support Fedora 31.
-    supports_eol_fedora:
-      title: Supports a end of life Fedora
-      description: We support Fedora 29,30 and 31. Modules in here support an end of life version (< Fedora 29)
-    supports_eol_debian:
-      title: Supports a end of life Debian
-      description: We support Debian 8, 9 and 10. Modules in here support an end of life version (< Debian 8)
-    doesnt_support_latest_debian:
-      title: Does not support latest Debian
-      description: We support Debian 8, 9 and 10. Modules in here don't support Debian 10.
-    supports_eol_centos:
-      title: Supports a end of life CentOS
-      description: We support CentOS 6, 7 and 8. Modules in here support an end of life version (< CentOS 6)
-    doesnt_support_latest_centos:
-      title: Does not support latest CentOS
-      description: We support CentOS 6, 7 and 8. Modules in here don't support CentOS 8.
-    missing_in_plumbing:
-      title: Missing in plumbing
-      description: Is missing in plumbing
-    need_another_sync:
-      title: Need another sync
-      description: ''

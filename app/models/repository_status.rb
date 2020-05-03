@@ -14,8 +14,10 @@ class RepositoryStatus < ApplicationRecord
   end
 
   def perform_checks
-    REPOSITORY_STATUS_CHECKS.each do |check|
-      check.constantize.new(repository, self).perform
+    transaction do
+      REPOSITORY_STATUS_CHECKS.each do |check|
+        check.constantize.new(repository, self).perform
+      end
     end
   end
 end

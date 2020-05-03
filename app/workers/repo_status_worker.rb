@@ -47,7 +47,8 @@ class RepoStatusWorker
     refresh_plumbing_modules
     refresh_managed_modules
     refresh_latest_modulesync_version
+    refresh_forge_releases
 
-    Repositories.each(&:update_todos)
+    Repository.all.each(&:fetch_status)
   end
 end

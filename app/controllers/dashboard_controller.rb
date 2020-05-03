@@ -2,12 +2,8 @@
 
 class DashboardController < ApplicationController
   def show
-    @data = begin
-              JSON.parse(RedisClient.client.get('repo_status_data').to_s)
-            rescue JSON::ParserError
-              nil
-            end
-    @last_sync = Time.zone.at(RedisClient.client.get('repo_status_time').to_i)
+    @repositories = Repository.all
+    @statuses = @repositories.map(&:current_status)
   end
 
   def about; end

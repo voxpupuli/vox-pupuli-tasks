@@ -163,6 +163,14 @@ class Repository < ApplicationRecord
     repository_statuses.last.checks.values.all?
   end
 
+  def current_status
+    repository_statuses.last
+  end
+
+  def passed_check?(check_name)
+    current_status.checks[check_name]
+  end
+
   def fetch_status
     RepositoryStatus.create!(repository_id: id)
   end
