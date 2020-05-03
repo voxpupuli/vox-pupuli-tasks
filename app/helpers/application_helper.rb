@@ -25,7 +25,7 @@ module ApplicationHelper
   end
 
   def color_by_passed_checks(passed, total)
-    percentage = (passed.to_f/total.to_f) * 100
+    percentage = (passed / total.to_f) * 100
     case percentage
     when 0..20
       'red'
