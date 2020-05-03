@@ -1,0 +1,10 @@
+.ui.dividing.header= @check_name.titleize
+.ui.relaxed.divided.list
+  - @repositories.each do |repo|
+    = link_to(repository_path(repo.name), class: :item) do
+      = repo.name
+      .right.floated
+        - if repo.passed_check?(@check_name)
+          .ui.basic.horizontal.green.label pass
+        - else
+          .ui.basic.horizontal.red.label miss

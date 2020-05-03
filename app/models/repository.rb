@@ -16,6 +16,8 @@ class Repository < ApplicationRecord
            foreign_key: :gh_repository_id,
            inverse_of: :repository)
 
+  has_many :repository_statuses, dependent: :destroy
+
   ##
   #  Checks if the given Repository name is in our application scope (a module)
 
@@ -155,5 +157,21 @@ class Repository < ApplicationRecord
     end
 
     pull_requests.count
+  end
+
+  def healty?
+    repository_statuses.last.checks.values.all?
+  end
+
+  def current_status
+    repository_statuses.last
+  end
+
+  def passed_check?(check_name)
+    current_status.checks[check_name]
+  end
+
+  def fetch_status
+    RepositoryStatus.create!(repository_id: id)
   end
 end

@@ -10,12 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_29_212046) do
+ActiveRecord::Schema.define(version: 2020_05_02_221148) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "labels", force: :cascade do |t|
     t.string "name"
     t.string "color"
-    t.integer "pull_request_id"
+    t.bigint "pull_request_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "description"
@@ -36,7 +39,7 @@ ActiveRecord::Schema.define(version: 2020_04_29_212046) do
     t.datetime "gh_updated_at"
     t.datetime "closed_at"
     t.datetime "merged_at"
-    t.integer "repository_id"
+    t.bigint "repository_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "mergeable"
@@ -44,8 +47,9 @@ ActiveRecord::Schema.define(version: 2020_04_29_212046) do
     t.integer "github_id"
     t.string "author"
     t.boolean "eligible_for_merge_comment", default: true
-    t.string "status", :default => "success"
-    t.boolean "draft", :default => false
+    t.string "status", default: "success"
+    t.boolean "draft", default: false
+    t.boolean "eligible_for_ci_comment", default: true
     t.index ["repository_id"], name: "index_pull_requests_on_repository_id"
   end
 
@@ -60,7 +64,23 @@ ActiveRecord::Schema.define(version: 2020_04_29_212046) do
     t.integer "github_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.json "todos", default: {}
     t.index ["name"], name: "index_repositories_on_name", unique: true
+  end
+
+  create_table "repository_statuses", force: :cascade do |t|
+    t.json "checks", default: {}
+    t.integer "repository_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "settings", force: :cascade do |t|
+    t.string "var", null: false
+    t.text "value"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["var"], name: "index_settings_on_var", unique: true
   end
 
   create_table "users", force: :cascade do |t|

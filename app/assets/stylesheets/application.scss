@@ -14,8 +14,9 @@
  *= require_self
  */
 @import "semantic-ui";
-@import 'datatables/jquery.dataTables';
-@import 'datatables/dataTables.semanticui';
+@import "semantic-ui/elements/text";
+@import "datatables/jquery.dataTables";
+@import "datatables/dataTables.semanticui";
 
 .ui.menu .item img.logo {
   margin-right: 1.5em;

@@ -1,4 +1,4 @@
-%h1.ui.header
+%h1.ui.dividing.header
   - if current_user
     What's up,
     = current_user.nickname
@@ -6,27 +6,48 @@
     Hej! Nice to meet you :)
   .sub.header
     Last sync was
-    = @last_sync
-.ui.basic.segment= area_chart PullRequest.group_by_day(:gh_created_at).count, title: 'Pull requests per day', library: {chart: {zoomType: 'x'}}
-.ui.top.attached.tabular.menu
-  %a.active.item{data: {tab: :os}}
-    .ui.header
-      = semantic_icon(:linux)
-      Operating System
-  %a.item{data: {tab: :plumbing}}
-    .ui.header
-      = semantic_icon(:bath)
-      Plumbing
-  %a.item{data: {tab: :sync}}
-    .ui.header
-      = semantic_icon(:sync)
-      Sync
-  %a.item{data: {tab: :dependencies}}
-    .ui.header
-      = semantic_icon(:list)
-      Dependencies
+    = @statuses.last.created_at
 
-= render partial: 'dashboard/plumbing'
-= render partial: 'dashboard/sync'
-= render partial: 'dashboard/dependencies'
-= render partial: 'dashboard/os'
+.ui.large.header Operating System Support
+.ui.five.cards
+  - ['Ubuntu', 'Debian', 'CentOS', 'FreeBSD', 'Fedora'].each do |os|
+    .ui.card
+      .content
+        .ui.large.header= os
+      .content
+        - pass_count = @statuses.count{|rs| rs.checks["supports_only_current_#{os.downcase}"]}
+        .ui.tiny.header{style: 'padding-bottom: 10px;'}
+          Does not support EOL
+          %span{data: { tooltip: I18n.t("check_descriptions.supports_only_current", os: os, versions: "#{os.upcase}_SUPPORT_RANGE".constantize.to_sentence), position: 'top center'}}
+            %i.icon.question.mark.circle.outline
+        %span.ui.huge.text{class: color_by_passed_checks(pass_count, @statuses.count)}= pass_count
+        %span.ui.big.grey.text{style: 'padding-left: 5px;'}
+          \/
+          = @statuses.count
+
+      .content
+        - pass_count = @statuses.count{|rs| rs.checks["supports_latest_#{os.downcase}"]}
+        .ui.tiny.header{style: 'padding-bottom: 10px;'}
+          Supports latest
+          %span{data: { tooltip: I18n.t("check_descriptions.supports_latest", os: os, version: "#{os.upcase}_SUPPORT_RANGE".constantize.last), position: 'top center'}}
+            %i.icon.question.mark.circle.outline
+        %span.ui.huge.text{class: color_by_passed_checks(pass_count, @statuses.count)}= pass_count
+        %span.ui.big.grey.text{style: 'padding-left: 5px;'}
+          \/
+          = @statuses.count
+
+.ui.large.header Plumbing and Syncing
+.ui.four.cards
+  = render partial: 'check_card', locals: {check_title: :Plumbing, check_name: 'in_plumbing'}
+  = render partial: 'check_card', locals: {check_title: 'In Sync', check_name: 'synced'}
+  = render partial: 'check_card', locals: {check_title: 'In Modulesync', check_name: 'in_modulesync_repo'}
+  = render partial: 'check_card', locals: {check_title: 'Latest msync', check_name: 'latest_modulesync'}
+
+.ui.large.header Dependencies
+.ui.four.cards
+  = render partial: 'check_card', locals: {check_title: 'Has PVR', check_name: 'with_puppet_version_range'}
+  = render partial: 'check_card', locals: {check_title: 'Correct PVR', check_name: 'correct_puppet_version_range'}
+  = render partial: 'check_card', locals: {check_title: 'Has Reference.md', check_name: 'reference_dot_md'}
+  = render partial: 'check_card', locals: {check_title: 'Has secrets', check_name: 'has_secrets'}
+
+.ui.basic.segment= area_chart PullRequest.group_by_day(:gh_created_at).count, title: 'Pull requests per day', library: {chart: {zoomType: 'x'}}
