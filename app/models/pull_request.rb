@@ -232,6 +232,7 @@ class PullRequest < ApplicationRecord
     else
       Raven.capture_message('Unknown PR state /o\\',
                             extra: { state: state,
+                                     status: status,
                                      repo: repository.github_url,
                                      title: title })
     end
