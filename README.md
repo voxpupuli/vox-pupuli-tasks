@@ -30,6 +30,7 @@
 * [Contribution and Development](#contribution-and-development)
   * [Add new Operating system checks](#add-new-operating-system-checks)
 * [License](#license)
+* [Docker Tricks](#docker-tricks)
 * [Sponsor](#sponsor)
 
 ## Purpose
@@ -384,6 +385,26 @@ index bbd6c7a..098d987 100644
 ## License
 
 This project is licensed under [GNU Affero General Public License version 3](LICENSE)
+
+## Docker tricks
+
+Start just the rails console while all containers are off:
+
+```sh
+docker-compose run --no-deps web bundle exec rails console
+```
+
+Start all containers:
+
+```sh
+docker-compose up -d
+```
+
+Start the rails console while containers are running:
+
+```sh
+docker-compose exec web bundle exec rails c
+```
 
 ## Sponsor
 
