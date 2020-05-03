@@ -43,7 +43,7 @@ ActiveRecord::Schema.define(version: 2020_04_29_212046) do
     t.integer "gh_repository_id"
     t.integer "github_id"
     t.string "author"
-    t.boolean "eligible_for_comment"
+    t.boolean "eligible_for_comment", default: true
     t.string "status", :default => "success"
     t.boolean "draft", :default => false
     t.index ["repository_id"], name: "index_pull_requests_on_repository_id"

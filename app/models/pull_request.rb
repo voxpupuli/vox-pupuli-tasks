@@ -137,18 +137,6 @@ class PullRequest < ApplicationRecord
   end
 
   ##
-  # mock the method eligible_for_comment. We call it and check if it's nil
-  # in that case, we return true. That means you can create a comment there
-  # if it's not true, we call it again and return the value.
-  # eligible_for_comment from the above object is a getter/setter for the
-  # attribute. see db/schema.rb for details
-  def eligible_for_comment
-    return true if super.nil?
-
-    super
-  end
-
-  ##
   #  if the PullRequest is mergeable we need to check if the 'merge-conflicts' Label
   #  is attached. If so, we need to remove it.
   #
