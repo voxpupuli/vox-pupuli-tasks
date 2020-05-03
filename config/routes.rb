@@ -10,6 +10,8 @@ Rails.application.routes.draw do
 
   resources :repositories, only: %i[index show]
 
+  get 'checks/:check_name', to: 'checks#show'
+
   get '/auth/:provider/callback', to: 'sessions#create'
 
   get 'auth/failure', to: redirect('/')

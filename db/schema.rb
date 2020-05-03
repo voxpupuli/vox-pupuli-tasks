@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_02_213446) do
+ActiveRecord::Schema.define(version: 2020_05_02_221148) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,8 +47,9 @@ ActiveRecord::Schema.define(version: 2020_05_02_213446) do
     t.integer "github_id"
     t.string "author"
     t.boolean "eligible_for_merge_comment", default: true
-    t.string "status", :default => "success"
-    t.boolean "draft", :default => false
+    t.string "status", default: "success"
+    t.boolean "draft", default: false
+    t.boolean "eligible_for_ci_comment", default: true
     t.index ["repository_id"], name: "index_pull_requests_on_repository_id"
   end
 
