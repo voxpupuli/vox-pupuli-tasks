@@ -13,12 +13,20 @@
     .ui.label
       = semantic_icon(:exclamation, :mark)
       = @repository.open_issues_count
-    - @repository.actions_needed.each do |action|
-      .ui.red.label{data: { tooltip: I18n.t("repo_states.#{action}.description"), position: 'bottom center'}}
-        = semantic_icon(:cogs)
-        = I18n.t("repo_states.#{action}.title")
   .sub.header
     = @repository.description
+
+.ui.cards
+  - @repository.current_status.checks.each do |name, value|
+    .ui.card{class: (value ? 'green' : 'red')}
+      .content
+        .ui.header
+          = name.titleize
+          .sub.header
+            = begin
+              - I18n.t!("check_descriptions.#{name}")
+            - rescue I18n::MissingTranslationData
+              - 'No translation'
 
 %h3.ui.header Open Pull Requests
 .ui.fluid.styled.accordion
