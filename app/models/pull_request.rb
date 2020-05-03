@@ -167,9 +167,6 @@ class PullRequest < ApplicationRecord
     # Don't run through validation if it's a draft
     return if draft
 
-    # Don't run through validation if it's a draft
-    return if draft
-
     # if the pull request is now closed, dont attach/remove labels/comments
     return if closed?
 
