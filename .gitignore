@@ -40,3 +40,4 @@ yarn-debug.log*
 /redis
 
 .DS_store
+/postgres-data
