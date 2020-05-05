@@ -6,6 +6,8 @@ services:
     container_name: vpt-redis
     volumes:
       - ./redis:/data
+    ports:
+      - 127.0.0.1:6379:6379
   web:
     restart: always
     image: voxpupuli/vox-pupuli-tasks
@@ -52,4 +54,5 @@ services:
       POSTGRES_USER: vpt
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
-      - ./db/production.sqlite3:/vpt/db/production.sqlite3
+    ports:
+      - 127.0.0.1:5432:5432
