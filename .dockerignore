@@ -5,3 +5,4 @@ Dockerfile
 /tmp/
 /public/packs/
 /redis
+/postgres-data/
