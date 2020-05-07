@@ -209,7 +209,7 @@ class PullRequest < ApplicationRecord
       # we also already added the comment. So no need for a new one.
       add_merge_comment if ensure_label_is_attached(label)
     elsif mergeable.nil?
-      UpdateMergeableWorker.perform_in(1.minute.from_now,
+      RefreshPullRequestWorker.perform_in(1.minute.from_now,
                                        repository.name,
                                        number)
     end
@@ -232,6 +232,10 @@ class PullRequest < ApplicationRecord
     when 'pending'
       # recheck in 10min? do we get an event if the status changes?
       true
+    when nil
+      RefreshPullRequestWorker.perform_in(1.minute.from_now,
+                                       repository.name,
+                                       number)
     else
       Raven.capture_message('Unknown PR state /o\\',
                             extra: { state: state,
