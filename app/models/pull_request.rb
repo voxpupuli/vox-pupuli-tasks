@@ -170,6 +170,9 @@ class PullRequest < ApplicationRecord
     # if the pull request is now closed, dont attach/remove labels/comments
     return if closed?
 
+    # If we're running in development mode, we try to run read-only and won't modify PRs
+    return if Rails.env.development?
+
     # Don't run through the validaten, if only the eligible_for_merge_comment attribute got updated
     if saved_changes.keys.sort != %w[updated_at eligible_for_merge_comment].sort && mergeable.nil?
       # check merge status and do work if required
