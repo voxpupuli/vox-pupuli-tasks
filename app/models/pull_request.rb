@@ -26,7 +26,7 @@ class PullRequest < ApplicationRecord
                 statuses = Github.client.combined_status(repo_id, gh_pull_request[:head][:sha])
                 statuses[:state]
                rescue StandardError => e
-                 Raven.capture_message('validate status', extra: { error: e.inspect, github_data: gh_pull_request })
+                 Raven.capture_message('validate status', extra: { trace: e.backtrace, error: e.inspect, github_data: gh_pull_request })
                  nil
               end
       pull_request.number           = gh_pull_request['number']
