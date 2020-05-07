@@ -32,9 +32,7 @@ class GithubEvent
       # Ignore events which are triggered by the bot
       return if payload.dig('sender', 'id').to_i == 53_702_691
 
-      if Repository.notably? payload['repository']['name']
-        @processor = GithubEvent::PullRequest.new(payload)
-      end
+      @processor = GithubEvent::PullRequest.new(payload) if Repository.notably? payload['repository']['name']
     when *known_but_ignoreable_events
       true
     else

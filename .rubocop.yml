@@ -8,10 +8,7 @@ AllCops:
     - vendor/**/*
     - node_modules/**/*
 
-Metrics/LineLength:
-  Max: 100
-
-Metrics/ClassLength:
+Layout/LineLength:
   Max: 140
 
 Style/MixinUsage:
