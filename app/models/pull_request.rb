@@ -26,10 +26,7 @@ class PullRequest < ApplicationRecord
                 statuses = Github.client.combined_status(repo_id, gh_pull_request[:head][:sha])
                 statuses[:state]
                rescue StandardError => e
-                 Raven.capture_message('validate status', extra: {
-                                         error: e.inspect,
-                                         github_data: gh_pull_request
-                                       })
+                 Raven.capture_message('validate status', extra: { error: e.inspect, github_data: gh_pull_request })
                  nil
               end
       pull_request.number           = gh_pull_request['number']
@@ -94,10 +91,7 @@ class PullRequest < ApplicationRecord
 
     Github.client.add_labels_to_an_issue(gh_repository_id, number, [label.name])
 
-    Raven.capture_message('Attached a label to an issue',
-                          extra: { label: label,
-                                   repo: repository.github_url,
-                                   title: title })
+    Raven.capture_message('Attached a label to an issue', extra: { label: label, repo: repository.github_url, title: title })
   end
 
   ##
@@ -106,10 +100,7 @@ class PullRequest < ApplicationRecord
   def ensure_label_is_detached(label)
     Github.client.remove_label(gh_repository_id, number, label.name)
 
-    Raven.capture_message('Detached a label from an issue',
-                          extra: { label: label,
-                                   repo: repository.github_url,
-                                   title: title })
+    Raven.capture_message('Detached a label from an issue', extra: { label: label, repo: repository.github_url, title: title })
   rescue Octokit::NotFound
     true
   end
@@ -145,11 +136,7 @@ class PullRequest < ApplicationRecord
             nil
           end
 
-    Raven.capture_message('Added a comment',
-                          extra: { text: text,
-                                   repo: repository.github_url,
-                                   title: title,
-                                   request: req })
+    Raven.capture_message('Added a comment', extra: { text: text, repo: repository.github_url, title: title, request: req })
     Github.client.add_comment(gh_repository_id, number, text)
   end
 
@@ -209,9 +196,7 @@ class PullRequest < ApplicationRecord
       # we also already added the comment. So no need for a new one.
       add_merge_comment if ensure_label_is_attached(label)
     elsif mergeable.nil?
-      UpdateMergeableWorker.perform_in(1.minute.from_now,
-                                       repository.name,
-                                       number)
+      RefreshPullRequestWorker.perform_in(1.minute.from_now, repository.name, number)
     end
   end
 
@@ -232,12 +217,10 @@ class PullRequest < ApplicationRecord
     when 'pending'
       # recheck in 10min? do we get an event if the status changes?
       true
+    when nil
+      RefreshPullRequestWorker.perform_in(1.minute.from_now, repository.name, number)
     else
-      Raven.capture_message('Unknown PR state /o\\',
-                            extra: { state: state,
-                                     status: status,
-                                     repo: repository.github_url,
-                                     title: title })
+      Raven.capture_message('Unknown PR state /o\\', extra: { state: state, status: status, repo: repository.github_url, title: title })
     end
   end
 end
