@@ -25,7 +25,6 @@ support_ranges:
     - "18.04"
     - "20.04"
   debian:
-    - 8
     - 9
     - 10
   centos:
