@@ -175,7 +175,7 @@ class PullRequest < ApplicationRecord
   # To prevent loops, we filter `saved_changed` of those attributes and won't create new job if those are the only changed attributes
   def queue_validation
     attributes = %w[eligible_for_merge_comment eligible_for_ci_comment]
-    return unless [saved_changes.keys & attributes].empty?
+    return unless (saved_changes.stringify_keys.keys & attributes).empty?
 
     ValidatePullRequestWorker.perform_async(id, saved_changes)
   end
