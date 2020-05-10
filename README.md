@@ -28,7 +28,7 @@
     * [Permissions](#permission)
     * [Events](#events)
 * [Contribution and Development](#contribution-and-development)
-  * [Add new Operating system checks](#add-new-operating-system-checks)
+  * [Add/Drop new Operating system checks](#adddrop-new-operating-system-checks)
 * [License](#license)
 * [Docker Tricks](#docker-tricks)
 * [Sponsor](#sponsor)
@@ -332,55 +332,32 @@ that violate the current rubocop config. For such situations we need to run
 bundle exec rubocop --auto-gen-config
 ```
 
-### Add new Operating system checks
+### Add/Drop new Operating system checks
 
 Among all the stuff we validate is also a check for supported operating systems
 in the `metadata.json` file in a Puppet module. Sometimes a new version
 [is released](https://lists.centos.org/pipermail/centos-announce/2019-September/023449.html).
 
-We need to update the checks. Currently, we need to adjust two places, the
-version array and the messages that are displayed in the UI:
-
-The array:
+We need to update the checks. Currently, we need to adjust one place:
 
 ```diff
-diff --git a/config/initializers/voxpupuli.rb b/config/initializers/voxpupuli.rb
-index 14b0459..cc4f26e 100644
---- a/config/initializers/voxpupuli.rb
-+++ b/config/initializers/voxpupuli.rb
-@@ -16,6 +16,6 @@ PUPPET_SUPPORT_RANGE = '>= 5.5.8 < 7.0.0'
- # https://github.com/camptocamp/facterdb/pull/82#event-1600066178
- UBUNTU_SUPPORT_RANGE = ['16.04', '18.04'].freeze
- DEBIAN_SUPPORT_RANGE = [8, 9, 10].freeze
--CENTOS_SUPPORT_RANGE = [6, 7].freeze
-+CENTOS_SUPPORT_RANGE = [6, 7, 8].freeze
- FREEBSD_SUPPORT_RANGE = [11, 12].freeze
- FEDORA_SUPPORT_RANGE = [29, 30, 31].freeze
+diff --git a/config/voxpupuli.yml b/config/voxpupuli.yml
+index b32a207..c4c3627 100644
+--- a/config/voxpupuli.yml
++++ b/config/voxpupuli.yml
+@@ -25,7 +25,6 @@ support_ranges:
+     - "18.04"
+     - "20.04"
+   debian:
+-    - 8
+     - 9
+     - 10
+   centos:
 ```
 
-and the messages:
-
-```diff
-diff --git a/config/locales/en.yml b/config/locales/en.yml
-index bbd6c7a..098d987 100644
---- a/config/locales/en.yml
-+++ b/config/locales/en.yml
-@@ -56,13 +56,13 @@ en:
-       description: We support Debian 8, 9 and 10. Modules in here don't support Debian 10.
-     supports_eol_centos:
-       title: Supports a end of life CentOS
--      description: We support CentOS 6 and 7. Modules in here support a end of life version (< CentOS 6)
-+      description: We support CentOS 6, 7 and 8. Modules in here support a end of life version (< CentOS 6)
-     doesnt_support_latest_centos:
-       title: Does not support latest CentOS
--      description: We support CentOS 6 and 7. Modules in here don't support CentOS 7.
-+      description: We support CentOS 6, 7 and 8. Modules in here don't support CentOS 8.
-     missing_in_plumbing:
-       title: Missing in plumbing
-       description: Is missing in plumbing
-     need_another_sync:
-       title: Need another sync
-```
+Based on those arrays of version numbers, the application parses the
+metadata.json and checks if a module supports EOL operating systems or doesn't
+support the latest versions.
 
 ## License
 
