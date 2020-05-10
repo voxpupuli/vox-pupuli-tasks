@@ -160,14 +160,8 @@ class PullRequest < ApplicationRecord
     # If we're running in development mode, we try to run read-only and won't modify PRs
     return if Rails.env.development?
 
-    # Don't run through the validaten, if only the eligible_for_merge_comment attribute got updated
-    if saved_changes.keys.sort != %w[updated_at eligible_for_merge_comment].sort && mergeable.nil?
-      # check merge status and do work if required
-      validate_mergeable
-    end
-
-    # Don't run through the validaten, if only the eligible_for_ci_comment attribute got updated
-    return unless saved_changes.keys.sort != %w[updated_at eligible_for_ci_comment].sort
+    # check merge status and do work if required
+    validate_mergeable
 
     # check CI status and do work if required
     validate_status(saved_changes)
@@ -176,11 +170,14 @@ class PullRequest < ApplicationRecord
   private
 
   ##
-  #  Since we want to be a fancy responsive application we to all the validation
-  #  stuff which might result in some new querys and api requests asyncronously.
-
+  # Queue a job into sidekiq that runs the validate() method above
+  # validate() might use update() to change attributes which would trigger a new job
+  # To prevent loops, we filter `saved_changed` of those attributes and won't create new job if those are the only changed attributes
   def queue_validation
-    ValidatePullRequestWorker.perform_async(id, saved_changes) if saved_changes? || mergeable.nil?
+    attributes = %w[eligible_for_merge_comment eligible_for_ci_comment]
+    return unless [saved_changes.keys & attributes].empty?
+
+    ValidatePullRequestWorker.perform_async(id, saved_changes)
   end
 
   def validate_mergeable
