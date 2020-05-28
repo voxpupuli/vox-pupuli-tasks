@@ -383,6 +383,12 @@ Start the rails console while containers are running:
 docker-compose exec web bundle exec rails c
 ```
 
+Delete the sidekiq queue (execute in `irb` session, returns `true` if jobs got deleted, otherwise `false`):
+
+```
+Sidekiq::Queue.new.clear
+```
+
 ## Sponsor
 
 This project is sponsored by [Hetzner Cloud](https://hetzner.com/cloud). They
