@@ -9,7 +9,7 @@ AllCops:
     - node_modules/**/*
 
 Layout/LineLength:
-  Max: 140
+  Max: 141
 
 Style/MixinUsage:
   Exclude:
