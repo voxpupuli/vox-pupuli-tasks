@@ -89,18 +89,20 @@ class PullRequest < ApplicationRecord
     attached_labels = Github.client.labels_for_issue(gh_repository_id, number)
     return if attached_labels.any? { |attached_label| attached_label['name'] == label.name }
 
-    Github.client.add_labels_to_an_issue(gh_repository_id, number, [label.name])
+    response = Github.client.add_labels_to_an_issue(gh_repository_id, number, [label.name])
 
     Raven.capture_message('Attached a label to an issue', extra: { label: label, repo: repository.github_url, title: title })
+    response
   end
 
   ##
   #  We simply remove the given Label if it exists
 
   def ensure_label_is_detached(label)
-    Github.client.remove_label(gh_repository_id, number, label.name)
+    response = Github.client.remove_label(gh_repository_id, number, label.name)
 
     Raven.capture_message('Detached a label from an issue', extra: { label: label, repo: repository.github_url, title: title })
+    response
   rescue Octokit::NotFound
     true
   end
@@ -206,7 +208,7 @@ class PullRequest < ApplicationRecord
       label_is_attached = ensure_label_is_attached(label)
 
       # A status change is required for a new comment
-      add_ci_comment if saved_changes.keys.sort.include?('status') and label_is_attached
+      add_ci_comment if saved_changes.keys.sort.include?('status') && label_is_attached
     when 'success'
       ensure_label_is_detached(label)
       update(eligible_for_ci_comment: true)
