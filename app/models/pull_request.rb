@@ -202,12 +202,11 @@ class PullRequest < ApplicationRecord
 
     case status
     when 'failure'
-      # if CI failed, add a label to repo
-      repository.ensure_label_exists(label)
-      # A status change is required for a new comment
-      return unless saved_changes.keys.sort.include?('status')
+      # if CI failed, add a label to PR
+      label_is_attached = ensure_label_is_attached(label)
 
-      add_ci_comment if ensure_label_is_attached(label)
+      # A status change is required for a new comment
+      add_ci_comment if saved_changes.keys.sort.include?('status') and label_is_attached
     when 'success'
       ensure_label_is_detached(label)
       update(eligible_for_ci_comment: true)
