@@ -29,6 +29,7 @@
     * [Events](#events)
 * [Contribution and Development](#contribution-and-development)
   * [Add/Drop new Operating system checks](#adddrop-new-operating-system-checks)
+* [Flowchart](#flowchart)
 * [License](#license)
 * [Docker Tricks](#docker-tricks)
 * [Sponsor](#sponsor)
@@ -358,6 +359,15 @@ index b32a207..c4c3627 100644
 Based on those arrays of version numbers, the application parses the
 metadata.json and checks if a module supports EOL operating systems or doesn't
 support the latest versions.
+
+## Flowchart
+
+The following flowchart displays what happens when we receive a GitHub
+notification about a pull request. The diagram was created with
+[draw.io](https://draw.io). You can import the `vpt.drawio` from the `/images/`
+directory.
+
+[![flowchart](images/vpt.png)](https://voxpupu.li)
 
 ## License
 
