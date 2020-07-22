@@ -152,7 +152,7 @@ class PullRequest < ApplicationRecord
   # The saved_changes variable includes all the stuff that has changed.
   # We currently don't care about them
 
-  def validate(saved_changes)
+  def validate
     # Don't run through validation if it's a draft
     return if draft
 
@@ -194,7 +194,7 @@ class PullRequest < ApplicationRecord
 
     return if saved_changes.empty? && !force
 
-    ValidatePullRequestWorker.perform_async(id, saved_changes)
+    ValidatePullRequestWorker.perform_async(id)
   end
 
   def validate_mergeable
