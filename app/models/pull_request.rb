@@ -166,7 +166,7 @@ class PullRequest < ApplicationRecord
     mergeable_result = validate_mergeable
 
     # check CI status and do work if required
-    status_result = validate_status(saved_changes)
+    status_result = validate_status
 
     # If one of the checks is nil perform a new check in one minute
     return if mergeable_result && status_result
@@ -216,7 +216,7 @@ class PullRequest < ApplicationRecord
     true
   end
 
-  def validate_status(saved_changes)
+  def validate_status
     label = Label.tests_fail
 
     case status
