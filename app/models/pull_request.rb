@@ -166,7 +166,7 @@ class PullRequest < ApplicationRecord
     mergeable_result = validate_mergeable
 
     # check CI status and do work if required
-    status_result = validate_status(saved_changes)
+    status_result = validate_status
 
     # If one of the checks is nil perform a new check in one minute
     return if mergeable_result && status_result
@@ -216,16 +216,13 @@ class PullRequest < ApplicationRecord
     true
   end
 
-  def validate_status(saved_changes)
+  def validate_status
     label = Label.tests_fail
 
     case status
     when 'failure'
       # if CI failed, add a label to PR
-      label_is_attached = ensure_label_is_attached(label)
-
-      # A status change is required for a new comment
-      add_ci_comment if saved_changes.keys.sort.include?('status') && label_is_attached
+      add_ci_comment if ensure_label_is_attached(label)
     when 'success'
       ensure_label_is_detached(label)
       update(eligible_for_ci_comment: true)
