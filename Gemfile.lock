@@ -117,7 +117,7 @@ GEM
       faraday (>= 0.7.4, < 1.0)
     fast_gettext (1.1.2)
     ffi (1.13.1)
-    fomantic-ui-sass (2.8.6)
+    fomantic-ui-sass (2.8.4)
       autoprefixer-rails
       rails (>= 3.2.0)
       sassc (>= 2.2)
@@ -439,7 +439,7 @@ DEPENDENCIES
   chromedriver-helper
   coffee-rails (~> 4.2)
   execjs
-  fomantic-ui-sass
+  fomantic-ui-sass (= 2.8.4)
   foreman
   groupdate
   haml-lint
