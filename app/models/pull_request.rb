@@ -163,10 +163,15 @@ class PullRequest < ApplicationRecord
     return if Rails.env.development?
 
     # check merge status and do work if required
-    validate_mergeable
+    mergeable_result = validate_mergeable
 
     # check CI status and do work if required
-    validate_status(saved_changes)
+    status_result = validate_status(saved_changes)
+
+    # If one of the checks is nil perform a new check in one minute
+    return if mergeable_result && status_result
+
+    RefreshPullRequestWorker.perform_in(1.minute.from_now, repository.name, number)
   end
 
   private
@@ -176,14 +181,18 @@ class PullRequest < ApplicationRecord
   # validate() might use update() to change attributes which would trigger a new job
   # To prevent loops, we filter `saved_changed` of those attributes and won't create new job if those are the only changed attributes
   def queue_validation
+    force = mergeable.nil? || status.nil?
+
     case saved_changes.stringify_keys.keys.sort
     when %w[eligible_for_merge_comment eligible_for_ci_comment].sort
-      return
+      return unless force
     when %w[eligible_for_ci_comment]
-      return
+      return unless force
     when %w[eligible_for_merge_comment]
-      return
+      return unless force
     end
+
+    return if saved_changes.empty? && !force
 
     ValidatePullRequestWorker.perform_async(id, saved_changes)
   end
@@ -201,8 +210,10 @@ class PullRequest < ApplicationRecord
       # we also already added the comment. So no need for a new one.
       add_merge_comment if ensure_label_is_attached(label)
     elsif mergeable.nil?
-      RefreshPullRequestWorker.perform_in(1.minute.from_now, repository.name, number)
+      return false
     end
+
+    true
   end
 
   def validate_status(saved_changes)
@@ -222,9 +233,11 @@ class PullRequest < ApplicationRecord
       # recheck in 10min? do we get an event if the status changes?
       true
     when nil
-      RefreshPullRequestWorker.perform_in(1.minute.from_now, repository.name, number)
+      return false
     else
       Raven.capture_message('Unknown PR state /o\\', extra: { state: state, status: status, repo: repository.github_url, title: title })
     end
+
+    true
   end
 end
