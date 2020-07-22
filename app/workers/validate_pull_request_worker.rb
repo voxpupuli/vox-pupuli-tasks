@@ -8,7 +8,7 @@ class ValidatePullRequestWorker
   # This worker is not meant to hold any logic but only trigger the
   # validation in its asyncronous context.
 
-  def perform(id, saved_changes)
-    PullRequest.find(id).validate(saved_changes)
+  def perform(id)
+    PullRequest.find(id).validate
   end
 end
