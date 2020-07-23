@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_03_192132) do
+ActiveRecord::Schema.define(version: 2020_07_23_173538) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(version: 2020_05_03_192132) do
     t.string "status"
     t.boolean "draft", default: false
     t.boolean "eligible_for_ci_comment", default: true
+    t.index ["github_id"], name: "index_pull_requests_on_github_id", unique: true
     t.index ["repository_id"], name: "index_pull_requests_on_repository_id"
   end
 
@@ -65,6 +66,7 @@ ActiveRecord::Schema.define(version: 2020_05_03_192132) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.json "todos", default: {}
+    t.index ["github_id"], name: "index_repositories_on_github_id", unique: true
     t.index ["name"], name: "index_repositories_on_name", unique: true
   end
 
