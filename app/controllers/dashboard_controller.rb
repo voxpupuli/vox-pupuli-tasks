@@ -3,7 +3,7 @@
 class DashboardController < ApplicationController
   def show
     @repositories = Repository.all
-    @statuses = @repositories.map(&:current_status)
+    @statuses = @repositories.map(&:current_status).compact
     @last_status = RepositoryStatus.last
   end
 
