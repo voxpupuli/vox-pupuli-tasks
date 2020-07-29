@@ -18,7 +18,8 @@ class IndexReposWorker
         repo.open_issues_count = github_repo.open_issues_count
         repo.save
 
-        repo.update_pull_requests
+        # refresh all *open* pull requests from this repository
+        repo.update_pull_requests(only_open: true)
       end
     end
 
