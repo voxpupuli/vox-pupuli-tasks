@@ -27,7 +27,17 @@ jobs:
       uses: ruby/setup-ruby@ec106b438a1ff6ff109590de34ddc62c540232e0
       with:
         ruby-version: 2.7
+    - uses: actions/cache@v2
+      with:
+        path: vendor/bundle
+        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-gems-
     - name: Install dependencies
-      run: bundle install --without development --jobs $(nproc)
+      run: |
+        bundle config set path vendor/bundle
+        bundle config set jobs $(nproc)
+        bundle config set without development
+        bundle install
     - name: Run tests
       run: bundle exec rake rubocop
