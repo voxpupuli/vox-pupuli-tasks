@@ -227,9 +227,13 @@ class PullRequest < ApplicationRecord
       ensure_label_is_detached(label)
       update(eligible_for_ci_comment: true)
     when 'pending'
-      # recheck in 10min? do we get an event if the status changes?
+      # TODO: check if a similar job is already in the queue?
+      RefreshPullRequestWorker.perform_in(2.minutes.from_now, repository.name, number)
+      Raven.capture_message('pending PR status', extra: { state: state, status: status, repo: repository.github_url, title: title })
       true
     when nil
+      # it's not really clear if the status is ever nil. if so, we should log it to decide if we need to act here
+      Raven.capture_message('nil PR status', extra: { state: state, status: status, repo: repository.github_url, title: title })
       return false
     else
       Raven.capture_message('Unknown PR state /o\\', extra: { state: state, status: status, repo: repository.github_url, title: title })
