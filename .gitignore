@@ -41,3 +41,4 @@ yarn-debug.log*
 
 .DS_store
 /postgres-data
+log-sidekiq/
