@@ -13,6 +13,9 @@ ADD . /vpt
 RUN git describe --always > VERSION
 
 RUN gem install bundler
-RUN bundle install --jobs $(nproc) --without development test --path vendor/bundle --deployment
+RUN bundle config set deployment 'true'
+RUN bundle config set path 'vendor/bundle'
+RUN bundle config set without 'development test'
+RUN bundle install --jobs $(nproc)
 RUN SECRET_KEY_BASE=$(bundle exec rails secret) bundle exec rails assets:precompile
 RUN date +%s > BUILD_DATE
