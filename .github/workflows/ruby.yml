@@ -49,8 +49,6 @@ jobs:
         repository: voxpupuli/vox-pupuli-tasks
         add_git_labels: true
         tags: latest
-        tag_with_ref: true
-        tag_with_sha: true
     - name: Build and push Docker images
       uses: docker/build-push-action@v1
       with:
