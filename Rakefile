@@ -24,3 +24,16 @@ desc 'Display the list of available rake tasks'
 task help: :environment do
   system('rake -T')
 end
+
+begin
+  require 'github_changelog_generator/task'
+
+  GitHubChangelogGenerator::RakeTask.new :changelog do |config|
+    config.header = "# Changelog\n\nAll notable changes to this project will be documented in this file."
+    config.exclude_labels = %w[duplicate question invalid wontfix wont-fix skip-changelog dependencies]
+    config.user = 'voxpupuli'
+    config.project = 'vox-pupuli-tasks'
+    config.future_release = 'v1.0.0'
+  end
+rescue LoadError # rubocop:disable Lint/SuppressedException
+end

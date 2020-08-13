@@ -82,3 +82,7 @@ group :test do
   gem 'rubocop-rails'
   gem 'selenium-webdriver'
 end
+
+group :release do
+  gem 'github_changelog_generator', require: false
+end

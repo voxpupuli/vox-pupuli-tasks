@@ -36,6 +36,7 @@
   - [License](#license)
   - [Docker tricks](#docker-tricks)
   - [Sponsor](#sponsor)
+  - [Prepare a release](#prepare-a-release)
 
 ## Purpose
 
@@ -475,3 +476,14 @@ provide us with free cloud instances to host the application.
 
 Are you interested as well in sponsoring parts of the Vox Pupuli organisation?
 Get in touch with the [Project Management Committee](mailto:pmc@voxpupuli.org).
+
+## Prepare a release
+
+We use the [GitHub changelog generator](https://github.com/github-changelog-generator/github-changelog-generator#github-changelog-generator-)
+to generate our `CHANGELOG.md`. To prepare a new release, write the desired
+version into our `Rakefile`. Afterwards export a GitHub API token as
+`CHANGELOG_GITHUB_TOKEN` environment variable. Now you can generate the
+changelog with `bundle exec rake changelog`. Propose that as a pull request.
+
+If it gets approved and merged, you can create a git tag and push it. Our CI
+platform will take care of pushing a matching docker image.
