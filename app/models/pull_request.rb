@@ -169,7 +169,7 @@ class PullRequest < ApplicationRecord
     status_result = validate_status
 
     # If one of the checks is nil perform a new check in one minute
-    return if mergeable_result && status_result
+    return if mergeable_result && (!status_result.nil? || status != 'pending')
 
     RefreshPullRequestWorker.perform_in(1.minute.from_now, repository.name, number)
   end
@@ -181,7 +181,7 @@ class PullRequest < ApplicationRecord
   # validate() might use update() to change attributes which would trigger a new job
   # To prevent loops, we filter `saved_changed` of those attributes and won't create new job if those are the only changed attributes
   def queue_validation
-    force = mergeable.nil? || status.nil?
+    force = mergeable.nil? || status.nil? || status == 'pending'
 
     case saved_changes.stringify_keys.keys.sort
     when %w[eligible_for_merge_comment eligible_for_ci_comment].sort
