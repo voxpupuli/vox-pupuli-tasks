@@ -11,28 +11,33 @@
 
 ## Table of contents
 
-* [Purpose](#purpose)
-  * [Reviewing open Pull Requests](#reviewing-open-pull-requests)
-  * [Yak shaving Puppet modules](#yak-shaving-puppet-modules)
-* [Usage](#usage)
-* [Existing Automatisation](#existing-automatisation)
-  * [Merge Conflicts](#merge-conflicts)
-  * [Sync GitHub labels](#sync-github-labels)
-* [Local Setup](#local-setup)
-* [Production Setup](#production-setup)
-  * [Cerebro](#cerebro)
-  * [Elasticsearch](#elasticsearch)
-  * [Kibana](#kibana)
-  * [Sentry](#sentry)
-  * [GitHub App Setup](#github-app-setup)
-    * [Permissions](#permission)
-    * [Events](#events)
-* [Contribution and Development](#contribution-and-development)
-  * [Add/Drop new Operating system checks](#adddrop-new-operating-system-checks)
-* [Flowchart](#flowchart)
-* [License](#license)
-* [Docker Tricks](#docker-tricks)
-* [Sponsor](#sponsor)
+- [Vox Pupuli Tasks - The Webapp for community management](#vox-pupuli-tasks---the-webapp-for-community-management)
+  - [Table of contents](#table-of-contents)
+  - [Purpose](#purpose)
+  - [Reviewing open Pull Requests](#reviewing-open-pull-requests)
+  - [Yak shaving Puppet modules](#yak-shaving-puppet-modules)
+  - [Usage](#usage)
+  - [Existing Automatisation](#existing-automatisation)
+    - [Merge Conflicts - Milestone 1](#merge-conflicts---milestone-1)
+    - [Sync GitHub Labels](#sync-github-labels)
+  - [Local Setup](#local-setup)
+  - [Production Setup](#production-setup)
+    - [Cerebro](#cerebro)
+    - [Elasticsearch](#elasticsearch)
+    - [Kibana](#kibana)
+  - [Sentry](#sentry)
+  - [GitHub App Setup](#github-app-setup)
+    - [`User authorization callback URL`](#user-authorization-callback-url)
+    - [`Request user authorization (OAuth) during installation`](#request-user-authorization-oauth-during-installation)
+    - [`Webhook URL`](#webhook-url)
+    - [Permissions](#permissions)
+    - [Events](#events)
+  - [Contribution and Development](#contribution-and-development)
+    - [Add/Drop new Operating system checks](#adddrop-new-operating-system-checks)
+  - [Flowchart](#flowchart)
+  - [License](#license)
+  - [Docker tricks](#docker-tricks)
+  - [Sponsor](#sponsor)
 
 ## Purpose
 
@@ -189,9 +194,15 @@ bundle install --jobs $(nproc) --with development test --path vendor/bundle
 bundle exec yarn install --frozen-lockfile --non-interactive
 export SECRET_KEY_BASE=$(bundle exec rails secret)
 bundle exec rails assets:precompile
-# somehow generate config/master.key
+# removing the credentials.yml.enc file is required unless you were given the matching master.key by the developers
+rm config/credentials.yml.enc
+bundle exec rails credentials:edit
+docker-compose up -d postgres
+# db:create will fail if the database already exists, go to the next step if that is the case
+RAILS_ENV=development bundle exec rails db:create
 RAILS_ENV=development bundle exec rails db:migrate
-bundle exec foreman start
+docker-compose up -d sidekiq
+bundle exec rails s -b '0.0.0.0'
 ```
 
 Secrets are stored as an encrypted yaml file. You can edit them by doing:
@@ -200,7 +211,7 @@ Secrets are stored as an encrypted yaml file. You can edit them by doing:
 bundle exec rails credentials:edit
 ```
 
-This only works properly if one od the developers sent you the `/config/master.key`
+This only works properly if one of the developers sent you the `/config/master.key`
 file.
 
 [Foreman](https://rubygems.org/gems/foreman) will take care of the actual rails
