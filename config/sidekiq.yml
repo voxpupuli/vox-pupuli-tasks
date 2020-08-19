@@ -1,5 +1,6 @@
 :logfile: log/sidekiq.log
+:max_retries: 0
 :schedule:
   repo_status:
-    every: '6h'
+    every: "6h"
     class: IndexReposWorker
