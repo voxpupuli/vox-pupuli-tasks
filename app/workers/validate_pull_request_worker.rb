@@ -10,7 +10,10 @@ class ValidatePullRequestWorker
 
     queue = Sidekiq::Queue.new('default')
     queue.each do |job|
-      return(false) if (job.args.sort == this_args.sort) && (job.item['class'] == name)
+      if (job.args.sort == this_args.sort) && (job.item['class'] == name)
+        Raven.capture_message('Duplicate Job, discarding', extra: { id: id, worker: name })
+        return false
+      end
     end
     super(id)
   end
