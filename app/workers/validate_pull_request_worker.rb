@@ -3,6 +3,18 @@
 class ValidatePullRequestWorker
   include Sidekiq::Worker
 
+  def self.perform_async(id)
+    this_args = method(__method__).parameters.map do |_, name|
+      binding.local_variable_get(name)
+    end
+
+    queue = Sidekiq::Queue.new('default')
+    queue.each do |job|
+      return(false) if (job.args.sort == this_args.sort) && (job.item['class'] == name)
+    end
+    super(id)
+  end
+
   ##
   # As validation may take a bit more time we do it async.
   # This worker is not meant to hold any logic but only trigger the
