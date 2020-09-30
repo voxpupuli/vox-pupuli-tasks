@@ -227,6 +227,7 @@ class PullRequest < ApplicationRecord
       ensure_label_is_detached(label)
       update(eligible_for_ci_comment: true)
     when 'pending'
+      RefreshPullRequestWorker.perform_in(5.minutes.from_now, repository.name, number)
       Raven.capture_message('pending PR status', extra: { state: state, status: status, repo: repository.github_url, title: title })
       true
     when nil
