@@ -349,27 +349,7 @@ bundle exec rubocop --auto-gen-config
 Among all the stuff we validate is also a check for supported operating systems
 in the `metadata.json` file in a Puppet module. Sometimes a new version
 [is released](https://lists.centos.org/pipermail/centos-announce/2019-September/023449.html).
-
-We need to update the checks. Currently, we need to adjust one place:
-
-```diff
-diff --git a/config/voxpupuli.yml b/config/voxpupuli.yml
-index b32a207..c4c3627 100644
---- a/config/voxpupuli.yml
-+++ b/config/voxpupuli.yml
-@@ -25,7 +25,6 @@ support_ranges:
-     - "18.04"
-     - "20.04"
-   debian:
--    - 8
-     - 9
-     - 10
-   centos:
-```
-
-Based on those arrays of version numbers, the application parses the
-metadata.json and checks if a module supports EOL operating systems or doesn't
-support the latest versions.
+This is checked via [puppet_metadata](https://github.com/voxpupuli/puppet_metadata).
 
 ## Flowchart
 

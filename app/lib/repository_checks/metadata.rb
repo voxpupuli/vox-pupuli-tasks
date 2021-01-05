@@ -2,20 +2,27 @@
 
 class Metadata < RepositoryCheckBase
   def perform
-    metadata = Github.get_file(repo.full_name, 'metadata.json')
+    raw_metadata = Github.get_file(repo.full_name, 'metadata.json')
 
-    if metadata
-      submit_result :metadata_valid, true
-    else
+    if not raw_metadata
       submit_result :metadata_valid, false
       return
     end
 
-    metadata = Oj.load(metadata)
+    begin
+      metadata = PuppetMetadata::Metadata.new(Oj.load(raw_metadata))
+    rescue PuppetMetadata::InvalidMetadataException
+      submit_result :metadata_valid, false
+      return
+    end
+
+    submit_result :metadata_valid, true
 
     check_puppet_version(metadata)
 
-    if metadata['operatingsystem_support']
+    # TODO: Not entirely the same. Is it also useful? extlib is functions only
+    # and shouldn't list any OS
+    if metadata.operatingsystems.any?
       submit_result :with_operatingsystem_support, true
     else
       submit_result :with_operatingsystem_support, false
@@ -26,43 +33,23 @@ class Metadata < RepositoryCheckBase
   end
 
   def check_operating_system_support(metadata)
-    metadata['operatingsystem_support'].each do |os|
-      os_type = os['operatingsystem']
+    metadata.operatingsystems.each do |os, releases|
+      submit_result("supports_only_current_#{os.downcase}",
+                    releases&.any? && PuppetMetadata::OperatingSystem.eol?(os, releases.first))
 
-      supported_versions = calculate_supported_versions(os_type, os)
-      support_range = calculate_support_range(os_type)
-
-      submit_result("supports_only_current_#{os_type.downcase}",
-                    supported_versions.min > support_range.min)
-      submit_result("supports_latest_#{os_type.downcase}",
-                    supported_versions.max == support_range.max)
-    rescue NameError
-      next
-    end
-  end
-
-  def calculate_support_range(os_type)
-    if os_type == 'Ubuntu'
-      "#{os_type.upcase}_SUPPORT_RANGE".constantize
-    else
-      "#{os_type.upcase}_SUPPORT_RANGE".constantize.all_i
-    end
-  end
-
-  def calculate_supported_versions(os_type, os)
-    if os_type == 'Ubuntu'
-      os['operatingsystemrelease']
-    else
-      os['operatingsystemrelease'].all_i
+      # TODO latest_release can be nil
+      submit_result("supports_latest_#{os.downcase}",
+                    releases&.include?(PuppetMetadata::OperatingSystem.latest_release))
     end
   end
 
   def check_puppet_version(metadata)
-    version_requirement = metadata['requirements'][0]['version_requirement']
-
-    submit_result :correct_puppet_version_range, PUPPET_SUPPORT_RANGE == version_requirement
-    submit_result :with_puppet_version_range, true
-  rescue NoMethodError
-    submit_result :with_puppet_version_range, false
+    version_requirement = metadata.requirements['puppet']
+    if version_requirement
+      submit_result :correct_puppet_version_range, PUPPET_SUPPORT_RANGE == version_requirement.to_s
+      submit_result :with_puppet_version_range, true
+    else
+      submit_result :with_puppet_version_range, false
+    end
   end
 end

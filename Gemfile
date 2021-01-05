@@ -39,6 +39,8 @@ gem 'redis'
 
 gem 'puppet_forge'
 
+gem 'puppet_metadata', '~> 0.1'
+
 gem 'octokit'
 gem 'omniauth-github'
 
