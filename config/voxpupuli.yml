@@ -21,7 +21,6 @@ puppet_support_range: ">= 6.1.0 < 8.0.0"
 # Updates here probably also need an update here: config/locales/*.yml
 support_ranges:
   ubuntu:
-    - "16.04"
     - "18.04"
     - "20.04"
   debian:
