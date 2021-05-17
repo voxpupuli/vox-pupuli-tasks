@@ -32,6 +32,7 @@ support_ranges:
   freebsd:
     - 11
     - 12
+    - 13
   fedora:
     - 30
     - 31
