@@ -15,6 +15,8 @@ jobs:
   test:
 
     runs-on: ubuntu-latest
+    env:
+      BUNDLE_WITHOUT: development
 
     steps:
     - uses: actions/checkout@v2
@@ -22,18 +24,7 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: 2.7
-    - uses: actions/cache@v2
-      with:
-        path: vendor/bundle
-        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-gems-
-    - name: Install dependencies
-      run: |
-        bundle config set path vendor/bundle
-        bundle config set jobs $(nproc)
-        bundle config set without development
-        bundle install
+        bundler-cache: true
     - name: Run tests
       run: bundle exec rake rubocop
     - name: Set up Docker Buildx
