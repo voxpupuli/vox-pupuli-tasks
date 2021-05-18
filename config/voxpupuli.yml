@@ -16,24 +16,23 @@ legacy_or_broken_nobody_knows:
   - puppet-mode
 
 # define some versions that we want to match against
-puppet_support_range: ">= 5.5.8 < 7.0.0"
+puppet_support_range: ">= 6.1.0 < 8.0.0"
 
 # Updates here probably also need an update here: config/locales/*.yml
 support_ranges:
   ubuntu:
-    - "16.04"
     - "18.04"
     - "20.04"
   debian:
     - 9
     - 10
   centos:
-    - 6
     - 7
     - 8
   freebsd:
     - 11
     - 12
+    - 13
   fedora:
     - 30
     - 31
