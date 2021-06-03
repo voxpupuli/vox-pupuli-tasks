@@ -19,9 +19,9 @@ jobs:
       BUNDLE_WITHOUT: development
 
     steps:
+    - uses: actions/checkout@v2
     - name: create git version file
       run: git describe --always > VERSION
-    - uses: actions/checkout@v2
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
