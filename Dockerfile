@@ -10,8 +10,6 @@ RUN mkdir /vpt
 WORKDIR /vpt
 ADD . /vpt
 
-RUN git describe --always > VERSION
-
 RUN gem install bundler \
   && bundle config set deployment 'true' \
   && bundle config set path 'vendor/bundle' \
