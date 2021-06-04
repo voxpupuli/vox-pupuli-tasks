@@ -8,6 +8,21 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+OpenTelemetry::SDK.configure do |c|
+  require 'pg'
+  c.use 'OpenTelemetry::Instrumentation::PG'
+  c.use 'OpenTelemetry::Instrumentation::Rails'
+  c.use 'OpenTelemetry::Instrumentation::Sidekiq'
+
+  c.add_span_processor(
+    OpenTelemetry::SDK::Trace::Export::BatchSpanProcessor.new(
+      OpenTelemetry::Exporter::Jaeger::AgentExporter.new(host: '127.0.0.1', port: 6831)
+      # Alternatively, for the collector exporter:
+      # exporter: OpenTelemetry::Exporter::Jaeger::CollectorExporter.new(endpoint: 'http://192.168.0.1:14268/api/traces')
+    )
+  )
+end
+
 module VoxPupuliTasks
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.

@@ -46,6 +46,13 @@ gem 'lograge'
 
 gem 'bootsnap', '>= 1.1.0', require: false
 
+gem 'opentelemetry-api'
+gem 'opentelemetry-exporter-jaeger'
+gem 'opentelemetry-instrumentation-pg'
+gem 'opentelemetry-instrumentation-rails'
+gem 'opentelemetry-instrumentation-sidekiq'
+gem 'opentelemetry-sdk'
+
 group :production do
   gem 'pg'
 end

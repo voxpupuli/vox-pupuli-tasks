@@ -200,6 +200,8 @@ bundle exec rails assets:precompile
 rm config/credentials.yml.enc
 bundle exec rails credentials:edit
 docker-compose up -d postgres
+# only required for local debugging
+docker-compose up -d jaeger
 # db:create will fail if the database already exists, go to the next step if that is the case
 RAILS_ENV=development bundle exec rails db:create
 RAILS_ENV=development bundle exec rails db:migrate
@@ -232,6 +234,8 @@ redis:
 
 [Foreman](https://rubygems.org/gems/foreman) will take care of the actual rails
 application, but it will also start [sidekiq](https://github.com/mperham/sidekiq#sidekiq).
+
+Connect to the [local jaeger instance](http://localhost:16686) to see traces of what's going on.
 
 ## Production Setup
 
