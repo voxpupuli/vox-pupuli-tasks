@@ -190,7 +190,9 @@ and yarn available, also redis needs to be started):
 ```sh
 git clone git@github.com:voxpupuli/vox-pupuli-tasks.git
 cd vox-pupuli-tasks
-bundle install --jobs $(nproc) --with development test --path vendor/bundle
+bundle config set path 'vendor/bundle'
+bundle config set with 'development test'
+bundle install
 yarn install --frozen-lockfile --non-interactive
 export SECRET_KEY_BASE=$(bundle exec rails secret)
 bundle exec rails assets:precompile
@@ -198,10 +200,13 @@ bundle exec rails assets:precompile
 rm config/credentials.yml.enc
 bundle exec rails credentials:edit
 docker-compose up -d postgres
+# only required for local debugging
+docker-compose up -d jaeger
 # db:create will fail if the database already exists, go to the next step if that is the case
 RAILS_ENV=development bundle exec rails db:create
 RAILS_ENV=development bundle exec rails db:migrate
-docker-compose up -d sidekiq
+bundle exec sidekiq
+# in a new shell
 bundle exec rails s -b '0.0.0.0'
 ```
 
@@ -214,8 +219,23 @@ bundle exec rails credentials:edit
 This only works properly if one of the developers sent you the `/config/master.key`
 file.
 
+For a basic development setup you need at least these values:
+
+```yaml
+# Used as the base secret for all MessageVerifiers in Rails, including the one protecting cookies.
+secret_key_base: <existing value from `rails secret`>
+
+redis:
+  development:
+    host: localhost
+    port: 6379
+    db: 9
+```
+
 [Foreman](https://rubygems.org/gems/foreman) will take care of the actual rails
 application, but it will also start [sidekiq](https://github.com/mperham/sidekiq#sidekiq).
+
+Connect to the [local jaeger instance](http://localhost:16686) to see traces of what's going on.
 
 ## Production Setup
 
@@ -284,6 +304,20 @@ Team.
 ### `Webhook URL`
 
 Events will POST to this URL. For our instance this is [https://voxpupu.li/incoming/github](https://voxpupu.li/incoming/github)
+
+As of 2021-06, [webhooks](https://docs.github.com/en/developers/webhooks-and-events/webhooks/creating-webhooks)
+can only be set up for organisations or individual repos. Set up the webhook
+for your organisation as described in the linked docs. Make sure to select content
+type "application/json" and "Send me **everything**". As "Secret" create a secure
+random string and also configure it in `rails credentials:edit` as
+
+```yaml
+github:
+  development:
+    webhook_secret: <secure random string>
+    client_id: <from your OAuth registration>
+    client_secret: <from your OAuth registration>
+```
 
 ### Permissions
 
