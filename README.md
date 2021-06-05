@@ -191,7 +191,7 @@ and yarn available, also redis needs to be started):
 git clone git@github.com:voxpupuli/vox-pupuli-tasks.git
 cd vox-pupuli-tasks
 bundle install --jobs $(nproc) --with development test --path vendor/bundle
-bundle exec yarn install --frozen-lockfile --non-interactive
+yarn install --frozen-lockfile --non-interactive
 export SECRET_KEY_BASE=$(bundle exec rails secret)
 bundle exec rails assets:precompile
 # removing the credentials.yml.enc file is required unless you were given the matching master.key by the developers
