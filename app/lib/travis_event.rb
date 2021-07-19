@@ -2,6 +2,7 @@
 
 class TravisEvent
   attr_reader :processor
+
   delegate :process, to: :processor
 
   ##
