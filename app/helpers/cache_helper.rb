@@ -2,7 +2,7 @@
 
 module CacheHelper
   SEED        = 'Eibae1Ox'
-  APP_NAME    = Rails.application.class.parent_name
+  APP_NAME    = 'VoxPupuliTasks'
   PREFIX      = "#{APP_NAME}::cache::#{SEED}"
   DEFAULT_TTL = 6.hours
 

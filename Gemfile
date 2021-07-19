@@ -7,7 +7,7 @@ gem 'rack', github: 'rack/rack', ref: 'f690bb71425aa31d7b9b3113829af773950d8ab5'
 
 gem 'execjs'
 gem 'puma', '~> 4.3'
-gem 'rails', '~> 6.0.3'
+gem 'rails', '~> 6.1.4'
 gem 'sass-rails', '~> 6.0'
 gem 'uglifier', '>= 1.3.0'
 
@@ -15,7 +15,7 @@ gem 'coffee-rails', '~> 5.0'
 gem 'jbuilder', '~> 2.5'
 
 gem 'chartkick'
-gem 'fomantic-ui-sass', '2.8.4'
+gem 'fomantic-ui-sass', '2.8.7'
 gem 'haml-rails'
 gem 'react-rails'
 gem 'redcarpet'
@@ -77,7 +77,7 @@ end
 group :test do
   gem 'capybara', '>= 2.15'
   gem 'chromedriver-helper'
-  gem 'rubocop', '~> 0.92.0'
+  gem 'rubocop', '~> 1.18'
   gem 'rubocop-rails'
   gem 'selenium-webdriver'
 end

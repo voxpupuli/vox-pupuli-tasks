@@ -27,19 +27,19 @@ class Repository < ApplicationRecord
 
   def actions_needed
     @actions_needed ||= begin
-                          actions = []
-                          data = JSON.parse(RedisClient.client.get('repo_status_data').to_s)
-                          data.each do |action, repos|
-                            actions << action if repos.include? name
-                          end
-                          actions
-                        rescue JSON::ParserError
-                          nil
-                        end
+      actions = []
+      data = JSON.parse(RedisClient.client.get('repo_status_data').to_s)
+      data.each do |action, repos|
+        actions << action if repos.include? name
+      end
+      actions
+    rescue JSON::ParserError
+      nil
+    end
   end
 
   def github_url
-    'https://github.com/' + full_name
+    "https://github.com/#{full_name}"
   end
 
   ##
@@ -76,12 +76,10 @@ class Repository < ApplicationRecord
   #  and create it in our database
   #
   def labels
-    @labels ||= begin
-      Github.client.labels("voxpupuli/#{name}").map do |label|
-        Label.find_or_create_by!(name: label[:name],
-                                 color: label[:color],
-                                 description: label[:description])
-      end
+    @labels ||= Github.client.labels("voxpupuli/#{name}").map do |label|
+      Label.find_or_create_by!(name: label[:name],
+                               color: label[:color],
+                               description: label[:description])
     end
   end
 

@@ -23,12 +23,12 @@ class PullRequest < ApplicationRecord
       # However, https://github.com/search does
       repo_id = gh_pull_request['base']['repo']['id']
       status = begin
-                statuses = Github.client.combined_status(repo_id, gh_pull_request['head']['sha'])
-                statuses['state']
-               rescue StandardError => e
-                 Raven.capture_message('validate status', extra: { trace: e.backtrace, error: e.inspect, github_data: gh_pull_request.to_h })
-                 nil
-              end
+        statuses = Github.client.combined_status(repo_id, gh_pull_request['head']['sha'])
+        statuses['state']
+      rescue StandardError => e
+        Raven.capture_message('validate status', extra: { trace: e.backtrace, error: e.inspect, github_data: gh_pull_request.to_h })
+        nil
+      end
       pull_request.number           = gh_pull_request['number']
       pull_request.state            = gh_pull_request['state']
       pull_request.title            = gh_pull_request['title']
@@ -133,10 +133,10 @@ class PullRequest < ApplicationRecord
   def add_comment(text)
     # TODO: why can request be nil and what is request
     req = begin
-            request
-          rescue StandardError
-            nil
-          end
+      request
+    rescue StandardError
+      nil
+    end
 
     Raven.capture_message('Added a comment', extra: { text: text, repo: repository.github_url, title: title, request: req })
     Github.client.add_comment(gh_repository_id, number, text)

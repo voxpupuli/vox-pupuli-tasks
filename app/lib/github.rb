@@ -16,7 +16,7 @@ class Github
   end
 
   def self.get_file(repo, path)
-    client.contents(repo, path: path, headers: { 'Accept': 'application/vnd.github.v3.raw' })
+    client.contents(repo, path: path, headers: { Accept: 'application/vnd.github.v3.raw' })
   rescue Octokit::NotFound
     false
   end
