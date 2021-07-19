@@ -6,12 +6,12 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 gem 'rack', github: 'rack/rack', ref: 'f690bb71425aa31d7b9b3113829af773950d8ab5'
 
 gem 'execjs'
-gem 'puma', '~> 3.12'
+gem 'puma', '~> 4.3'
 gem 'rails', '~> 6.0.3'
-gem 'sass-rails', '~> 5.0'
+gem 'sass-rails', '~> 6.0'
 gem 'uglifier', '>= 1.3.0'
 
-gem 'coffee-rails', '~> 4.2'
+gem 'coffee-rails', '~> 5.0'
 gem 'jbuilder', '~> 2.5'
 
 gem 'chartkick'
@@ -20,10 +20,10 @@ gem 'haml-rails'
 gem 'react-rails'
 gem 'redcarpet'
 
-gem 'sidekiq', '~> 5.0'
+gem 'sidekiq', '~> 6.0'
 gem 'sidekiq-scheduler'
 
-gem 'sentry-raven'
+gem 'sentry-ruby'
 
 gem 'jquery-datatables'
 gem 'jquery-rails'
@@ -68,7 +68,7 @@ group :development do
   gem 'foreman'
   gem 'haml-lint'
   gem 'irb'
-  gem 'listen', '>= 3.0.5', '< 3.2'
+  gem 'listen'
   gem 'pry-rails'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
