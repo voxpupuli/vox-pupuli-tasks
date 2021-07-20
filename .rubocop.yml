@@ -3,6 +3,7 @@ inherit_from: .rubocop_todo.yml
 require: rubocop-rails
 
 AllCops:
+  NewCops: enable
   Exclude:
     - db/**/*
     - vendor/**/*

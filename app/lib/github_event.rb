@@ -2,6 +2,7 @@
 
 class GithubEvent
   attr_reader :processor
+
   delegate :process, to: :processor
 
   ##
