@@ -15,7 +15,7 @@ gem 'coffee-rails', '~> 5.0'
 gem 'jbuilder', '~> 2.5'
 
 gem 'chartkick'
-gem 'fomantic-ui-sass', '2.8.7'
+gem 'fomantic-ui-sass', '2.8.7.1'
 gem 'haml-rails'
 gem 'react-rails'
 gem 'redcarpet'
