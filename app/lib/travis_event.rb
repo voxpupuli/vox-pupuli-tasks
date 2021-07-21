@@ -12,7 +12,7 @@ class TravisEvent
   # the next steps. If not kick off a Sentry error.
 
   def initialize(payload)
-    Raven.capture_message('Unknown Travis Event Received', extra: payload)
+    Sentry.capture_message('Unknown Travis Event Received', extra: payload)
     # case payload['type']
     # when 'push'
     #  TravisEvent::Push.new(payload)
@@ -23,7 +23,7 @@ class TravisEvent
     # when 'api'
     #  TravisEvent::Push.new(payload)
     # else
-    #  Raven.capture_message("Unknown Hook Received: #{payload['type']}", extra: payload)
+    #  Sentry.capture_message("Unknown Hook Received: #{payload['type']}", extra: payload)
     # end
   end
 end
