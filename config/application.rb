@@ -35,7 +35,7 @@ module VoxPupuliTasks
     # the framework and any gems in your application.
 
     if Rails.application.credentials.sentry
-      Sentry.init do |config|
+      Raven.configure do |config|
         config.dsn = Rails.application.credentials.sentry[Rails.env.to_sym]
       end
     end
