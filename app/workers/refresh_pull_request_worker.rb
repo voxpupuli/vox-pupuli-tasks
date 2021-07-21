@@ -14,7 +14,7 @@ class RefreshPullRequestWorker
         return false
       end
     end
-    super(interval, args)
+    super(interval, *args)
   end
 
   def perform(repo, number)
