@@ -341,7 +341,7 @@ GEM
       railties (>= 3.2)
       tilt
     redcarpet (3.5.1)
-    redis (4.3.1)
+    redis (4.1.4)
     regexp_parser (2.1.1)
     reline (0.2.6)
       io-console (~> 0.5)
@@ -390,10 +390,11 @@ GEM
     sentry-raven (3.1.2)
       faraday (>= 1.0)
     sexp_processor (4.15.3)
-    sidekiq (6.2.1)
-      connection_pool (>= 2.2.2)
+    sidekiq (5.2.9)
+      connection_pool (~> 2.2, >= 2.2.2)
       rack (~> 2.0)
-      redis (>= 4.2.0)
+      rack-protection (>= 1.5.0)
+      redis (>= 3.3.5, < 4.2)
     sidekiq-scheduler (3.1.0)
       e2mmap
       redis (>= 3, < 5)
@@ -482,7 +483,7 @@ DEPENDENCIES
   sass-rails (~> 6.0)
   selenium-webdriver
   sentry-raven
-  sidekiq (~> 6.0)
+  sidekiq (< 6)
   sidekiq-scheduler
   spring
   spring-watcher-listen (~> 2.0.0)
