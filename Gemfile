@@ -41,7 +41,7 @@ gem 'puppet_forge'
 
 gem 'octokit'
 gem 'omniauth-github'
-gem "omniauth-rails_csrf_protection"
+gem 'omniauth-rails_csrf_protection'
 
 gem 'lograge'
 
