@@ -40,7 +40,7 @@ class IncomingController < ApplicationController
 
     return if Rack::Utils.secure_compare(signature, request.env['HTTP_X_HUB_SIGNATURE'])
 
-    Sentry.capture_message('Invalid webhook signature')
+    Raven.capture_message('Invalid webhook signature')
     halt 500, 'invalid signature'
   end
 end

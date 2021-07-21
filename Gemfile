@@ -23,7 +23,7 @@ gem 'redcarpet'
 gem 'sidekiq', '~> 6.0'
 gem 'sidekiq-scheduler'
 
-gem 'sentry-ruby'
+gem 'sentry-raven'
 
 gem 'jquery-datatables'
 gem 'jquery-rails'
