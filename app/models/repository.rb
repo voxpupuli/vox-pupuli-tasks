@@ -52,9 +52,9 @@ class Repository < ApplicationRecord
     Github.client.add_label(github_id, label.name, label.color)
 
     Sentry.capture_message('Attached a label to an repository',
-                          extra: { label_color: label.color,
-                                   label_name: label.name,
-                                   repo: github_id })
+                           extra: { label_color: label.color,
+                                    label_name: label.name,
+                                    repo: github_id })
   end
 
   ##
@@ -64,9 +64,9 @@ class Repository < ApplicationRecord
     Github.client.delete_label!(github_id, label.name)
 
     Sentry.capture_message('Detached a label from an repository',
-                          extra: { label_color: label.color,
-                                   label_name: label.name,
-                                   repo: github_id })
+                           extra: { label_color: label.color,
+                                    label_name: label.name,
+                                    repo: github_id })
   rescue Octokit::NotFound
     true
   end
