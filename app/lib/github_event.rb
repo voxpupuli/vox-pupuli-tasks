@@ -9,7 +9,7 @@ class GithubEvent
   # The GithubEvent handler checks which type of event we are dealing with.
   #
   # If it is a known event, create a specific handler and let it take care of
-  # the next steps. If not kick off a Sentry error.
+  # the next steps. If not kick off a Raven error.
 
   def initialize(payload, type)
     known_but_ignoreable_events = %w[
@@ -33,13 +33,13 @@ class GithubEvent
       # Ignore events which are triggered by the bot
       return if payload.dig('sender', 'id').to_i == 53_702_691
 
-      Sentry.capture_message("Got github event for pr #{payload['number']}", extra: { payload: payload })
+      Raven.capture_message("Got github event for pr #{payload['number']}", extra: { payload: payload })
 
       @processor = GithubEvent::PullRequest.new(payload) if Repository.notably? payload['repository']['name']
     when *known_but_ignoreable_events
       true
     else
-      Sentry.capture_message("Unknown Hook Received: #{type}", extra: payload)
+      Raven.capture_message("Unknown Hook Received: #{type}", extra: payload)
     end
   end
 end
