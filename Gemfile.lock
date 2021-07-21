@@ -245,6 +245,9 @@ GEM
     omniauth-oauth2 (1.7.1)
       oauth2 (~> 1.4)
       omniauth (>= 1.9, < 3)
+    omniauth-rails_csrf_protection (1.0.0)
+      actionpack (>= 4.2)
+      omniauth (~> 2.0)
     opentelemetry-api (0.17.0)
     opentelemetry-common (0.17.0)
       opentelemetry-api (~> 0.17.0)
@@ -462,6 +465,7 @@ DEPENDENCIES
   octokit
   oj
   omniauth-github
+  omniauth-rails_csrf_protection
   opentelemetry-api
   opentelemetry-exporter-jaeger
   opentelemetry-instrumentation-pg
