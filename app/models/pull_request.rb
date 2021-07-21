@@ -26,7 +26,7 @@ class PullRequest < ApplicationRecord
         statuses = Github.client.combined_status(repo_id, gh_pull_request['head']['sha'])
         statuses['state']
       rescue StandardError => e
-        Raven.capture_message('validate status', extra: { trace: e.backtrace, error: e.inspect, github_data: gh_pull_request.to_h })
+        Sentry.capture_message('validate status', extra: { trace: e.backtrace, error: e.inspect, github_data: gh_pull_request.to_h })
         nil
       end
       pull_request.number           = gh_pull_request['number']
@@ -91,7 +91,7 @@ class PullRequest < ApplicationRecord
 
     response = Github.client.add_labels_to_an_issue(gh_repository_id, number, [label.name])
 
-    Raven.capture_message('Attached a label to an issue', extra: { label: label, repo: repository.github_url, title: title })
+    Sentry.capture_message('Attached a label to an issue', extra: { label: label, repo: repository.github_url, title: title })
     response
   end
 
@@ -101,7 +101,7 @@ class PullRequest < ApplicationRecord
   def ensure_label_is_detached(label)
     response = Github.client.remove_label(gh_repository_id, number, label.name)
 
-    Raven.capture_message('Detached a label from an issue', extra: { label: label, repo: repository.github_url, title: title })
+    Sentry.capture_message('Detached a label from an issue', extra: { label: label, repo: repository.github_url, title: title })
     response
   rescue Octokit::NotFound
     true
@@ -138,7 +138,7 @@ class PullRequest < ApplicationRecord
       nil
     end
 
-    Raven.capture_message('Added a comment', extra: { text: text, repo: repository.github_url, title: title, request: req })
+    Sentry.capture_message('Added a comment', extra: { text: text, repo: repository.github_url, title: title, request: req })
     Github.client.add_comment(gh_repository_id, number, text)
   end
 
@@ -228,14 +228,14 @@ class PullRequest < ApplicationRecord
       update(eligible_for_ci_comment: true)
     when 'pending'
       RefreshPullRequestWorker.perform_in(5.minutes.from_now, repository.name, number)
-      Raven.capture_message('pending PR status', extra: { state: state, status: status, repo: repository.github_url, title: title })
+      Sentry.capture_message('pending PR status', extra: { state: state, status: status, repo: repository.github_url, title: title })
       true
     when nil
       # it's not really clear if the status is ever nil. if so, we should log it to decide if we need to act here
-      Raven.capture_message('nil PR status', extra: { state: state, status: status, repo: repository.github_url, title: title })
+      Sentry.capture_message('nil PR status', extra: { state: state, status: status, repo: repository.github_url, title: title })
       return false
     else
-      Raven.capture_message('Unknown PR state /o\\', extra: { state: state, status: status, repo: repository.github_url, title: title })
+      Sentry.capture_message('Unknown PR state /o\\', extra: { state: state, status: status, repo: repository.github_url, title: title })
     end
 
     true
