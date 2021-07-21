@@ -27,7 +27,7 @@
               = semantic_icon(:cogs)
               Background Jobs
           - if current_user.blank?
-            = link_to '/auth/github', class: 'item' do
+            = link_to '/auth/github', class: 'item', method: :post do
               = semantic_icon(:github)
               Log in
           - else
