@@ -32,10 +32,10 @@
             .right.floated.author
               - if value
                 passed
-                %i.icon.green.check
+                = semantic_icon(:green, :check)
               - else
                 failed
-                %i.icon.red.times
+                = semantic_icon(:red, :times)
 
 %h3.ui.header Open Pull Requests
 .ui.fluid.styled.accordion
