@@ -21,6 +21,7 @@
     - [Merge Conflicts - Milestone 1](#merge-conflicts---milestone-1)
     - [Sync GitHub Labels](#sync-github-labels)
   - [Local Setup](#local-setup)
+    - [Dry Run](#dry-run)
   - [Production Setup](#production-setup)
     - [Cerebro](#cerebro)
     - [Elasticsearch](#elasticsearch)
@@ -236,6 +237,13 @@ redis:
 application, but it will also start [sidekiq](https://github.com/mperham/sidekiq#sidekiq).
 
 Connect to the [local jaeger instance](http://localhost:16686) to see traces of what's going on.
+
+### Dry Run
+
+> Experimental! It is very likely that not all write requests are skipped yet!
+
+You can use the environment variable `DRY_RUN` to skip write requests to GitHub.
+This will log to `log/dry_run.log` if a write has been skipped because of the flag.
 
 ## Production Setup
 
