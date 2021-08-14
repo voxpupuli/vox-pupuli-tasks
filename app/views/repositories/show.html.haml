@@ -16,7 +16,7 @@
   .sub.header
     = @repository.description
 
-.ui.cards
+.ui.four.cards
   - @repository.current_status.checks.each do |name, value|
     .ui.card{class: (value ? 'green' : 'red')}
       .content
@@ -27,6 +27,14 @@
               - I18n.t!("check_descriptions.#{name}")
             - rescue I18n::MissingTranslationData
               - 'No translation'
+      .extra.content
+        .right.floated.author
+          - if value
+            passed
+            %i.icon.green.check
+          - else
+            failed
+            %i.icon.red.times
 
 %h3.ui.header Open Pull Requests
 .ui.fluid.styled.accordion
