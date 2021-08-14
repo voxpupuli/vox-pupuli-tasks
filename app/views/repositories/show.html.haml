@@ -3,16 +3,6 @@
     = semantic_icon(:github)
     GitHub
   = @repository.name
-  %span.ui.basic.tiny.labels
-    .ui.label
-      = semantic_icon(:star)
-      = @repository.stars
-    .ui.label
-      = semantic_icon(:eye)
-      = @repository.watchers
-    .ui.label
-      = semantic_icon(:exclamation, :mark)
-      = @repository.open_issues_count
   .sub.header
     = @repository.description
 
