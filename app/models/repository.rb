@@ -49,6 +49,11 @@ class Repository < ApplicationRecord
   def ensure_label_exists(label)
     Github.client.label(github_id, label.name)
   rescue Octokit::NotFound
+    if ENV['DRY_RUN']
+      DRY_LOGGER.info("Would create #{label.name} in #{full_name}")
+      return
+    end
+
     Github.client.add_label(github_id, label.name, label.color)
 
     Raven.capture_message('Attached a label to an repository',
@@ -61,6 +66,10 @@ class Repository < ApplicationRecord
   #  Delete the given Label from the Repository
   #
   def ensure_label_missing(label)
+    if ENV['DRY_RUN']
+      DRY_LOGGER.info("Would delete #{label.name} in #{full_name}")
+      return
+    end
     Github.client.delete_label!(github_id, label.name)
 
     Raven.capture_message('Detached a label from an repository',
@@ -108,6 +117,10 @@ class Repository < ApplicationRecord
   #
   def attach_missing_labels
     missing_labels.each do |label|
+      if ENV['DRY_RUN']
+        DRY_LOGGER.info("Would attach #{label.name} to #{full_name}")
+        next
+      end
       ensure_label_exists(label)
     end
   end
@@ -129,6 +142,11 @@ class Repository < ApplicationRecord
 
       next unless config_label
       next if (label.color == config_label.color) && (label.description == config_label.description)
+
+      if ENV['DRY_RUN']
+        DRY_LOGGER.info("Would update github label #{config_label.name}")
+        next
+      end
 
       Github.client.update_label(github_id,
                                  config_label.name,

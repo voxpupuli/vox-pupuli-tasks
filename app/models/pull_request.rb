@@ -85,6 +85,11 @@ class PullRequest < ApplicationRecord
   #  If the list does not include the given Label we attach it
 
   def ensure_label_is_attached(label)
+    if ENV['DRY_RUN']
+      DRY_LOGGER.info("Would attach label #{label.name} from #{title} in #{repository.full_name}")
+      return
+    end
+
     repository.ensure_label_exists(label)
     attached_labels = Github.client.labels_for_issue(gh_repository_id, number)
     return if attached_labels.any? { |attached_label| attached_label['name'] == label.name }
@@ -99,6 +104,11 @@ class PullRequest < ApplicationRecord
   #  We simply remove the given Label if it exists
 
   def ensure_label_is_detached(label)
+    if ENV['DRY_RUN']
+      DRY_LOGGER.info("Would detach label #{label.name} from #{title} in #{repository.full_name}")
+      return
+    end
+
     response = Github.client.remove_label(gh_repository_id, number, label.name)
 
     Raven.capture_message('Detached a label from an issue', extra: { label: label, repo: repository.github_url, title: title })
@@ -131,6 +141,11 @@ class PullRequest < ApplicationRecord
   ##
   #  Add a comment with the given text
   def add_comment(text)
+    if ENV['DRY_RUN']
+      DRY_LOGGER.info("Would add comment to #{title} in #{repository.full_name}")
+      return
+    end
+
     # TODO: why can request be nil and what is request
     req = begin
       request
