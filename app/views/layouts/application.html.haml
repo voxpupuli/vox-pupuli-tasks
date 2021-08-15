@@ -7,13 +7,12 @@
     = csp_meta_tag
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
-    = stylesheet_link_tag    'https://cdn.jsdelivr.net/gh/Lukas-W/font-logos@v0.11/assets/font-logos.css'
   %body
     .ui.top.large.fixed.menu
       .ui.container
         %a.header.item{style: 'padding: 0px 15px', href: '/'}
           .ui.avatar.image
-            %img.logo{src: 'https://voxpupuli.org/static/images/8bit-vox.png'}
+            = image_tag('8bit-vox.png', class: :logo)
           Vox Pupuli Tasks
         %a.item{href: '/repositories'}
           = semantic_icon(:list)
