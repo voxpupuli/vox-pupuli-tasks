@@ -31,7 +31,7 @@ en:
     in_plumbing: Is in plumbing
     has_modulesync: Is present in voxpupuli/modulesync_config/managed_modules.yml
     synced: Has a .msync.yml file
-    has_secrets: Has a .sync.yml file
+    has_secrets: Has a .sync.yml file with a hash containing '.travis.yml' containing 'secure'.
     released: Is in modulesync_config and in forge releases.
   repo_states:
     modules_without_operatingsystems_support:
