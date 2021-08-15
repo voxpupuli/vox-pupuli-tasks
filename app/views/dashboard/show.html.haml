@@ -48,6 +48,6 @@
   = render partial: 'check_card', locals: {check_title: 'Has PVR', check_name: 'with_puppet_version_range'}
   = render partial: 'check_card', locals: {check_title: 'Correct PVR', check_name: 'correct_puppet_version_range'}
   = render partial: 'check_card', locals: {check_title: 'Has Reference.md', check_name: 'reference_dot_md'}
-  = render partial: 'check_card', locals: {check_title: 'Has secrets', check_name: 'has_secrets'}
+  = render partial: 'check_card', locals: {check_title: 'Valid Sync File', check_name: 'valid_sync_file'}
 
 .ui.basic.segment= area_chart PullRequest.group_by_day(:gh_created_at).count, title: 'Pull requests per day', library: {chart: {zoomType: 'x'}}
