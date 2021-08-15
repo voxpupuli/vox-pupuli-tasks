@@ -10,7 +10,7 @@ class MissingSecrets < RepositoryCheckBase
     else
       submit_result :has_secrets, false
     end
-  rescue StandardError => e
+  rescue StandardError
     submit_result :has_secrets, false
 
     ##
