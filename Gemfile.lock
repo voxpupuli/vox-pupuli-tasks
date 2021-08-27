@@ -72,7 +72,7 @@ GEM
     babel-transpiler (0.7.0)
       babel-source (>= 4.0, < 6)
       execjs (~> 2.0)
-    bootsnap (1.7.7)
+    bootsnap (1.8.0)
       msgpack (~> 1.0)
     builder (3.2.4)
     byebug (11.1.3)
