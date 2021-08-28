@@ -47,3 +47,6 @@
         .ui.small.horizontal.label{style: "background-color: ##{label.color}"}=label.name
     .content
       .ui.segment= markdown(pull_request.body)
+      %a.ui.basic.small.labeled.icon.button{href: pull_request.github_url, target: '_blank'}
+        = semantic_icon(:github, :link)
+        Open PR in GitHub
