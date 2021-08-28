@@ -24,19 +24,17 @@ support_ranges:
     - "18.04"
     - "20.04"
   debian:
-    - 9
     - 10
+    - 11
   centos:
     - 7
     - 8
   freebsd:
-    - 11
     - 12
     - 13
   fedora:
-    - 30
-    - 31
-    - 32
+    - 33
+    - 34
 
 # labels that we would like to have on all repositories
 labels:
