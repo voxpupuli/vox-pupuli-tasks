@@ -12,15 +12,6 @@ class RepoStatusWorker
     end
   end
 
-  def refresh_plumbing_modules
-    data = Github.get_file('voxpupuli/plumbing', 'share/modules')
-    RepoStatusData.plumbing_modules = begin
-      data.split("\n")
-    rescue StandardError
-      []
-    end
-  end
-
   def refresh_forge_releases
     PuppetForge.user_agent = 'VoxPupuli/Vox Pupuli Tasks'
     RepoStatusData.forge_releases = begin
@@ -44,7 +35,6 @@ class RepoStatusWorker
   end
 
   def perform
-    refresh_plumbing_modules
     refresh_managed_modules
     refresh_latest_modulesync_version
     refresh_forge_releases
