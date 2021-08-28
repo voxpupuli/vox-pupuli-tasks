@@ -121,6 +121,7 @@ class PullRequest < ApplicationRecord
   # Only attach a comment if eligible_for_merge_comment is true (The first iteration
   # after the mergeable state changed to false)
   def add_merge_comment
+    return if vpt_config.dig('comment_on', 'needs_rebase') == false
     return unless eligible_for_merge_comment
 
     add_comment(I18n.t('comment.needs_rebase', author: author))
@@ -132,6 +133,7 @@ class PullRequest < ApplicationRecord
   # This logic is required to prevent comments for failure -> pending -> failure
   # Also it prevents duplicate comments
   def add_ci_comment
+    return if vpt_config.dig('comment_on', 'tests_failed') == false
     return unless eligible_for_ci_comment
 
     add_comment(I18n.t('comment.tests_fail', author: author))
