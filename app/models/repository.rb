@@ -185,10 +185,8 @@ class Repository < ApplicationRecord
     if sync_file
       content = YAML.safe_load(sync_file)
       update(vpt_config: content['vpt'].to_h)
-    else
-      if vpt_config.any?
-        update(vpt_config: {})
-      end
+    elsif vpt_config.any?
+      update(vpt_config: {})
     end
   end
 
