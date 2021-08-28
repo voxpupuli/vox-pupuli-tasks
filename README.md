@@ -195,7 +195,10 @@ Example configuration of the current posibilities:
 
 ```yml
 vpt:
-  enabled: false # vpt will ignore this repository completely. default: true
+  enabled: false # vpt will ignore this repository completely if false. default: true
+  comment_on:
+    needs_rebase: false # vpt will post a comment if a pull request gets conflicts with the target branch if true, default: true
+    tests_failed: false # vpt will post a comment if the ci tests enter a failed state if true, default: true
 ```
 
 ## Local Setup
