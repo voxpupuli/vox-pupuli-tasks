@@ -20,6 +20,13 @@ class Repository < ApplicationRecord
 
   ##
   #  Checks if the given Repository name is in our application scope (a module)
+  #
+  #  The config can be a hash containing a 'enabled' key.
+  #  Only if the key explicitly contains false we skip right away, a missing key does default to true.
+  def notably?
+    return false if vpt_config.dig('enabled') == false
+    Repository.notably?(name)
+  end
 
   def self.notably?(name)
     /^puppet-(?!lint)/.match?(name) && LEGACY_OR_BROKEN_NOBODY_KNOWS.exclude?(name)
