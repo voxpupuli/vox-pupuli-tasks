@@ -24,7 +24,8 @@ class Repository < ApplicationRecord
   #  The config can be a hash containing a 'enabled' key.
   #  Only if the key explicitly contains false we skip right away, a missing key does default to true.
   def notably?
-    return false if vpt_config.dig('enabled') == false
+    return false if vpt_config['enabled'] == false
+
     Repository.notably?(name)
   end
 
