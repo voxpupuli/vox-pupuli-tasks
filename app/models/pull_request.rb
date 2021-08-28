@@ -61,6 +61,12 @@ class PullRequest < ApplicationRecord
   end
 
   ##
+  # link to github
+  def github_url
+    repository.github_url + "/pull/#{number}"
+  end
+
+  ##
   # Shortcut to check if the PullRequest is closed
 
   def closed?
