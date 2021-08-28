@@ -8,7 +8,7 @@ class ValidSyncFile < RepositoryCheckBase
     sync_file = Github.get_file(repo.full_name, '.sync.yml')
 
     if sync_file
-      content = YAML.safe_load(secrets_file)
+      content = YAML.safe_load(sync_file)
       submit_result :valid_sync_file, !content['.travis.yml']
     else
       submit_result :valid_sync_file, true
