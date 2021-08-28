@@ -180,7 +180,7 @@ class Repository < ApplicationRecord
   # If there is some content, we set this in the repo to avoid multiple github requests
   # If the file is missing completely, we also remove the config locally.
   def update_vpt_config
-    sync_file = Github.get_file(repo.full_name, '.sync.yml')
+    sync_file = Github.get_file(full_name, '.sync.yml')
 
     if sync_file
       content = YAML.safe_load(sync_file)
