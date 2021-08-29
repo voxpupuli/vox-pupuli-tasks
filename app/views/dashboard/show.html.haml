@@ -36,18 +36,17 @@
           \/
           = @statuses.count
 
-.ui.large.header Plumbing and Syncing
+.ui.large.header Syncing
 .ui.four.cards
-  = render partial: 'check_card', locals: {check_title: :Plumbing, check_name: 'in_plumbing'}
   = render partial: 'check_card', locals: {check_title: 'In Sync', check_name: 'synced'}
   = render partial: 'check_card', locals: {check_title: 'In Modulesync', check_name: 'in_modulesync_repo'}
   = render partial: 'check_card', locals: {check_title: 'Latest msync', check_name: 'latest_modulesync'}
+  = render partial: 'check_card', locals: {check_title: 'Valid Sync File', check_name: 'valid_sync_file'}
 
 .ui.large.header Dependencies
 .ui.four.cards
   = render partial: 'check_card', locals: {check_title: 'Has PVR', check_name: 'with_puppet_version_range'}
   = render partial: 'check_card', locals: {check_title: 'Correct PVR', check_name: 'correct_puppet_version_range'}
   = render partial: 'check_card', locals: {check_title: 'Has Reference.md', check_name: 'reference_dot_md'}
-  = render partial: 'check_card', locals: {check_title: 'Valid Sync File', check_name: 'valid_sync_file'}
 
 .ui.basic.segment= area_chart PullRequest.group_by_day(:gh_created_at).count, title: 'Pull requests per day', library: {chart: {zoomType: 'x'}}
