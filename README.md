@@ -20,6 +20,7 @@
   - [Existing Automatisation](#existing-automatisation)
     - [Merge Conflicts - Milestone 1](#merge-conflicts---milestone-1)
     - [Sync GitHub Labels](#sync-github-labels)
+  - [Configure your module repo](#configure-your-module-repo)
   - [Local Setup](#local-setup)
     - [Dry Run](#dry-run)
   - [Production Setup](#production-setup)
@@ -182,6 +183,23 @@ app searches for labels in repositories with an alias. Matching labels could be
 renamed to the correct one.
 
 The work for this feature is/was tracked in [issue #131](https://github.com/voxpupuli/vox-pupuli-tasks/issues/131).
+
+## Configure your module repo
+> The old list with repos to ignore is still active but will be replaced with the below workflow soon.
+
+Per default VPT does take care of every repo in the voxpupuli group matching `/^puppet-(?!lint)/`.
+
+You can configure VPT on a repository level to override some of the default behavior via the `.sync.yml` file.
+
+Example configuration of the current posibilities:
+
+```yml
+vpt:
+  enabled: false # vpt will ignore this repository completely if false. default: true
+  comment_on:
+    needs_rebase: false # vpt will post a comment if a pull request gets conflicts with the target branch if true, default: true
+    tests_failed: false # vpt will post a comment if the ci tests enter a failed state if true, default: true
+```
 
 ## Local Setup
 

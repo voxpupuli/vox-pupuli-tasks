@@ -20,6 +20,14 @@ class Repository < ApplicationRecord
 
   ##
   #  Checks if the given Repository name is in our application scope (a module)
+  #
+  #  The config can be a hash containing a 'enabled' key.
+  #  Only if the key explicitly contains false we skip right away, a missing key does default to true.
+  def notably?
+    return false if vpt_config['enabled'] == false
+
+    Repository.notably?(name)
+  end
 
   def self.notably?(name)
     /^puppet-(?!lint)/.match?(name) && LEGACY_OR_BROKEN_NOBODY_KNOWS.exclude?(name)
@@ -173,6 +181,21 @@ class Repository < ApplicationRecord
     end
 
     pull_requests.count
+  end
+
+  ##
+  # Within the .sync.yml you can optionally place some vpt config
+  # If there is some content, we set this in the repo to avoid multiple github requests
+  # If the file is missing completely, we also remove the config locally.
+  def update_vpt_config
+    sync_file = Github.get_file(full_name, '.sync.yml')
+
+    if sync_file
+      content = YAML.safe_load(sync_file)
+      update(vpt_config: content['vpt'].to_h)
+    elsif vpt_config.any?
+      update(vpt_config: {})
+    end
   end
 
   def healty?

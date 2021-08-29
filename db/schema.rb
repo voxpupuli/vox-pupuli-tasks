@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_23_173538) do
+ActiveRecord::Schema.define(version: 2021_08_15_140513) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(version: 2020_07_23_173538) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.json "todos", default: {}
+    t.json "vpt_config", default: {}
     t.index ["github_id"], name: "index_repositories_on_github_id", unique: true
     t.index ["name"], name: "index_repositories_on_name", unique: true
   end
