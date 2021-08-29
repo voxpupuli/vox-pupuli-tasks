@@ -1,10 +1,20 @@
-.ui.dividing.header= @check_name.titleize
-.ui.relaxed.divided.list
-  - @repositories.each do |repo|
-    = link_to(repository_path(repo.name), class: :item) do
-      = repo.name
-      .right.floated
-        - if repo.passed_check?(@check_name)
-          .ui.basic.horizontal.green.label success
-        - else
-          .ui.basic.horizontal.red.label failed
+.ui.dividing.massive.header= @check_name.titleize
+%table.ui.celled.table#dttb
+  %thead
+    %th Name
+    %th Description
+    %th Check State
+  %tbody
+    - @repositories.each do |repo|
+      %tr
+        %td= link_to repo.name, repository_path(repo.name), class: 'ui mini basic compact primary button'
+        %td= repo.description
+        %td
+          - if repo.passed_check?(@check_name)
+            .ui.basic.green.mini.compact.button
+              = semantic_icon(:check)
+              success
+          - else
+            .ui.basic.red.mini.compact.button
+              = semantic_icon(:times)
+              failed
