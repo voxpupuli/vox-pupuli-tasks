@@ -48,14 +48,6 @@ Metrics/ParameterLists:
 Metrics/PerceivedComplexity:
   Max: 9
 
-# Offense count: 2
-# Configuration parameters: Include.
-# Include: app/models/**/*.rb
-Rails/HasAndBelongsToMany:
-  Exclude:
-    - 'app/models/label.rb'
-    - 'app/models/pull_request.rb'
-
 # Offense count: 1
 Rails/OutputSafety:
   Exclude:
@@ -73,10 +65,3 @@ Style/Documentation:
 Style/MutableConstant:
   Exclude:
     - 'config/initializers/voxpupuli.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: Mode.
-Style/StringConcatenation:
-  Exclude:
-    - 'app/controllers/incoming_controller.rb'
