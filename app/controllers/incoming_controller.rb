@@ -34,9 +34,8 @@ class IncomingController < ApplicationController
 
   def verify_signature(payload)
     webhook_secret = Rails.application.credentials.github[Rails.env.to_sym][:webhook_secret]
-    signature = 'sha1=' + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'),
-                                                  webhook_secret,
-                                                  payload)
+    sha = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), webhook_secret, payload)
+    signature = "sha1=#{sha}"
 
     return if Rack::Utils.secure_compare(signature, request.env['HTTP_X_HUB_SIGNATURE'])
 

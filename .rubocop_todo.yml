@@ -73,10 +73,3 @@ Style/Documentation:
 Style/MutableConstant:
   Exclude:
     - 'config/initializers/voxpupuli.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: Mode.
-Style/StringConcatenation:
-  Exclude:
-    - 'app/controllers/incoming_controller.rb'
