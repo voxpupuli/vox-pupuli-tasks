@@ -48,14 +48,6 @@ Metrics/ParameterLists:
 Metrics/PerceivedComplexity:
   Max: 9
 
-# Offense count: 2
-# Configuration parameters: Include.
-# Include: app/models/**/*.rb
-Rails/HasAndBelongsToMany:
-  Exclude:
-    - 'app/models/label.rb'
-    - 'app/models/pull_request.rb'
-
 # Offense count: 1
 Rails/OutputSafety:
   Exclude:

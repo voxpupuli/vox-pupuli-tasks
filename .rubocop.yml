@@ -16,3 +16,8 @@ Style/MixinUsage:
   Exclude:
     - 'bin/setup'
     - 'bin/update'
+
+Rails/HasAndBelongsToMany:
+  Exclude:
+    - 'app/models/label.rb'
+    - 'app/models/pull_request.rb'
