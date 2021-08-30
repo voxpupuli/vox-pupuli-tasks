@@ -28,6 +28,8 @@ en:
     reference_dot_md: The repository has a REFERENCE.md. It needs to be generated / puppet-strings documentation is missing.
     with_puppet_version_range: Puppet version range is present in requirements in metadata.json
     correct_puppet_version_range: Supported Puppet version range is %{PUPPET_SUPPORT_RANGE}
+    in_modulesync_repo: Is listed as a module managed using modulesync_config
+    latest_modulesync: Has been synchronized with the latest tagged version of modulesync_config
     has_modulesync: Is present in voxpupuli/modulesync_config/managed_modules.yml
     synced: Has a .msync.yml file
     valid_sync_file: If a (optional) sync file is present, it must not contain a `.travis.yml` entry.
