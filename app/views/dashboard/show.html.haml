@@ -18,7 +18,7 @@
       .content
         - pass_count = @statuses.count{|rs| rs.checks["supports_only_current_#{os.downcase}"]}
         .ui.tiny.header{style: 'padding-bottom: 10px;'}
-          Does not support EOL
+          Supports only current
           %span{data: { tooltip: I18n.t("check_descriptions.supports_only_current", os: os, versions: "#{os.upcase}_SUPPORT_RANGE".constantize.to_sentence), position: 'top center'}}
             %i.icon.question.mark.circle.outline
         %span.ui.huge.text{class: color_by_passed_checks(pass_count, relevant_status_count)}= pass_count

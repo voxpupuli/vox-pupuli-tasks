@@ -2,7 +2,7 @@
   .content
     .ui.large.header
       = check_title
-      %span{data: { tooltip: I18n.t("check_descriptions.#{check_name}"), position: 'top center'}}
+      %span{data: { tooltip: I18n.t("check_descriptions.#{check_name}", PUPPET_SUPPORT_RANGE: PUPPET_SUPPORT_RANGE), position: 'top center'}}
         %i.icon.question.mark.circle.outline.tiny
   .content
     - pass_count = @statuses.count{|rs| rs.checks[check_name]}
