@@ -15,7 +15,7 @@
       - relevant_status_count = @statuses.count { |rs| !rs.checks["supports_only_current_#{os.downcase}"].nil? }
       .content
         .ui.large.header= os
-      .content
+      %a.content{href: "checks/supports_only_current_#{os.downcase}"}
         - pass_count = @statuses.count{|rs| rs.checks["supports_only_current_#{os.downcase}"]}
         .ui.tiny.header{style: 'padding-bottom: 10px;'}
           Does not support EOL
@@ -26,7 +26,7 @@
           \/
           = relevant_status_count
 
-      .content
+      %a.content{href: "checks/supports_latest_#{os.downcase}"}
         - pass_count = @statuses.count{|rs| rs.checks["supports_latest_#{os.downcase}"]}
         .ui.tiny.header{style: 'padding-bottom: 10px;'}
           Supports latest

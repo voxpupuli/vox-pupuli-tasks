@@ -6,6 +6,7 @@
     %th Check State
   %tbody
     - @repositories.each do |repo|
+      - next if repo.passed_check?(@check_name).nil?
       %tr
         %td= link_to repo.name, repository_path(repo.name), class: 'ui mini basic compact primary button'
         %td= repo.description
