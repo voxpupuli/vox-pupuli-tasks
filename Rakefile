@@ -30,10 +30,10 @@ begin
 
   GitHubChangelogGenerator::RakeTask.new :changelog do |config|
     config.header = "# Changelog\n\nAll notable changes to this project will be documented in this file."
-    config.exclude_labels = %w[duplicate question invalid wontfix wont-fix skip-changelog dependencies]
+    config.exclude_labels = %w[duplicate question invalid wontfix wont-fix skip-changelog]
     config.user = 'voxpupuli'
     config.project = 'vox-pupuli-tasks'
-    config.future_release = 'v1.0.0'
+    config.future_release = 'v1.0.1'
   end
 rescue LoadError # rubocop:disable Lint/SuppressedException
 end
