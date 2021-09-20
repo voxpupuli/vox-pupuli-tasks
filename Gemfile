@@ -30,7 +30,7 @@ gem 'jquery-rails'
 
 gem 'kaminari'
 
-gem 'rails-settings-cached', '~> 2.0'
+gem 'rails-settings-cached', '~> 2.8'
 
 gem 'groupdate'
 
