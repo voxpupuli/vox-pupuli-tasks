@@ -14,7 +14,8 @@ class Repository < ApplicationRecord
            class_name: 'PullRequest',
            primary_key: :github_id,
            foreign_key: :gh_repository_id,
-           inverse_of: :repository)
+           inverse_of: :repository,
+           dependent: :destroy)
 
   has_many :repository_statuses, dependent: :destroy
 
