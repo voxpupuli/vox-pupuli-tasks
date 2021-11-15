@@ -438,7 +438,7 @@ GEM
     semantic_puppet (1.0.4)
     sentry-raven (3.1.2)
       faraday (>= 1.0)
-    sexp_processor (4.15.3)
+    sexp_processor (4.16.0)
     sidekiq (5.2.9)
       connection_pool (~> 2.2, >= 2.2.2)
       rack (~> 2.0)
