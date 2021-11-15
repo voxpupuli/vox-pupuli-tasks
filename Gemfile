@@ -12,7 +12,7 @@ gem 'sass-rails', '~> 6.0'
 gem 'uglifier', '>= 1.3.0'
 
 gem 'coffee-rails', '~> 5.0'
-gem 'jbuilder', '~> 2.5'
+gem 'jbuilder', '~> 2.11'
 
 gem 'chartkick'
 gem 'fomantic-ui-sass', '2.8.7.1'
