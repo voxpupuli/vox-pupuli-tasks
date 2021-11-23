@@ -83,8 +83,8 @@ GEM
       async
     async-pool (0.3.9)
       async (>= 1.25)
-    autoprefixer-rails (10.2.5.1)
-      execjs (> 0)
+    autoprefixer-rails (10.3.3.0)
+      execjs (~> 2)
     awesome_print (1.9.2)
     babel-source (5.8.35)
     babel-transpiler (0.7.0)
