@@ -124,7 +124,7 @@ GEM
     e2mmap (0.1.0)
     erubi (1.10.0)
     erubis (2.7.0)
-    et-orbi (1.2.4)
+    et-orbi (1.2.6)
       tzinfo
     execjs (2.8.1)
     faraday (1.8.0)
