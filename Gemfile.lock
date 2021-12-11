@@ -325,7 +325,7 @@ GEM
     opentelemetry-semantic_conventions (1.6.1)
       opentelemetry-api (~> 1.0)
     parallel (1.21.0)
-    parser (3.0.2.0)
+    parser (3.0.3.1)
       ast (~> 2.4.1)
     pg (1.2.3)
     protocol-hpack (1.4.2)
