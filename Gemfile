@@ -7,7 +7,7 @@ gem 'rack'
 
 gem 'execjs'
 gem 'puma', '~> 5.5'
-gem 'rails', '~> 6.1.4'
+gem 'rails', '~> 7.0.0'
 gem 'sass-rails', '~> 6.0'
 gem 'uglifier', '>= 1.3.0'
 
