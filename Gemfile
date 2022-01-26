@@ -6,7 +6,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 gem 'rack'
 
 gem 'execjs'
-gem 'puma', '~> 5.5'
+gem 'puma', '~> 5.6'
 gem 'rails', '~> 6.1.4'
 gem 'sass-rails', '~> 6.0'
 gem 'uglifier', '>= 1.3.0'
