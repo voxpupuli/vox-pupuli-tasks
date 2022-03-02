@@ -83,7 +83,7 @@ GEM
       async
     async-pool (0.3.9)
       async (>= 1.25)
-    autoprefixer-rails (10.3.3.0)
+    autoprefixer-rails (10.4.2.0)
       execjs (~> 2)
     awesome_print (1.9.2)
     babel-source (5.8.35)
@@ -156,7 +156,7 @@ GEM
       faraday (~> 1.0)
     ffi (1.15.5)
     fiber-local (1.0.0)
-    fomantic-ui-sass (2.8.7.1)
+    fomantic-ui-sass (2.8.8)
       autoprefixer-rails
       rails (>= 3.2.0)
       sassc (>= 2.2)
@@ -202,7 +202,7 @@ GEM
       haml (>= 4.0, < 6)
       nokogiri (>= 1.6.0)
       ruby_parser (~> 3.5)
-    i18n (1.9.1)
+    i18n (1.10.0)
       concurrent-ruby (~> 1.0)
     io-console (0.5.9)
     io-like (0.3.1)
@@ -506,7 +506,7 @@ DEPENDENCIES
   chromedriver-helper
   coffee-rails (~> 5.0)
   execjs
-  fomantic-ui-sass (= 2.8.7.1)
+  fomantic-ui-sass (= 2.8.8)
   foreman
   github_changelog_generator
   groupdate
