@@ -12,13 +12,10 @@
 
 ActiveRecord::Schema.define(version: 2021_08_15_140513) do
 
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
   create_table "labels", force: :cascade do |t|
     t.string "name"
     t.string "color"
-    t.bigint "pull_request_id"
+    t.integer "pull_request_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "description"
@@ -39,7 +36,7 @@ ActiveRecord::Schema.define(version: 2021_08_15_140513) do
     t.datetime "gh_updated_at"
     t.datetime "closed_at"
     t.datetime "merged_at"
-    t.bigint "repository_id"
+    t.integer "repository_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "mergeable"
