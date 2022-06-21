@@ -3,7 +3,7 @@
 module CacheHelper
   SEED        = 'Eibae1Ox'
   APP_NAME    = 'VoxPupuliTasks'
-  PREFIX      = "#{APP_NAME}::cache::#{SEED}"
+  PREFIX      = "#{APP_NAME}::cache::#{SEED}".freeze
   DEFAULT_TTL = 6.hours
 
   def cached_data(name: nil,

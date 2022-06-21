@@ -8,7 +8,7 @@ class RepositoryCheckBase
   end
 
   def self.register_checks
-    Dir[Rails.root.join('app/lib/repository_checks/*.rb')].sort.each do |file|
+    Dir[Rails.root.join('app/lib/repository_checks/*.rb')].each do |file|
       require file
       clazz = File.basename(file, '.rb').camelcase.constantize
 
