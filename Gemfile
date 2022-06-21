@@ -8,6 +8,8 @@ gem 'rack'
 gem 'execjs'
 gem 'puma', '~> 5.6'
 
+gem 'net-imap', require: false
+gem 'net-pop', require: false
 gem 'net-smtp', require: false
 gem 'rails', '~> 6.1.6'
 
