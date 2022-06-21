@@ -31,7 +31,7 @@ class Github
 
     payload = {
       iat: Time.now.to_i,
-      exp: Time.now.to_i + (10 * 60),
+      exp: Time.now.to_i + (60),
       iss: Rails.application.credentials.github[Rails.env.to_sym][:app_id]
     }
 

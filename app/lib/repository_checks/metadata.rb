@@ -33,7 +33,7 @@ class Metadata < RepositoryCheckBase
       support_range = calculate_support_range(os_type)
 
       submit_result("supports_only_current_#{os_type.downcase}",
-                    supported_versions.min > support_range.min)
+                    supported_versions.min == support_range.min)
       submit_result("supports_latest_#{os_type.downcase}",
                     supported_versions.max == support_range.max)
     rescue NameError
