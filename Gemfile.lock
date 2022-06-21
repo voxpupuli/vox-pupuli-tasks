@@ -254,6 +254,14 @@ GEM
     multi_json (1.15.0)
     multi_xml (0.6.0)
     multipart-post (2.2.3)
+    net-imap (0.2.3)
+      digest
+      net-protocol
+      strscan
+    net-pop (0.1.1)
+      digest
+      net-protocol
+      timeout
     net-protocol (0.1.3)
       timeout
     net-smtp (0.3.1)
@@ -485,6 +493,7 @@ GEM
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
     sqlite3 (1.4.4)
+    strscan (3.0.1)
     sysexits (1.2.0)
     temple (0.8.2)
     thor (1.2.1)
@@ -531,6 +540,8 @@ DEPENDENCIES
   kaminari
   listen
   lograge
+  net-imap
+  net-pop
   net-smtp
   octokit
   oj
