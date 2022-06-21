@@ -8,8 +8,8 @@ gem 'rack'
 gem 'execjs'
 gem 'puma', '~> 5.6'
 
-gem 'rails', '~> 6.1.6'
 gem 'net-smtp', require: false
+gem 'rails', '~> 6.1.6'
 
 gem 'sass-rails', '~> 6.0'
 gem 'uglifier', '>= 1.3.0'
