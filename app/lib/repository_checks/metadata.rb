@@ -39,7 +39,7 @@ class Metadata < RepositoryCheckBase
 
       # TODO: latest_release can be nil
       submit_result("supports_latest_#{os.downcase}",
-                    releases&.include?(PuppetMetadata::OperatingSystem.latest_release))
+                    releases&.include?(PuppetMetadata::OperatingSystem.latest_release(os)))
     end
   end
 
