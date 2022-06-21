@@ -21,3 +21,6 @@ Rails/HasAndBelongsToMany:
   Exclude:
     - 'app/models/label.rb'
     - 'app/models/pull_request.rb'
+
+Style/HashSyntax:
+  Enabled: false
