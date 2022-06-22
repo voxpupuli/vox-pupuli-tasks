@@ -51,3 +51,14 @@ jobs:
       run: docker image ls
     - name: Run Docker Image
       run: docker run --rm --env RAILS_ENV=development --env NODE_ENV=development voxpupuli/vox-pupuli-tasks:latest ruby -e "puts 'we can use Ruby in the container \o/'"
+
+  github-action-updater:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        token: ${{ secrets.SAADMK11_GITHUB_ACTIONS_VERSION_UPDATER_VPT }}
+    - name: GitHub Actions Version Updater
+      uses: saadmk11/github-actions-version-updater@v0.5.6
+      with:
+        token: ${{ secrets.SAADMK11_GITHUB_ACTIONS_VERSION_UPDATER_VPT }}
