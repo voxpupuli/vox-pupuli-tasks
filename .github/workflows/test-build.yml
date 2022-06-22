@@ -21,9 +21,9 @@ jobs:
       BUNDLE_WITHOUT: development:release
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3.0.2
     - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
+      uses: ruby/setup-ruby@v1.110.0
       with:
         ruby-version: 2.7
         bundler-cache: true
@@ -33,14 +33,14 @@ jobs:
   docker:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3.0.2
     - name: create git version file
       run: git describe --always > VERSION
     - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v1
+      uses: docker/setup-buildx-action@v2.0.0
     - name: Build Docker image
       id: docker_build
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v3.0.0
       with:
         context: .
         push: false
@@ -55,7 +55,7 @@ jobs:
   github-action-updater:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3.0.2
       with:
         token: ${{ secrets.SAADMK11_GITHUB_ACTIONS_VERSION_UPDATER_VPT }}
     - name: GitHub Actions Version Updater
