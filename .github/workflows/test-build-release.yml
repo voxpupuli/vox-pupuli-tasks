@@ -53,5 +53,3 @@ jobs:
         tags: |
           voxpupuli/vox-pupuli-tasks:latest
           ghcr.io/voxpupuli/vox-pupuli-tasks:latest
-    - name: Image digest
-      run: echo ${{ steps.docker_build.outputs.digest }}
