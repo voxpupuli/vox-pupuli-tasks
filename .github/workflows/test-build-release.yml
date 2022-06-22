@@ -53,3 +53,7 @@ jobs:
         tags: |
           voxpupuli/vox-pupuli-tasks:latest
           ghcr.io/voxpupuli/vox-pupuli-tasks:latest
+    - name: List images
+      run: docker image ls
+    - name: Run Docker Image
+      run: docker run --rm --env DRY_RUN=true --env RAILS_ENV=development --env NODE_ENV=development voxpupuli/vox-pupuli-tasks:latest ruby -e "puts 'we can use Ruby in the container \o/'"
