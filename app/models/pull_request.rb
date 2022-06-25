@@ -191,6 +191,9 @@ class PullRequest < ApplicationRecord
 
     # check CI status and do work if required
     validate_conclusion
+    unless validate_mergeable && validate_conclusion
+      RefreshPullRequestWorker.perform_in(5.minutes.from_now, repository.name, number)
+    end
   end
 
   private
@@ -239,9 +242,8 @@ class PullRequest < ApplicationRecord
     label = Label.tests_fail
 
     if status != 'completed'
-      RefreshPullRequestWorker.perform_in(5.minutes.from_now, repository.name, number)
       Raven.capture_message('pending PR status', extra: { state: state, status: status, repo: repository.github_url, title: title })
-      return true
+      return false
     end
 
     case conclusion
@@ -254,7 +256,6 @@ class PullRequest < ApplicationRecord
     when nil
       # it's not really clear if the status is ever nil. if so, we should log it to decide if we need to act here
       Raven.capture_message('nil PR status', extra: { state: state, status: status, repo: repository.github_url, title: title })
-      return false
     else
       Raven.capture_message('Unknown PR state /o\\',
                             extra: { state: state, status: status, conclusion: conclusion, repo: repository.github_url, title: title })
