@@ -9,6 +9,7 @@ legacy_or_broken_nobody_knows:
   - puppet-bacula
   - puppet-nagios_providers
   - puppet-iis
+  - puppet-facette
   # Actually a gem
   - puppet-syntax
   - puppet-blacksmith
