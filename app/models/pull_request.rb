@@ -191,7 +191,6 @@ class PullRequest < ApplicationRecord
 
     # check CI status and do work if required
     validate_conclusion
-
   end
 
   private
@@ -238,7 +237,7 @@ class PullRequest < ApplicationRecord
 
   def validate_conclusion
     label = Label.tests_fail
-    
+
     if status != 'completed'
       RefreshPullRequestWorker.perform_in(5.minutes.from_now, repository.name, number)
       Raven.capture_message('pending PR status', extra: { state: state, status: status, repo: repository.github_url, title: title })
@@ -257,7 +256,8 @@ class PullRequest < ApplicationRecord
       Raven.capture_message('nil PR status', extra: { state: state, status: status, repo: repository.github_url, title: title })
       return false
     else
-      Raven.capture_message('Unknown PR state /o\\', extra: { state: state, status: status, conclusion: conclusion, repo: repository.github_url, title: title })
+      Raven.capture_message('Unknown PR state /o\\',
+                            extra: { state: state, status: status, conclusion: conclusion, repo: repository.github_url, title: title })
     end
 
     true
