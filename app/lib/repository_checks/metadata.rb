@@ -33,9 +33,10 @@ class Metadata < RepositoryCheckBase
   end
 
   def check_operating_system_support(metadata)
+    submit_result :operatingsystems, metadata.operatingsystems
     metadata.operatingsystems.each do |os, releases|
       submit_result("supports_only_current_#{os.downcase}",
-                    releases&.any? && PuppetMetadata::OperatingSystem.eol?(os, releases.first))
+                    releases&.any? && !PuppetMetadata::OperatingSystem.eol?(os, releases.first))
 
       # TODO: latest_release can be nil
       submit_result("supports_latest_#{os.downcase}",
