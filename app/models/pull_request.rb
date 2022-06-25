@@ -187,9 +187,9 @@ class PullRequest < ApplicationRecord
     return if Rails.env.development?
 
     # check merge status and CI status and do requeue if required
-    unless validate_mergeable && validate_conclusion
-      RefreshPullRequestWorker.perform_in(5.minutes.from_now, repository.name, number)
-    end
+    return if validate_mergeable && validate_conclusion
+
+    RefreshPullRequestWorker.perform_in(5.minutes.from_now, repository.name, number)
   end
 
   private
