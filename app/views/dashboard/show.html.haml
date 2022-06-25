@@ -12,14 +12,14 @@
 .ui.five.cards
   - ['Ubuntu', 'Debian', 'CentOS', 'FreeBSD', 'Fedora'].each do |os|
     .ui.card
-      - relevant_status_count = @statuses.count { |rs| !rs.checks["supports_only_current_#{os.downcase}"].nil? }
+      - relevant_status_count = @statuses.count { |rs| rs.checks['operatingsystems'] && !rs.checks['operatingsystems'][os].nil? }
       .content
         .ui.large.header= os
       %a.content{href: "checks/supports_only_current_#{os.downcase}"}
         - pass_count = @statuses.count{|rs| rs.checks["supports_only_current_#{os.downcase}"]}
         .ui.tiny.header{style: 'padding-bottom: 10px;'}
           Supports only current
-          %span{data: { tooltip: I18n.t("check_descriptions.supports_only_current", os: os, versions: "#{os.upcase}_SUPPORT_RANGE".constantize.to_sentence), position: 'top center'}}
+          %span{data: { tooltip: I18n.t("check_descriptions.supports_only_current", os: os, versions: PuppetMetadata::OperatingSystem.supported_releases(os).to_sentence), position: 'top center'}}
             %i.icon.question.mark.circle.outline
         %span.ui.huge.text{class: color_by_passed_checks(pass_count, relevant_status_count)}= pass_count
         %span.ui.big.grey.text{style: 'padding-left: 5px;'}
@@ -30,7 +30,7 @@
         - pass_count = @statuses.count{|rs| rs.checks["supports_latest_#{os.downcase}"]}
         .ui.tiny.header{style: 'padding-bottom: 10px;'}
           Supports latest
-          %span{data: { tooltip: I18n.t("check_descriptions.supports_latest", os: os, version: "#{os.upcase}_SUPPORT_RANGE".constantize.last), position: 'top center'}}
+          %span{data: { tooltip: I18n.t("check_descriptions.supports_latest", os: os, version: PuppetMetadata::OperatingSystem.latest_release(os)), position: 'top center'}}
             %i.icon.question.mark.circle.outline
         %span.ui.huge.text{class: color_by_passed_checks(pass_count, relevant_status_count)}= pass_count
         %span.ui.big.grey.text{style: 'padding-left: 5px;'}

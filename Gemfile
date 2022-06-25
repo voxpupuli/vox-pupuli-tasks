@@ -44,6 +44,8 @@ gem 'redis'
 
 gem 'puppet_forge'
 
+gem 'puppet_metadata', '~> 1.7'
+
 gem 'octokit'
 gem 'omniauth-github'
 gem 'omniauth-rails_csrf_protection'

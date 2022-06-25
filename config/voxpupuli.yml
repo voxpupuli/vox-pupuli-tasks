@@ -18,25 +18,6 @@ legacy_or_broken_nobody_knows:
 # define some versions that we want to match against
 puppet_support_range: ">= 6.1.0 < 8.0.0"
 
-# Updates here probably also need an update here: config/locales/*.yml
-support_ranges:
-  ubuntu:
-    - "18.04"
-    - "20.04"
-    - "22.04"
-  debian:
-    - 10
-    - 11
-  centos:
-    - 7
-    - 8
-  freebsd:
-    - 12
-    - 13
-  fedora:
-    - 33
-    - 34
-
 # labels that we would like to have on all repositories
 labels:
   - name: backwards-incompatible
