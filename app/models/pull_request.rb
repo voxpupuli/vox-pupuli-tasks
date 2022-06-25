@@ -22,9 +22,9 @@ class PullRequest < ApplicationRecord
       # get current status. GitHub API does not expose it as an atttribute of a PR
       # However, https://github.com/search does
       repo_id = gh_pull_request['base']['repo']['id']
-      status = begin
-        statuses = Github.client.check_suites_for_ref(repo_id, gh_pull_request['head']['sha'])
-        [statuses.last.status, statuses.last.conclusion]
+      check_suite = begin
+        raw_check_suite = Github.client.check_suites_for_ref(repo_id, gh_pull_request['head']['sha']).last
+        [raw_check_suite.status, raw_check_suite.conclusion]
       rescue StandardError => e
         Raven.capture_message('validate status', extra: { trace: e.backtrace, error: e.inspect, github_data: gh_pull_request.to_h })
         [nil, nil]
@@ -40,8 +40,8 @@ class PullRequest < ApplicationRecord
       pull_request.merged_at        = gh_pull_request['merged_at']
       pull_request.mergeable        = gh_pull_request['mergeable']
       pull_request.author           = gh_pull_request['user']['login']
-      pull_request.status           = status[0]
-      pull_request.conclusion       = status[1]
+      pull_request.status           = check_suite[0]
+      pull_request.conclusion       = check_suite[1]
       pull_request.draft            = gh_pull_request['draft']
       pull_request.save
 
