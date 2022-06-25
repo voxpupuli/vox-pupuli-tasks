@@ -566,7 +566,7 @@ DEPENDENCIES
   pry-rails
   puma (~> 5.6)
   puppet_forge
-  puppet_metadata (~> 1.0)
+  puppet_metadata (~> 1.7)
   rack
   rails (~> 6.1.6)
   rails-settings-cached (~> 2.8)
