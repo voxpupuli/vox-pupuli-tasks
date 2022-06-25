@@ -1,11 +1,3 @@
-GIT
-  remote: https://github.com/voxpupuli/puppet_metadata
-  revision: 1748e0d66f5c0856a079af74ef6e5c3c8960f9df
-  specs:
-    puppet_metadata (1.6.0)
-      metadata-json-lint (>= 2.0, < 4)
-      semantic_puppet (~> 1.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -386,6 +378,9 @@ GEM
       faraday_middleware (~> 1.0)
       minitar
       semantic_puppet (~> 1.0)
+    puppet_metadata (1.7.0)
+      metadata-json-lint (>= 2.0, < 4)
+      semantic_puppet (~> 1.0)
     raabro (1.4.0)
     racc (1.6.0)
     rack (2.2.3.1)
@@ -571,7 +566,7 @@ DEPENDENCIES
   pry-rails
   puma (~> 5.6)
   puppet_forge
-  puppet_metadata!
+  puppet_metadata (~> 1.0)
   rack
   rails (~> 6.1.6)
   rails-settings-cached (~> 2.8)
