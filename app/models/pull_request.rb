@@ -186,11 +186,7 @@ class PullRequest < ApplicationRecord
     # If we're running in development mode, we try to run read-only and won't modify PRs
     return if Rails.env.development?
 
-    # check merge status and do work if required
-    validate_mergeable
-
-    # check CI status and do work if required
-    validate_conclusion
+    # check merge status and CI status and do requeue if required
     unless validate_mergeable && validate_conclusion
       RefreshPullRequestWorker.perform_in(5.minutes.from_now, repository.name, number)
     end
