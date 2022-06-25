@@ -22,12 +22,12 @@ class PullRequest < ApplicationRecord
       # get current status. GitHub API does not expose it as an atttribute of a PR
       # However, https://github.com/search does
       repo_id = gh_pull_request['base']['repo']['id']
-      status = begin
-        statuses = Github.client.combined_status(repo_id, gh_pull_request['head']['sha'])
-        statuses['state']
+      check_suite = begin
+        raw_check_suite = Github.client.check_suites_for_ref(repo_id, gh_pull_request['head']['sha']).last
+        [raw_check_suite.status, raw_check_suite.conclusion]
       rescue StandardError => e
         Raven.capture_message('validate status', extra: { trace: e.backtrace, error: e.inspect, github_data: gh_pull_request.to_h })
-        nil
+        [nil, nil]
       end
       pull_request.number           = gh_pull_request['number']
       pull_request.state            = gh_pull_request['state']
@@ -40,7 +40,8 @@ class PullRequest < ApplicationRecord
       pull_request.merged_at        = gh_pull_request['merged_at']
       pull_request.mergeable        = gh_pull_request['mergeable']
       pull_request.author           = gh_pull_request['user']['login']
-      pull_request.status           = status
+      pull_request.status           = check_suite[0]
+      pull_request.conclusion       = check_suite[1]
       pull_request.draft            = gh_pull_request['draft']
       pull_request.save
 
@@ -185,16 +186,10 @@ class PullRequest < ApplicationRecord
     # If we're running in development mode, we try to run read-only and won't modify PRs
     return if Rails.env.development?
 
-    # check merge status and do work if required
-    mergeable_result = validate_mergeable
+    # check merge status and CI status and do requeue if required
+    return if validate_mergeable && validate_conclusion
 
-    # check CI status and do work if required
-    status_result = validate_status
-
-    # If one of the checks is nil perform a new check in one minute
-    return if mergeable_result && (!status_result.nil? || status != 'pending')
-
-    RefreshPullRequestWorker.perform_in(1.minute.from_now, repository.name, number)
+    RefreshPullRequestWorker.perform_in(5.minutes.from_now, repository.name, number)
   end
 
   private
@@ -239,26 +234,27 @@ class PullRequest < ApplicationRecord
     true
   end
 
-  def validate_status
+  def validate_conclusion
     label = Label.tests_fail
 
-    case status
+    if status != 'completed'
+      Raven.capture_message('pending PR status', extra: { state: state, status: status, repo: repository.github_url, title: title })
+      return false
+    end
+
+    case conclusion
     when 'failure'
       # if CI failed, add a label to PR
       add_ci_comment if ensure_label_is_attached(label)
     when 'success'
       ensure_label_is_detached(label)
       update(eligible_for_ci_comment: true)
-    when 'pending'
-      RefreshPullRequestWorker.perform_in(5.minutes.from_now, repository.name, number)
-      Raven.capture_message('pending PR status', extra: { state: state, status: status, repo: repository.github_url, title: title })
-      true
     when nil
       # it's not really clear if the status is ever nil. if so, we should log it to decide if we need to act here
       Raven.capture_message('nil PR status', extra: { state: state, status: status, repo: repository.github_url, title: title })
-      return false
     else
-      Raven.capture_message('Unknown PR state /o\\', extra: { state: state, status: status, repo: repository.github_url, title: title })
+      Raven.capture_message('Unknown PR state /o\\',
+                            extra: { state: state, status: status, conclusion: conclusion, repo: repository.github_url, title: title })
     end
 
     true
