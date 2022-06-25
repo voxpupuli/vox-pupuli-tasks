@@ -10,15 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_15_140513) do
-
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+ActiveRecord::Schema.define(version: 2022_06_25_195434) do
 
   create_table "labels", force: :cascade do |t|
     t.string "name"
     t.string "color"
-    t.bigint "pull_request_id"
+    t.integer "pull_request_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "description"
@@ -39,7 +36,7 @@ ActiveRecord::Schema.define(version: 2021_08_15_140513) do
     t.datetime "gh_updated_at"
     t.datetime "closed_at"
     t.datetime "merged_at"
-    t.bigint "repository_id"
+    t.integer "repository_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "mergeable"
@@ -50,6 +47,7 @@ ActiveRecord::Schema.define(version: 2021_08_15_140513) do
     t.string "status"
     t.boolean "draft", default: false
     t.boolean "eligible_for_ci_comment", default: true
+    t.string "conclusion"
     t.index ["github_id"], name: "index_pull_requests_on_github_id", unique: true
     t.index ["repository_id"], name: "index_pull_requests_on_repository_id"
   end
