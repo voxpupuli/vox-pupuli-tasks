@@ -10,7 +10,7 @@ class RefreshPullRequestWorker
       # use tally. the arrays can contain strings and ints. we cannot call sort on heterogenous arrays
       # see also https://twitter.com/BastelsBlog/status/1311421975827546112
       if (job.args.tally.to_a - this_args).empty? && (job.item['class'] == name)
-        Raven.capture_message('Duplicate Job, discarding', extra: { id: id, worker: name })
+        Raven.capture_message('Duplicate Job, discarding', extra: { args: this_args, worker: name })
         return false
       end
     end
