@@ -23,7 +23,7 @@ class PullRequest < ApplicationRecord
       # However, https://github.com/search does
       repo_id = gh_pull_request['base']['repo']['id']
       check_suite = begin
-        raw_check_suite = Github.client.check_suites_for_ref(repo_id, gh_pull_request['head']['sha']).last
+        raw_check_suite = Github.client.check_suites_for_ref(repo_id, gh_pull_request['head']['sha']).check_suites.last
         [raw_check_suite.status, raw_check_suite.conclusion]
       rescue StandardError => e
         Raven.capture_message('validate status', extra: { trace: e.backtrace, error: e.inspect, github_data: gh_pull_request.to_h })
