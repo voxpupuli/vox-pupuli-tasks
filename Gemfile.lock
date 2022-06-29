@@ -479,11 +479,10 @@ GEM
     sentry-raven (3.1.2)
       faraday (>= 1.0)
     sexp_processor (4.16.1)
-    sidekiq (5.2.10)
-      connection_pool (~> 2.2, >= 2.2.2)
+    sidekiq (6.5.1)
+      connection_pool (>= 2.2.2)
       rack (~> 2.0)
-      rack-protection (>= 1.5.0)
-      redis (~> 4.5, < 4.6.0)
+      redis (>= 4.2.0)
     sidekiq-scheduler (4.0.2)
       redis (>= 4.2.0)
       rufus-scheduler (~> 3.2)
@@ -578,7 +577,7 @@ DEPENDENCIES
   sass-rails (~> 6.0)
   selenium-webdriver
   sentry-raven
-  sidekiq (< 6)
+  sidekiq (< 7)
   sidekiq-scheduler
   spring
   spring-watcher-listen (~> 2.0.0)
