@@ -436,7 +436,7 @@ GEM
     request_store (1.5.1)
       rack (>= 1.4)
     rexml (3.2.5)
-    rubocop (1.32.0)
+    rubocop (1.33.0)
       json (~> 2.3)
       parallel (~> 1.10)
       parser (>= 3.1.0.0)
@@ -575,7 +575,7 @@ DEPENDENCIES
   react-rails
   redcarpet
   redis
-  rubocop (~> 1.32)
+  rubocop (~> 1.33)
   rubocop-rails
   sass-rails (~> 6.0)
   selenium-webdriver

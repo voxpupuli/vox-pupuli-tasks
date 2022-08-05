@@ -85,7 +85,7 @@ end
 group :test do
   gem 'capybara', '>= 2.15'
   gem 'chromedriver-helper'
-  gem 'rubocop', '~> 1.32'
+  gem 'rubocop', '~> 1.33'
   gem 'rubocop-rails'
   gem 'selenium-webdriver'
 end
