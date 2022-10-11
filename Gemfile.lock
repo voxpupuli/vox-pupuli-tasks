@@ -124,7 +124,6 @@ GEM
     crass (1.0.6)
     digest (3.1.0)
     erubi (1.11.0)
-    erubis (2.7.0)
     et-orbi (1.2.7)
       tzinfo
     execjs (2.8.1)
@@ -185,11 +184,10 @@ GEM
       tilt
     haml-lint (0.999.999)
       haml_lint
-    haml-rails (2.0.1)
+    haml-rails (2.1.0)
       actionpack (>= 5.1)
       activesupport (>= 5.1)
-      haml (>= 4.0.6, < 6.0)
-      html2haml (>= 1.0.1)
+      haml (>= 4.0.6)
       railties (>= 5.1)
     haml_lint (0.40.0)
       haml (>= 4.0, < 5.3)
@@ -198,11 +196,6 @@ GEM
       rubocop (>= 0.50.0)
       sysexits (~> 1.1)
     hashie (5.0.0)
-    html2haml (2.2.0)
-      erubis (~> 2.7.0)
-      haml (>= 4.0, < 6)
-      nokogiri (>= 1.6.0)
-      ruby_parser (~> 3.5)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     io-console (0.5.11)
@@ -241,7 +234,7 @@ GEM
       activesupport (>= 4)
       railties (>= 4)
       request_store (~> 1.0)
-    loofah (2.18.0)
+    loofah (2.19.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -451,8 +444,6 @@ GEM
       rubocop (>= 1.7.0, < 2.0)
     ruby-progressbar (1.11.0)
     ruby2_keywords (0.0.5)
-    ruby_parser (3.19.1)
-      sexp_processor (~> 4.16)
     rubyzip (2.3.2)
     rufus-scheduler (3.8.2)
       fugit (~> 1.1, >= 1.1.6)
@@ -477,7 +468,6 @@ GEM
     semantic_puppet (1.0.4)
     sentry-raven (3.1.2)
       faraday (>= 1.0)
-    sexp_processor (4.16.1)
     sidekiq (5.2.10)
       connection_pool (~> 2.2, >= 2.2.2)
       rack (~> 2.0)
@@ -526,7 +516,7 @@ GEM
     websocket-extensions (0.1.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.6.0)
+    zeitwerk (2.6.1)
 
 PLATFORMS
   ruby
