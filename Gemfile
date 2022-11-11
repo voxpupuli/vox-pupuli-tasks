@@ -6,7 +6,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 gem 'rack'
 
 gem 'execjs'
-gem 'puma', '~> 5.6'
+gem 'puma', '~> 6.0'
 
 gem 'net-imap', require: false
 gem 'net-pop', require: false
