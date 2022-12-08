@@ -349,7 +349,7 @@ GEM
       faraday-follow_redirects (~> 0.3.0)
       minitar
       semantic_puppet (~> 1.0)
-    puppet_metadata (1.8.0)
+    puppet_metadata (1.9.0)
       metadata-json-lint (>= 2.0, < 4)
       semantic_puppet (~> 1.0)
     raabro (1.4.0)
@@ -542,7 +542,7 @@ DEPENDENCIES
   pry-rails
   puma (~> 6.0)
   puppet_forge
-  puppet_metadata (~> 1.8)
+  puppet_metadata (~> 1.9)
   rack
   rails (~> 6.1.7)
   rails-settings-cached (~> 2.8)
