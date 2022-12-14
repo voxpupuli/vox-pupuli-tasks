@@ -298,7 +298,7 @@ GEM
     opentelemetry-instrumentation-base (0.21.0)
       opentelemetry-api (~> 1.0)
       opentelemetry-registry (~> 0.1)
-    opentelemetry-instrumentation-pg (0.22.2)
+    opentelemetry-instrumentation-pg (0.22.3)
       opentelemetry-api (~> 1.0)
       opentelemetry-instrumentation-base (~> 0.21.0)
     opentelemetry-instrumentation-rack (0.21.1)
