@@ -106,9 +106,7 @@ class Repository < ApplicationRecord
   #  Repository on GitHub
   #
   def missing_labels
-    required_label_names = VOXPUPULI_CONFIG['labels'].map do |label|
-      label['name']
-    end
+    required_label_names = VOXPUPULI_CONFIG['labels'].pluck('name')
 
     label_names = labels.pluck(:name)
 

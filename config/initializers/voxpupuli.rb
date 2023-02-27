@@ -12,7 +12,7 @@ RepositoryCheckBase.register_checks
 
 ##
 # Create logger for dry runs and rotate file on every startup to increase readabiliy
-if File.file?(Rails.root.join('log/dry_run.log'))
+if Rails.root.join('log/dry_run.log').file?
   FileUtils.mv(Rails.root.join('log/dry_run.log'),
                Rails.root.join('log/dry_run_prev.log'))
 end
