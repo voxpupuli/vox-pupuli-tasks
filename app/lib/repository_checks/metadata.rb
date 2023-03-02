@@ -47,7 +47,7 @@ class Metadata < RepositoryCheckBase
   def check_puppet_version(metadata)
     version_requirement = metadata.requirements['puppet']
     if version_requirement
-      submit_result :correct_puppet_version_range, PUPPET_SUPPORT_RANGE == version_requirement.to_s
+      submit_result :correct_puppet_version_range, version_requirement.to_s == PUPPET_SUPPORT_RANGE
       submit_result :with_puppet_version_range, true
     else
       submit_result :with_puppet_version_range, false
