@@ -157,7 +157,7 @@ GEM
       rake (>= 10.0)
     globalid (1.1.0)
       activesupport (>= 5.0)
-    groupdate (6.1.0)
+    groupdate (6.2.0)
       activesupport (>= 5.2)
     haml (5.2.2)
       temple (>= 0.8.0)
