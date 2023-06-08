@@ -37,7 +37,7 @@ jobs:
     - name: create git version file
       run: git describe --always > VERSION
     - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v1
+      uses: docker/setup-buildx-action@v2
     - name: Build Docker image
       id: docker_build
       uses: docker/build-push-action@v4
