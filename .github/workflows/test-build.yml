@@ -51,3 +51,12 @@ jobs:
       run: docker image ls
     - name: Run Docker Image
       run: docker run --rm --env RAILS_ENV=development --env NODE_ENV=development voxpupuli/vox-pupuli-tasks:latest ruby -e "puts 'we can use Ruby in the container \o/'"
+
+  tests:
+    needs:
+      - rubocop
+      - docker
+    runs-on: ubuntu-latest
+    name: Test suite
+    steps:
+      - run: echo Test suite completed
