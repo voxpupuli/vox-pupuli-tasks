@@ -126,7 +126,7 @@ GEM
     et-orbi (1.2.7)
       tzinfo
     execjs (2.8.1)
-    faraday (2.7.4)
+    faraday (2.7.6)
       faraday-net_http (>= 2.0, < 3.1)
       ruby2_keywords (>= 0.0.4)
     faraday-follow_redirects (0.3.0)
@@ -350,7 +350,7 @@ GEM
     public_suffix (5.0.1)
     puma (6.2.1)
       nio4r (~> 2.0)
-    puppet_forge (4.1.0)
+    puppet_forge (5.0.0)
       faraday (~> 2.0)
       faraday-follow_redirects (~> 0.3.0)
       minitar
@@ -454,7 +454,7 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
-    semantic_puppet (1.0.4)
+    semantic_puppet (1.1.0)
     sentry-raven (3.1.2)
       faraday (>= 1.0)
     sidekiq (6.0.0.pre1)
