@@ -3,8 +3,8 @@ FROM ruby:3.1.2-alpine
 ENV NODE_ENV production
 ENV RAILS_ENV production
 
-RUN apk update && apk upgrade
-RUN apk add build-base linux-headers git nodejs yarn tzdata postgresql-dev postgresql-client shared-mime-info
+RUN apk --no-cache update && apk --no-cache upgrade
+RUN apk add --no-cache build-base linux-headers git nodejs yarn tzdata postgresql-dev postgresql-client shared-mime-info
 
 RUN mkdir /vpt
 WORKDIR /vpt
