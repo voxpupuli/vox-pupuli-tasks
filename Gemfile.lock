@@ -245,7 +245,7 @@ GEM
       timeout
     net-smtp (0.3.3)
       net-protocol
-    nio4r (2.5.9)
+    nio4r (2.7.0)
     nokogiri (1.15.2)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
@@ -349,7 +349,7 @@ GEM
     pry-rails (0.3.9)
       pry (>= 0.10.4)
     public_suffix (5.0.1)
-    puma (6.3.1)
+    puma (6.4.2)
       nio4r (~> 2.0)
     puppet_forge (5.0.0)
       faraday (~> 2.0)
@@ -547,7 +547,7 @@ DEPENDENCIES
   opentelemetry-sdk
   pg
   pry-rails
-  puma (~> 6.3)
+  puma (~> 6.4)
   puppet_forge
   puppet_metadata (~> 2.0)
   rack
