@@ -130,3 +130,5 @@ labels:
 teams_with_admin_access:
   - org-login: voxpupuli
     team-slug: project-maintainers
+  - org-login: voxpupuli
+    team-slug: tools/vox-pupuli-tasks
