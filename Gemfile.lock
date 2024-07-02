@@ -91,6 +91,7 @@ GEM
     babel-transpiler (0.7.0)
       babel-source (>= 4.0, < 6)
       execjs (~> 2.0)
+    base64 (0.2.0)
     bootsnap (1.16.0)
       msgpack (~> 1.2)
     builder (3.2.4)
@@ -117,7 +118,7 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     concurrent-ruby (1.2.3)
-    connection_pool (2.3.0)
+    connection_pool (2.4.1)
     console (1.16.2)
       fiber-local
     crass (1.0.6)
@@ -210,6 +211,7 @@ GEM
     listen (3.8.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
+    logger (1.6.0)
     lograge (0.12.0)
       actionpack (>= 4)
       activesupport (>= 4)
@@ -362,8 +364,9 @@ GEM
     raabro (1.4.0)
     racc (1.7.3)
     rack (2.2.9)
-    rack-protection (3.0.2)
-      rack
+    rack-protection (3.2.0)
+      base64 (>= 0.1.0)
+      rack (~> 2.2, >= 2.2.4)
     rack-test (2.1.0)
       rack (>= 1.3)
     rails (6.1.7.7)
@@ -411,7 +414,7 @@ GEM
     redcarpet (3.6.0)
     redis (5.0.6)
       redis-client (>= 0.9.0)
-    redis-client (0.13.0)
+    redis-client (0.22.2)
       connection_pool
     regexp_parser (2.8.1)
     reline (0.3.3)
@@ -460,15 +463,15 @@ GEM
     semantic_puppet (1.1.0)
     sentry-raven (3.1.2)
       faraday (>= 1.0)
-    sidekiq (6.0.0.pre1)
-      connection_pool (>= 2.2.2)
-      rack (>= 1.5.0)
-      rack-protection (>= 1.5.0)
-      redis (>= 4.0.2)
-    sidekiq-scheduler (4.0.3)
-      redis (>= 4.2.0)
+    sidekiq (7.3.0)
+      concurrent-ruby (< 2)
+      connection_pool (>= 2.3.0)
+      logger
+      rack (>= 2.2.4)
+      redis-client (>= 0.22.2)
+    sidekiq-scheduler (5.0.3)
       rufus-scheduler (~> 3.2)
-      sidekiq (>= 4, < 7)
+      sidekiq (>= 6, < 8)
       tilt (>= 1.4.0)
     snaky_hash (2.0.1)
       hashie
@@ -563,7 +566,7 @@ DEPENDENCIES
   sass-rails (~> 6.0)
   selenium-webdriver
   sentry-raven
-  sidekiq (< 6)
+  sidekiq (< 8)
   sidekiq-scheduler
   spring
   spring-watcher-listen (~> 2.1.0)

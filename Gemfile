@@ -25,7 +25,7 @@ gem 'haml-rails'
 gem 'react-rails'
 gem 'redcarpet'
 
-gem 'sidekiq', '< 6'
+gem 'sidekiq', '< 8'
 gem 'sidekiq-scheduler'
 
 gem 'sentry-raven'
